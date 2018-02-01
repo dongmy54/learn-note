@@ -22,3 +22,22 @@ puts 'first'
 puts 'second'
 # 如果log.text 文件不存在，则新建
 # log.text 中会有 first 和 second
+
+
+# 一个类方法 调用另一个类方法
+class A 
+  
+  def self.test
+    ret = test1('sd')
+    # 这里等价于 self.test1('sd')
+    # 一个类方法可以直接调用另外一个类方法
+    puts ret
+  end
+
+  def self.test1(arg)
+    "参数是：#{arg}"
+  end
+
+end
+A.test
+# 参数是：sd
