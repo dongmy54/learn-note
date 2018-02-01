@@ -729,11 +729,69 @@
 #   test(rand_number,i)            # 神奇的事，自己居然可以调用自己
 # end
 
-require 'find'
+# require 'find'
 
-Find.find('blog-tutorial') do |path|
-  puts path      # 强大的find库
-end
+# Find.find('blog-tutorial') do |path|
+#   puts path      # 强大的find库
+# end
+
+# require 'base64'
+# app_key = '2e1fb1d63b134c2b9f71b3f4de47ba28'
+# app_secret = '7257721855084f4f9b1d21f06f4fbe0a'
+# # 使用遵循 RFC 4648 的 Base64 编码函数
+# encoded = Base64.urlsafe_encode64("#{app_key}:#{app_secret}")
+# basic = "Basic #{encoded}"
+# #输出为：Basic YTk0YTExMGQ4NmQyNDUyZWIzZTJhZjRjZmI4YTM4Mjg6YTg0YTExMGQ4NmQyNDUyZWIzZTJhZjRjZmI4YTM4Mjg=
+# puts basic
+
+# 
+
+# # next 与 break
+# (1..10).each do |i|
+#   next if  i == 5
+#   # next 跳过本次循环，进入下一次循环
+#   break if i == 8
+#   # break 直接终止整个循环
+#   puts i
+# end
+
+# # str = "sasadfhsdlwe"
+# # str.truncate(5)
+
+# # ruby test.rb >> log.text
+# # >> 符号会将 执行结果输出内容写到某文件中
+# puts 'first'
+# puts 'second'
+# # 如果log.text 文件不存在，则新建
+# # log.text 中会有 first 和 second
+
+# # scan 对字符串不做处理，但可以校验字符串
+# str = 'adhwadadsawea'
+# count = 0
+# str.scan(/a/) do
+#   count += 1
+# end
+# puts "str中包含#{count}个字符串"
+# # str中包含5个字符串
+
+# # gsub 方法对字符串做置换
+# str = 'asadsa asd asda sa'
+# str.gsub!(/\s+/, '')
+# # \s+ 匹配空格 换行 等
+# puts "处理后字符串为#{str}"
+# # 处理后字符串为asadsaasdasdasa
+
+# # open-uri 像打开文件一样获取 html
+# require 'open-uri'
+# url      = "http://www.ruby-lang.org/"
+# filename = "cathedral.html"
+# File.open(filename, 'w') do |f|
+#   # 直接 open read
+#   text = open(url).read
+#   # 写入 文件
+#   f.write text
+# end
+# # url 内容写入到cathedral.html 中了
 
 
 
