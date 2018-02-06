@@ -794,6 +794,42 @@
 # # url 内容写入到cathedral.html 中了
 
 
+# class A
+
+#   attr_accessor :attributes
+#   def initialize(str)
+#     @attributes = str
+#   end
+
+# end
+
+# str = {:a => 'a', :b => 'b'}
+
+# a = A.new(str)
+
+# puts a.attributes
+# puts a.a
+
+# update_params = {'active_amount' => 'asdf', 'sd' => 'sd'}
+#  update_params = update_params.select do |key, _|
+
+#         %w(
+#           active_amount
+#           discount_amount
+#           discount_percentage
+#           name
+#           actived_at
+#           expired_at
+#           quantity_type
+#           no_expires
+#           atype
+#           utype).include? key.to_s
+#       end
+
+
+# puts update_params
+
+
 
 
 

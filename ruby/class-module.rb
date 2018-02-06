@@ -41,3 +41,16 @@ class A
 end
 A.test
 # 参数是：sd
+
+# 在条件判断中，两个并列条件，前者把一个实例赋值给它
+# 后者用这个被赋值的变量，调用实例方法
+# 会报错，a 为空
+class A
+  def test
+    true
+  end
+end
+
+if a = A.new && a.test      #  猜测 应该是不是从前往后的逐步判定的，前后条件难道是同时去判断？
+  puts "sda"
+end
