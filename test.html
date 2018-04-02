@@ -1,0 +1,1660 @@
+<style>.frame {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+.view-count {
+    float: right;
+    margin-top: -54px;
+    color: #9B9B9B;
+}
+
+.markdown h2, .markdown h3, .markdown h4 {
+    text-align: left;
+    font-weight: 800;
+    font-size: 16px !important;
+    line-height: 100%;
+    margin: 0;
+    color: #555;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+  .markdown .figure-code figcaption {
+    background-color: #e6e6e6;
+
+    font: 100%/2.25 Monaco, Menlo, Consolas, 'Courier New', monospace;
+    text-indent: 10.5px;
+    
+    -moz-border-radius: 0.25em 0.25em 0 0;
+    -webkit-border-radius: 0.25em;
+    border-radius: 0.25em 0.25em 0 0;
+    -moz-box-shadow: inset 0 0 0 1px #d9d9d9;
+    -webkit-box-shadow: inset 0 0 0 1px #d9d9d9;
+    box-shadow: inset 0 0 0 1px #d9d9d9;
+}
+
+.markdown {
+    position: relative;
+    line-height: 1.8em;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    font-family: 'PT Serif', Georgia, Times, 'Times New Roman', serif !important;
+}
+
+.markdown ol li, .markdown ul li {
+    line-height: 1.6em;
+    padding: 2px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.markdown .figure-code {
+    margin: 20px 0;
+}
+
+.post-content {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.markdown code {
+    background-color: #ececec;
+    color: #d14;
+    font-size: 85%;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.9);
+    border: 1px solid #d9d9d9;
+    padding: 0.15em 0.3em;
+}
+
+div {
+    display: block;
+}
+
+.markdown figure.code pre {
+    background-color: #ffffcc !important;
+}
+
+.code .gi {
+    color: #859900;
+    line-height: 1.2em;
+}
+
+.code .err {
+    color: #93A1A1;
+}
+
+.markdown a:link, .markdown a:visited {
+    color: #0069D6 !important;
+    text-decoration: none !important;
+}
+
+.markdown p {
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+.markdown blockquote {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 12px;
+    border-left: 5px solid #50AF51;
+    background-color: #F3F8F3;
+    clear: both;
+    display: block;
+}
+
+.markdown blockquote>*:first-child {
+    margin-top: 0 !important;
+}
+
+.markdown blockquote>*:last-child {
+    margin-bottom: 0 !important;
+}
+
+.markdown blockquote p {
+    color: #222;
+}
+
+* {
+    outline: none !important;
+}
+
+a:active, a:hover, a:link, a:visited {
+    text-decoration: none;
+}
+
+pre {
+    margin: 0;
+}
+
+.markdown img {
+    vertical-align: top;
+    max-width:100%;
+    height:auto;
+}
+
+h1 a {
+  color: #071A52;
+}
+
+h4 {
+  color: #734488;
+}
+
+hr {
+  border-color: #DEDEDE;
+  border-width: 0.8px;
+  margin-bottom: auto;
+}
+
+.end {
+  height: 400px;
+}
+.end img {
+  clear: both; 
+  display: block; 
+  margin:auto;
+  margin-top: -70px; 
+}
+
+.end p {
+  margin-left: 300px;
+  margin-top: -100px;
+  color: #FF9D76;
+}
+</style><div class='frame'><h1>
+      1-1 效能提升
+    </h1><h4>所属章节：1-概览</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>这一章我们将涵盖两个主题</p>
+
+<ul>
+<li>网站效能调整 - 前端篇</li>
+<li>网站效能调整 - 后端篇</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      1-2 效能提升基础概念
+    </h1><h4>所属章节：1-概览</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>说到网站效能提升，一个网站大概分成几个结构</p>
+
+<ul>
+<li>网站放置主机的地方（美国，日本，北京，等等等等）</li>
+<li>前端代码结构（ CSS / JavaScript）</li>
+<li>后端代码结构
+
+<ul>
+<li>Ruby Code 效能</li>
+<li>数据库的效能</li>
+</ul>
+</li>
+</ul>
+
+<p>你会先调整哪里呢？</p>
+<h3>膝盖反射迷思：先调整后端代码或机器摆放位置</h3>
+<p>很多同学听到这一题，通常会不加思索的回答出这两种答案，要不就是</p>
+
+<ul>
+<li>搬主机</li>
+<li>要不就是重构 Ruby 代码</li>
+</ul>
+
+<p>还有很多程序员同学整天在网上跟人争论这个问题「Ruby 是不是性能不好，不适合拿来做网站？」上完这个课程，你会发现这样的争论事实上是没有道理的。</p>
+<h3>程序员性价比问题</h3>
+<p>要回答优先从何处提速这个问题，我的意见其实是得从程序员的「注意力」可以换取最高的网站提升效率速度来考虑优先级，「一天能够提升的有感速度」。</p>
+
+<p>以下我们会先分析「开启一个网站」需要经过多少手续，速度，与资源。开始谈论这个问题。</p>
+<h3>机器地理位置的确很重要</h3>
+<p>首先，地理位置是一定会对开启速度造成差异的。</p>
+
+<p>各位可以用 <code>ping</code> 这个指令去侦测你想要测试的网站，这个网站会告诉你现在的电脑距离服务器有多远。上面显示的毫秒值就是<code>完成一次封包请求需要的时间</code>。</p>
+
+<p>比如说</p>
+
+<ul>
+<li>ping baidu.cn</li>
+<li>ping airbnb.com</li>
+</ul>
+
+<p>大致上了解机器的实体地理位置，回传的速度真的是有很大差异的。</p>
+
+<p>那这件事又对我们今天说的提速优先权有什么关系呢？</p>
+
+<p>下图是</p>
+
+<ul>
+<li>「日本用户」与「美国用户」连到中国大陆的服务器所需要的时间</li>
+<li>中国大陆用户连到「日本网站」「美国网站」「香港网站」所需要的时间</li>
+</ul>
+
+<p>你可以发现把机器放在日本是比放在美国快上好几倍的。</p>
+
+<p>（所以甚至就算是 VPN 也是尽量要选择日本服务器的，铁定会比美国快很多倍。）</p>
+
+<p>这是我们今天要讲的第一个观念。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/B6p5ylfeRfSaV9uZ9eL2_Rocketbook-2017-02-16-191127-039.png" title=""></figure></p>
+<h3>网站开启速度是累加的</h3>
+<p>接下来我们要谈「下载并完全开启一个网站」的「总时长」是如何计算出来的？</p>
+
+<p>以下这个图是中国大陆用户开启一个美国网站所需要的时间，公式是这样的：</p>
+
+<blockquote>
+<p>网站代码产生网页的速度 + 下载网页的速度 + 下载素材的速度</p>
+</blockquote>
+
+<ul>
+<li> 网站代码产生网页的速度（通常在100ms-200ms）</li>
+<li>下载网页（通常一张网页约 100-200KB）</li>
+<li>下载素材 x 15（通常一张网页大约有 15 个以上素材）</li>
+</ul>
+
+<p>只要发出每一个请求都要 +230 ms。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/Wta2x8zfTuWu5Fksbl6Q_Rocketbook-2017-02-16-191121-043.png" title=""></figure></p>
+
+<p>由这个公式我们会总结出</p>
+
+<blockquote>
+<ol>
+<li>下载所需时间  &gt; （远大于）网页生成时间</li>
+<li>如果你的网站放在美国（如 Heroku），素材又很多的话，网站会巨慢</li>
+</ol>
+</blockquote>
+<h3>调整「前端速度」优先远高于「后端产生网页」速度</h3>
+<p>而「生成网页」的架构分解是这样的。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/aW05icz3RVWkDRaMiLOK_Rocketbook-2017-02-16-191115-049.png" title=""></figure></p>
+
+<p>程序员花了一整天的时间，修改了网站架构，得到的结果可能是：</p>
+
+<ul>
+<li>调整前端架构或搬机器：从 10s 下降到 2s  (1s = 1000ms)</li>
+<li>调整后端代码或数据库架构：从 500ms 下降到 150ms</li>
+</ul>
+<h3>总结</h3>
+<p><code>「调整前端架构或搬机器」</code>比起「调整后端代码或数据库架构」来说，性价比远远为高。</p>
+
+<p>但是，搬机器的地理位置手续非常复杂，特别是机器往往不是一台的，而是一组的，依据地理位置分配资源的技术与架构实做起来会非常复杂。所以我们这种「个体户程序员」，提速的方向往往会以「修正前端架构」去思考。</p>
+
+<p>下面，我们就会先分享如何藉由<code>「更改前端架构」</code>为自己的网站，大大提速的技巧。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      2-1 前端提速套路概览
+    </h1><h4>所属章节：2-前端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>在 2009 年左右，当时前端大神 Steve Sounders 与他在雅虎的同事们，写了一篇神文，教当时还处于蛮荒世界的程序员，如何有效提升前端速度效果。</p>
+
+<p>这篇教程 <a href="https://developer.yahoo.com/performance/rules.html">Best Practices for Speeding Your website</a>　也是我们今天会拿来做教学的教程之一。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/wtwbyc5RHqjxVbiSi7wd_%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-02-16%20%E4%B8%8B%E5%8D%888.36.09.png" title=""></figure></p>
+
+<p><br></p>
+
+<p>这篇教程洋洋洒洒了写了要调效前端，你所必须要知道的十几个要点。如：</p>
+
+<ul>
+<li>Minimize HTTP Requests</li>
+<li>Use a Content Delivery Network</li>
+<li>Put Stylesheets at the Top</li>
+<li>Put Scripts at the Bottom</li>
+<li>…..</li>
+<li>….</li>
+</ul>
+
+<p>大伙在当时可听的如痴如醉。</p>
+
+<p>但是后来问题来了，程序员大概知道自己网页上的结构问题。但是一个网站有几百页，几十个问题，我如何快速找到这些问题，以及知道网站上调整前与调整后的差异呢？</p>
+<h3>YSlow</h3>
+<p>所以后来 Yahoo 就决定了，好人做到底，也开源他们内部用的扫描侦测工具 <a href="http://yslow.org">YSlow</a>。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/xFJMeyk1RXmksjQTuanr_yslow.png" title=""></figure></p>
+
+<p>YSlow 这个工具是个浏览器插件，按下扫描就可以跑出这个网页的比分。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/vRaEQus4SDDt0jRBmcFL_yslow2.png" title=""></figure></p>
+
+<p>今天我们前端提速章节，要谈的就是如何利用 YSlow 工具扫描网站的速度问题，并且利用 Rails 本身的机制实做出来这这些加速机制。</p>
+<h2>本节主要议题：</h2>
+<p>Best Practices for Speeding Your website　上面有很多诀窍，今天我们会挑 4 个最重要提速的技巧讲解并且实做。主要覆盖的题目会有这几个：</p>
+
+<ul>
+<li>Put Stylesheets at the Top / Put Scripts at the Bottom</li>
+<li>Minimize HTTP Requests</li>
+<li>Use a CDN</li>
+<li>Split Components Across Domains</li>
+<li>Gzip Components</li>
+<li>Minify JavaScript and CSS</li>
+</ul>
+
+<p>如果你都实做了这些技巧，网站瞬间就会有很大的速度提升了。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      2-2 将 CSS 放在最顶层，将 JavaScript 放在最底层
+    </h1><h4>所属章节：2-前端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>我们首先来讲一个最简单又能最有感提升网页速度的技巧，这一招叫做：</p>
+
+<ul>
+<li>将 CSS 放在最顶层读取</li>
+<li>将 JavaScript 放在最底层读取</li>
+</ul>
+
+<p>什么意思呢？</p>
+
+<p>就是原先在 Rails 预设的项目，我们都是这样摆放我们的 CSS 与 JavaScript 位置的。</p>
+<h3>步骤</h3>
+<p>先是这样摆：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/pjWXDHTFe8BsSqzolffA_css_before.png" title=""></figure></p>
+
+<p>你现在得改成这样：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/fcaZo2prRoiMyAtI7dzn_js_after.png" title=""></figure></p>
+<h3>原理</h3>
+<h4>将 CSS 放在最顶层读取</h4>
+<p>将 CSS 先摆在网站的最上层读取，将 JavaScript 放在最底层读取。是因为浏览器是这样运作的：</p>
+
+<ul>
+<li>先下载 HTML 本身。</li>
+<li>而 CSS 放在 head 区块定义，这样可以允许页面逐步呈现。</li>
+<li>「浏览器」下载完毕 CSS 就开始根据 CSS 的定义「绘制」网页</li>
+<li>所以 CSS 的顺序要放在 head 里面。</li>
+</ul>
+<h4>将 JavaScript 放在最底层读取</h4>
+<p>而为什么要将 JavaScript 从 head 拿出来放在 body 里面呢？</p>
+
+<ul>
+<li>因为如果我们倾向在网站里面放很多支 JavaScript ，而这些 JavaScript 都非常肥大，要是一起放在 head 里面，CSS 下载绘制的速度也会受影响。</li>
+<li>而如果你看大多数 jQuery 的教程，你会发现很都是这样的范例：</li>
+</ul>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="nx">$</span><span class="p">(</span> <span class="nb">document</span> <span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s2">"ready!"</span> <span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</figure>
+
+<ul>
+<li>document ready 意思是 HTML 下载完毕之后执行。既然是网页开完才执行，「先画完」再「执行特效」，那么把 JavaScript 放在最底层执行，使用者是不会察觉到任何改动的。</li>
+<li>而且甚至使用者会感受到网页开得更快了，因为 CSS 更快被浏览器下载绘制完毕。</li>
+</ul>
+<h3>在 Rails 内实做的一个小细节</h3>
+<p>不过要在 Rails 中这样实做，其实还是要注意一个微小的细节：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/yjQg5SZQSOlVNimTJcc9_js_after.png" title=""></figure></p>
+
+<p>如果我们将 JavaScript 往下搬了，那么我们在网页里面要是手写了一些 jQuery 代码。因为这些「手写的代码」开在「jQuery」的上面，所以特效会烂掉，浏览器会抱怨找不到 jQuery。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/YDMR2coGQxGmh6MkHn6l_js_2.png" title=""></figure></p>
+
+<p>因为「手写的代码」实际上执行的地方是在 <code>yield</code> 这一区。</p>
+<h4>解决方法：</h4>
+<p>解决方式是我们在 <code>javascript_include_tag</code> 下再多加一行 <code>yield :handwrite_javascript</code>。（多一个区块）</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/4xvqB5IUTKWzIQOCPbCS_js_solution.png" title=""></figure></p>
+
+<p>然后再将原先写的 JavaScript 特效，用 <code>content_for</code> 把原先的网页包起来。</p>
+
+<p>那么这一段  JavaScript 就会在<code>javascript_include_tag</code> 以下执行了。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/ICPtH9rTQA2kzyBctMms_%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-02-16%20%E4%B8%8B%E5%8D%889.12.08.png" title=""></figure></p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      2-3 Minimize HTTP Requests
+    </h1><h4>所属章节：2-前端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>接下来，我们要请各位在浏览器看网站源代码，你会在网站 head 看到这么一大包 CSS / JS。这是我们网站里面会用的所有细小资源。</p>
+
+<p>浏览器下载抓档案是这样的：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/cPTBSarTiicVuMSqHUbw_%E6%AA%94%E6%A1%88%202017-2-16%2022%2009%2046.jpeg" title=""></figure></p>
+
+<p>有点像是每次要下载档案，都要先说「哈啰，你这里有没有图？」。</p>
+
+<p>如果你要下载 10 个 CSS，那么就要问 10 次「哈啰，你这里有没有 CSS？」。</p>
+
+<p><br></p>
+
+<blockquote>
+<p>哈啰一次也是要 50-200ms 的</p>
+
+<p>哈啰一次也是要 50-200ms 的</p>
+
+<p>哈啰一次也是要 50-200ms 的</p>
+</blockquote>
+
+<p><br></p>
+
+<p>如果你的网站一次要下载很多 CSS / JavaScipt 时，那么网站开启效果一定不会太好，要不是</p>
+
+<ul>
+<li>等很久，网站一片空白</li>
+<li>网站开起来是一片一片开的</li>
+</ul>
+
+<p>所以我们这里有一招可以加速。</p>
+<h3>把多支 CSS /  JavaScript 合并成一支 CSS / JS</h3>
+<p>前端程序员有一个邪恶的技巧，可以解决「要讲 10 次哈啰」的耗时问题。</p>
+
+<p>他们决定部署时把所有 CSS 复制贴上打包成一支 CSS（那么就只需要讲 1 次哈啰）。</p>
+
+<p>如果你用 chrome 打开 Rails production 上 HTML 的源码，就会发现结果的确是变成这样子。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/Y7y84mSaTjmrMwP4uWop_css_production.png" title=""></figure></p>
+
+<p>为什么可以这样做呢？这是因为：</p>
+
+<ul>
+<li>多个 CSS 样式放在一个档案，是可以如常执行的</li>
+<li>甚至打包起来，把所有空白空行都「砍掉」，还是可以如常执行的。</li>
+</ul>
+
+<p>所以前端界要将网站上线，几乎都会做这样处理。而近年来更先进，以前要先自己用工具打包，再部署。</p>
+
+<p>而现在有些先进的框架（如 Rails ）则是在部署的过程当中，自动压制（ <code>rake assets:precompile</code> ）上传。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/o8Z7zt3TRZK8ivwGKdWr_%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-02-16%20%E4%B8%8B%E5%8D%8810.21.31.png" title=""></figure></p>
+<h3>步骤</h3>
+<p>这一课你不用作什么，Rails 已经帮你自动做完了 XD</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      2-4 Use a Content Delivery Network
+    </h1><h4>所属章节：2-前端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>在最前面我们提到了，搬迁机器的位置其实能有效提升传输速率，但是做起来不太可行。因为有时候，牛逼的服务商只在某个国家提供服务（ 如 Heroku 是在美东，Linode 最近的点在东京）。</p>
+
+<p>况且你的服务对象是面对世界各地的用户，那么机器放哪儿都是问题。</p>
+
+<p>这种状况我们会怎么解决呢？</p>
+
+<p>这时候我们就会用上 CDN （ Content delivery network）加速档案的分发。CDN 是个什么样的概念，我们这里用张图来解释：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/q6Nn9L8ERcyvAAJKfaES_Rocketbook-2017-02-17-134659-053.png" title=""></figure></p>
+
+<p><br></p>
+
+<ul>
+<li>我们可以把「网站服务」与「静态档案」的提供来源（网址出处）分开。
+
+<ul>
+<li>比如说服务器网站是 <a href="http://www.jd.com">www.jd.com</a>
+</li>
+<li>图片网址则是由 cdn.jd.com 提供</li>
+</ul>
+</li>
+<li>CDN 技术做的是针对不同地区的用户，自动提供他们最近的点下载档案
+
+<ul>
+<li>如果 CDN 上有档案快取，就直接从 CDN 上吐给用户</li>
+<li>如果 CDN 上没有档案快取，就从原站拉一份，快取在 CDN 上。</li>
+</ul>
+</li>
+</ul>
+<h3>如何在 Rails 上实现</h3>
+<p>你不需要去改网站上的 image_tag 一个一个处理。</p>
+
+<p>只要在 Rails 上改全站的图片来源，只要修改 <code>config/enviorments/production.rb</code> 里的这一行就可以了。</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>config.action_controller.asset_host = "http://cdn.jd.com"
+</pre></div>
+</figure>
+
+<p>这样全站的 image/css/js 网址，就会全部变成</p>
+
+<ul>
+<li>cdn.jd.com/images/demo.jpg</li>
+<li>cdn.jd.com/assets/admin.css</li>
+<li>cdn.jd.com/assets/admin.js</li>
+</ul>
+<h3>我在哪可以找到 CDN  服务</h3>
+<ul>
+<li><a href="https://aws.amazon.com/cloudfront/">Amazon Cloudfront</a></li>
+<li><a href="https://www.cloudflare.com/">Cloudflare</a></li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      2-5 Split component cross domain
+    </h1><h4>所属章节：2-前端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>在上一章 CDN 的章节，我们提到只要修改 config/enviorments/production.rb 档里的这一行代码 <code>config.action_controller.asset_host = "http://cdn.jd.com"</code> 就可以把全站的 image/css/js 网址全部都一并改了。</p>
+<h3>HTTP 1.1 的限制</h3>
+<p>一般来说，一个网站的图片可能都是放在同一个网址上的。比如说原先你上面图的网址可能是：</p>
+
+<ul>
+<li>jd.com/images/demo.jpg</li>
+<li>jd.com/assets/admin.css</li>
+<li>jd.com/assets/admin.js</li>
+</ul>
+
+<p>那么我们改成 CDN 递送之后，网址会变成</p>
+
+<ul>
+<li>cdn.jd.com/images/demo.jpg</li>
+<li>cdn.jd.com/assets/admin.css</li>
+<li>cdn.jd.com/assets/admin.js</li>
+</ul>
+
+<p>这样的作法，是有可能将速度提升一些的。那么，这里我们要介绍一个能将速度再提升个四倍的技巧，让我们画一张图来解释一下这件事。</p>
+
+<p>这个技巧要牵扯到 HTTP 1.1 通讯协定，是怎么处理「下载」这件事的。</p>
+
+<p>一般来说，根据浏览器与通讯协定的实做，一个网站只能同时对一个 domain 开启两个连线。也就是如果这一页有 48 张图。浏览器得做 24 次下载。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/jPfICewkTnQEgJzuwawQ_Rocketbook-2017-02-17-142235-054.png" title=""></figure></p>
+
+<p>那么，这会造成什么情况呢？也就是服务器很快，客户家里的网速也很快，但是客户开起网站的图还是「2张2张开起来的）。</p>
+
+<p>所以我们可以在实现上做个小小 hack，也就是我们可以起多个域名，但是都连到同一台主机上，也就是输出网址改成：</p>
+
+<ul>
+<li>cdn0.jd.com/images/demo.jpg</li>
+<li>cdn1.jd.com/assets/admin.css</li>
+<li>cdn2.jd.com/assets/admin.js</li>
+<li>cdn3.jd.com/assets/fonts/font-awesome.ttf</li>
+</ul>
+
+<p>网站上的素材是随机从四台机器上分发，那么有 48 张图，只有做 6 次下载，网站瞬间就会变成秒开。</p>
+<h3>Rails 可以怎么做：</h3>
+<p>修改 <code>config/environments/production.rb</code> 这一行就可以把全站的 image/css/js 网址全部都一并改了。</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>config.action_controller.asset_host = "http://cdn％d.jd.com"
+</pre></div>
+</figure>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-1 后端提速套路概览
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>后端提速分为两个方向：</p>
+
+<ul>
+<li>一个方向是提升 Ruby Code 的效能</li>
+<li>一个方向是提升数据库方面的效能</li>
+</ul>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/aW05icz3RVWkDRaMiLOK_Rocketbook-2017-02-16-191115-049.png" title=""></figure></p>
+<h3>后端侦测速度工具 rack-mini-profiler</h3>
+<p>这里推荐各位一个在 Rails 里面的测速神器：<a href="https://github.com/MiniProfiler/rack-mini-profiler" rel="nofollow" target="_blank">https://github.com/MiniProfiler/rack-mini-profiler</a></p>
+
+<p>装上去后，会在 Rails 开发模式的网页出现一个小小的 widget，会显示这个网站执行时耗费了多少时间，主要会显示以下的信息：</p>
+
+<ul>
+<li>controller 执行的速度</li>
+<li>view 执行的速度</li>
+<li>SQL 下了几次</li>
+<li>为什么 SQL 很慢</li>
+</ul>
+<h3>提速方向</h3>
+<p>而在实务上，通常后端效能速度瓶颈是这样的：</p>
+
+<ul>
+<li>慢在资料库  ( 90% 机率）</li>
+<li>慢在 Ruby Code  （10% 机率）</li>
+</ul>
+
+<p>所以这一章我们会集中在如何<code>设计调整资料库取资料</code>的方式，以提升网站效能。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-2 消滅 N+1 Query
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>提升资料库查询效率有两个方向：</p>
+
+<ul>
+<li>减少查询次数</li>
+<li>提升资料库索引效率</li>
+</ul>
+<h3>ActiveRecord 的作用</h3>
+<p>ActiveRecord （ model ）其实是 Rails 非常强大的一套工具。正常来说，在网站开发时，我们要呼叫数据库资料是使用 SQL 查询语法。</p>
+
+<p>比如说我们要调取 Post 这个 table 的第 12 笔资料，SQL 语法是这样的：</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 12]]
+</pre></div>
+</figure>
+
+<p>但在 Rails 里面我们只需要很优雅的写 <code>Post.find(12)</code>。</p>
+
+<p>又比如说我们要调取 Post 的最新 5 笔资料，SQL 语法是这样的：</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>SELECT  "posts".* FROM "posts"  ORDER BY id DESC LIMIT 5
+</pre></div>
+</figure>
+
+<p>但在 Rails 里面我们只需要很优雅的写 <code>Post.order("id DESC").limit(5)</code>。</p>
+
+<p>Rails 开发者很幸福的可以利用类似 Ruby 的语句查询资料，享受高效开发的红利。</p>
+<h3>N+1 Query 问题</h3>
+<p>但是，这么方便的包装，却会带来另外一个问题。</p>
+
+<p>以下这是一个情境题，假设这个 controller 里面，我们要列出所有学生 ( students )，页面上也会连带显示他们上的班级 ( class ) 的信息）。</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/students_controller.rb
+</span></figcaption><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="p">.</span><span class="nf">all</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/views/students/index.html.erb
+</span></figcaption><div class="highlight"><pre><span class="cp">&lt;%</span> <span class="vi">@students</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">student</span><span class="o">|</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td&gt;</span> <span class="cp">&lt;%=</span> <span class="n">student</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span> <span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;td&gt;</span> <span class="cp">&lt;%=</span> <span class="n">student</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span> <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</pre></div>
+</figure>
+
+<p>看起来没有什么问题。</p>
+
+<p>但问题是这个画面，却会调用了 1 + 4 个 Query。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/PsU5TabROyk8noQuTneV_Rocketbook-2017-02-17-211038-057.png" title=""></figure></p>
+
+<p>如果在本机开发环境，应该还不会感受到这是什么严重的大事。</p>
+
+<ul>
+<li>因为每调取 1 笔资料是 0.1 ms</li>
+<li>总共才调取  1+N  ( 1+4 = 5 ) 笔资料。</li>
+<li>总共是 0.1 * 5 = 0.5 ms</li>
+</ul>
+
+<p>但是正式开发环境，要是 Web Server 与 Database Server 是不同台机器，而调取每笔资料是 20ms 的差距，一个页面又有 20 笔资料。那么效能数据就会变成</p>
+
+<ul>
+<li>每调取 1 笔资料是 20 ms</li>
+<li>调取  1+20  ( 1+20 = 21 ) 笔资料</li>
+<li>总共是 21* 20 = 420 ms</li>
+</ul>
+
+<p>那样这个网页就会变得巨慢无比了！</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/students_controller.rb
+</span></figcaption><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:class</span><span class="p">).</span><span class="nf">all</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/views/students/index.html.erb
+</span></figcaption><div class="highlight"><pre><span class="cp">&lt;%</span> <span class="vi">@students</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">student</span><span class="o">|</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td&gt;</span> <span class="cp">&lt;%=</span> <span class="n">student</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span> <span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;td&gt;</span> <span class="cp">&lt;%=</span> <span class="n">student</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span> <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</pre></div>
+</figure>
+<h3>Rails 的解法</h3>
+<p>你可以修改代码变成如下：</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/students_controller.rb
+</span></figcaption><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:class</span><span class="p">).</span><span class="nf">all</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<ul>
+<li>加一个<code>includes(:class)</code>，Rails 　就会智能的将这么多个 query 合并成一个 query 了。</li>
+</ul>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/LIdTs0gdTbSvZmlZpD08_Rocketbook-2017-02-17-220154-057.png" title=""></figure></p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-3 消灭 Table Scan
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>Table Scan 的意思是一般数据库，在没有加 Index （索引）的情况下，找资料是一笔一笔的循序的找。</p>
+
+<p>如果我们偷换这个概念</p>
+
+<ul>
+<li>书 =&gt; 资料</li>
+<li>地上 =&gt; 内存</li>
+</ul>
+
+<p>假设我们今天到图书馆，如果要找一本书要怎么找？</p>
+
+<p>Table Scan 的找法，就是<code>图书馆工作人员，将全馆的书都倒在地上，一本一本的找给你</code>！</p>
+
+<p>你就会知道，如果数据库里面有一千万笔资料，查找我们要的数据，效率会如何低下？</p>
+
+<p>以下我们用一张图解释数据库在没有索引卡时，是怎么查找资料。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/9r5HYUOMSNOOG3BcBFtE_Rocketbook-2017-02-17-225746-059.png" title=""></figure></p>
+<h3>打上 Index</h3>
+<p>所以，比较好的方式，是我们针对关键的特征栏位，打上索引。比如我们对整个图书馆的书做上索引卡，那么检索时就会比较高效。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/y48a22VPSYS0ZtzmpSFF_Rocketbook-2017-02-17-225746-059%20%E6%8B%B7%E8%B2%9D.png" title=""></figure></p>
+<h3>常见忘记打 Index 的状况</h3>
+<h4>状况一：has_many</h4>
+<p>比如说  User <code>has_many</code> Order</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_many</span> <span class="ss">:orders</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>那么实务上，我们常常就需要查询 user.orders，会生成如此的 SQL 语句。</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">SELECT</span> <span class="nv">"orders"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"orders"</span> <span class="k">WHERE</span> <span class="nv">"orders"</span><span class="p">.</span><span class="nv">"user_id"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span>  <span class="p">[[</span><span class="nv">"user_id"</span><span class="p">,</span> <span class="mi">3140</span><span class="p">]]</span>
+</pre></div>
+</figure>
+
+<p>那么当 Order 这个 table 很大时，查询订单效率就会变得很差</p>
+<h5>解法：</h5>
+<p>新增一个 migration 然后打上 Index</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">change</span>
+   <span class="n">add_index</span> <span class="ss">:orders</span><span class="p">,</span> <span class="ss">:user_id</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h3>状况二：查询条件</h3>
+<p>更多时候，我们在实做某些查询时，也都需要下条件判断：</p>
+<h5>1. state_machine 的条件</h5>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@new_orders</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:aasm_state</span> <span class="o">=&gt;</span> <span class="s2">"order_placed"</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h5>2. 时间</h5>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@orders</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s2">"created_at DESC"</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h4>3. True / False</h4>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
+   <span class="vi">@paid_orders</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:is_paid</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>这一些关键的栏位，其实也都需要下 index。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-4 使用高效 index
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>在上一章我们讲了下 index 的重要性，这一章我们要讲 index 其实也有分索引效率的。</p>
+
+<p>我们以下图来解释不同的数据栏位，索引效率也是有分别的。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/9nzgcEkmQdesuBlRLjpG_Rocketbook-2017-02-18-030342-061.png" title=""></figure></p>
+<h3>常见低效索引：</h3>
+<p>所以如果当你的代码是这样设计的，想要捞出最新的订单：</p>
+
+<p>如果原先是这样设计的：</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@orders</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s2">"created_at DESC"</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>可以改成</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@orders</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s2">"id DESC"</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>效率会高上好几倍。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-5 使用 counter cache
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <h3>使用 Counter Cache</h3>
+<p>有时候，我们必须在 Rails 里面计算总共有多少笔资料。比如说，一门课有多少学生选修：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/MbBzLMwcTNKwdRc7d7aY_Rocketbook-2017-02-18-033651-063.png" title=""></figure></p>
+
+<p>背后的代码是：</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Course</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_many</span> <span class="ss">:students</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Student</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:course</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">CoursesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@courses</span> <span class="o">=</span> <span class="no">Course</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="nt">&lt;h1&gt;</span> Courses <span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;ol&gt;</span>
+  <span class="cp">&lt;%</span> <span class="vi">@courses</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">course</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="n">course</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">course_path</span><span class="p">(</span><span class="n">course</span><span class="p">)</span> <span class="cp">%&gt;</span> (<span class="cp">&lt;%=</span> <span class="n">course</span><span class="p">.</span><span class="nf">students</span><span class="p">.</span><span class="nf">count</span> <span class="cp">%&gt;</span> students )<span class="nt">&lt;/li&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/ol&gt;</span>
+</pre></div>
+</figure>
+
+<p>而后面产生出来的 Log 会长这样</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>Rendering courses/index
+  SQL (0.3ms)   SELECT count(*) AS count_all FROM "students" WHERE ("students".course_id = 61) 
+  SQL (0.2ms)   SELECT count(*) AS count_all FROM "students" WHERE ("students".course_id = 62) 
+  SQL (0.3ms)   SELECT count(*) AS count_all FROM "students" WHERE ("students".course_id = 63) 
+  SQL (0.2ms)   SELECT count(*) AS count_all FROM "students" WHERE ("students".course_id = 64) 
+  SQL (0.2ms)   SELECT count(*) AS count_all FROM "students" WHERE ("students".course_id = 65)
+</pre></div>
+</figure>
+
+<p>而 count(*) 其实是很伤效能的。</p>
+<h3>改进方法</h3>
+<p>Rails 其实有一招叫 counter_cache，也就是将 count 快取起来。具体实现作法是：</p>
+
+<p><code>rails g migration add_students_count_to_course</code></p>
+
+<p>然后在 migration 档案里面加入：</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">def</span> <span class="nf">change</span>
+   <span class="n">add_column</span> <span class="ss">:courses</span><span class="p">,</span> <span class="ss">:students_count</span><span class="p">,</span> <span class="ss">:integer</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">0</span> 
+<span class="k">end</span>
+
+</pre></div>
+</figure>
+
+<p>然后修改 <code>app/models/student.rb</code>，变成：</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>class Student &lt; ActiveRecord::Base
+  belongs_to :course, counter_cache: true
+end
+</pre></div>
+</figure>
+
+<p>那么 Log 就会变成：</p>
+
+<figure class="figure-code code"><div class="highlight"><pre>Rendering courses/index
+  SQL (0.3ms)   SELECT students_count FROM "courses" WHERE id = 61
+  SQL (0.3ms)   SELECT students_count FROM "courses" WHERE id = 62
+  SQL (0.3ms)   SELECT students_count FROM "courses" WHERE id = 63
+  SQL (0.3ms)   SELECT students_count FROM "courses" WHERE id = 64   
+
+</pre></div>
+</figure>
+
+<p>直接取存好的数字，而不是「即时算」，这样就会大幅降低数据库的负担。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      3-6 用工具自动侦测 N+1 Query, Table Scan, Counter Cache
+    </h1><h4>所属章节：3-后端效能提升</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>Bullet 这个 gem <a href="https://github.com/flyerhzm/bullet" rel="nofollow" target="_blank">https://github.com/flyerhzm/bullet</a>，可以自动侦测 Rails 里面的代码有这样的问题。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/JuouXfqaSW8jp49RgJ6u_%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-02-18%20%E4%B8%8A%E5%8D%884.55.39.png" title=""></figure></p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/YMvraJKTBqIRo50B9KQH_%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-02-18%20%E4%B8%8A%E5%8D%884.55.51.png" title=""></figure></p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-1 重构套路概览
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>优美高质量的代码是人人都想习得的技能，在此章我们会介绍一些 Rails 内基础的技巧。</p>
+
+<p>让大家可以将代码写的更佳优美。主要在本章我们会涵盖几个主题的基本重构技巧</p>
+
+<ul>
+<li>Controller </li>
+<li>Model</li>
+<li>View</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-2 Controller 重构套路：before_action
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>这是一个常见的 CRUD controller，我们会发现：<code>@group = Group.find(params[:id])</code> 一直出现。</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/groups_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">GroupsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@groups</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edit</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">group_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@group</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="n">groups_path</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="k">if</span> <span class="vi">@group</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">group_params</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="n">groups_path</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Update Success'</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:edit</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="vi">@group</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="n">redirect_to</span> <span class="n">groups_path</span><span class="p">,</span> <span class="ss">alert: </span><span class="s1">'Group deleted'</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+
+
+  <span class="k">def</span> <span class="nf">group_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:group</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:description</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h2>如何整理冗余代码</h2>
+<p>我们可以用 <code>before_action</code> 将这一行重复的代码提取出来。</p>
+
+<p>变成：</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/groups_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">GroupsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="n">before_aciton</span> <span class="ss">:find_group</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
+  
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@groups</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edit</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">group_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@group</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="n">groups_path</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="k">if</span> <span class="vi">@group</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">group_params</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="n">groups_path</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Update Success'</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:edit</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+
+    <span class="vi">@group</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="n">redirect_to</span> <span class="n">groups_path</span><span class="p">,</span> <span class="ss">alert: </span><span class="s1">'Group deleted'</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+
+
+  <span class="k">def</span> <span class="nf">group_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:group</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:description</span><span class="p">)</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">find_group</span>
+    <span class="vi">@group</span> <span class="o">=</span> <span class="no">Group</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-3 Controller 重构套路：继承
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>当我们在写后台几个 action 时，会发现几个 Controller 都有同样的几行代码</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/admin/products_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:authenticate_user!</span>
+  <span class="n">before_action</span> <span class="ss">:admin_required</span>
+
+  <span class="n">layout</span> <span class="s2">"admin"</span>
+  
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/admin/orders_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">OrdersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:authenticate_user!</span>
+  <span class="n">before_action</span> <span class="ss">:admin_required</span>
+
+  <span class="n">layout</span> <span class="s2">"admin"</span>
+  
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h3>如何改善</h3>
+<p>我们可以利用 <code>继承</code> 这个特性。新增一个 <code>AdminController</code>，内容如下：</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/admin_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">AdminController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:authenticate_user!</span>
+  <span class="n">before_action</span> <span class="ss">:admin_required</span>
+
+  <span class="n">layout</span> <span class="s2">"admin"</span>
+
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>然后再把里面重复的这几句砍掉，将这几个 controller <code>&lt; （继承）</code> 自 AdminController。</p>
+
+<p>如此一来，它们就都具有了 AdminController 的特性。（都需要注册才能登入，都限定要admin才能登入，都使用admin这个layout）</p>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/admin/products_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">ProductsController</span> <span class="o">&lt;</span> <span class="no">AdminController</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/controllers/admin/orders_controller.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">OrdersController</span> <span class="o">&lt;</span> <span class="no">AdminController</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-4 Model 重构套路：mixin 与 ActiveSupport::Concern
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <h3>Mixin</h3>
+<p>假设我们在 Order 与 Reciept 这两个 model 里面都有 <code>generate_token</code> 这个 method。</p>
+
+<figure class="figure-code code"><figcaption><span>app/models/order.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">generate_token</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/models/reciept.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Reciept</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">generate_token</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>复制贴上代码实在是个不好的习惯。</p>
+
+<p>我们其实可用 <code>mixin</code> 这个技巧，将代码进行重构，新增一个档案 ，将此 method 变成一个「特性」。</p>
+
+<figure class="figure-code code"><figcaption><span>app/models/concerns/tokenable.rb
+</span></figcaption><div class="highlight"><pre><span class="k">module</span> <span class="nn">Tokenable</span>
+  <span class="k">def</span> <span class="nf">generate_token</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>再将 Order 与 Reciept 修改成如下。这样一来，代码就变得高雅以及容易叙述。</p>
+
+<figure class="figure-code code"><figcaption><span>app/models/order.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="kp">include</span> <span class="no">Tokenable</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/models/reciept.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Reciept</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="kp">include</span> <span class="no">Tokenable</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h3>ActiveSupport::Concern</h3>
+<p>但是 generate_token 其实与 before_create :generate_token 是一组的。</p>
+
+<figure class="figure-code code"><figcaption><span>app/models/order.rb
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="n">before_create</span> <span class="ss">:generate_token</span>
+  <span class="k">def</span> <span class="nf">generate_token</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>一般纯的 Ruby module 其实是不认识 before_create 的，所以 Rails 内部开发了一套工具 <code>ActiveSupport::Concern</code> 解决这件事。</p>
+
+<p>如果要让 module 也支援加入 before_create，必须要这样写。</p>
+
+<figure class="figure-code code"><figcaption><span>app/models/concerns/tokenable.rb
+</span></figcaption><div class="highlight"><pre><span class="k">module</span> <span class="nn">Tokenable</span>
+
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+  
+  <span class="n">included</span> <span class="k">do</span> 
+    <span class="n">before_create</span> <span class="ss">:generate_token</span> 
+  <span class="k">end</span>
+  
+  
+  <span class="k">def</span> <span class="nf">generate_token</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-5 解说：Instance method / Class method
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>class method就是给class层级呼叫的method，instance method则是给class的实例呼叫的method。</p>
+
+<p>举例说明，假设我们有一个class Test长这样：</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Test</span>
+<span class="c1"># 在class内定义method时加上self代表要直接取用class
+</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">class_method</span>
+    <span class="s2">"class method"</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">instance_method</span>
+     <span class="s2">"instance method"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+<h3>呼叫class method时的情况：</h3>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="c1">#class的呼叫
+</span>
+<span class="no">Test</span><span class="p">.</span><span class="nf">class_method</span> <span class="c1"># =&gt; "class method"
+</span>
+<span class="no">Test</span><span class="p">.</span><span class="nf">instance_method</span> <span class="c1"># =&gt; NoMethodError: undefined method `instance_method' for Test:Class
+</span></pre></div>
+</figure>
+<h3>呼叫instance method时的情况：</h3>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="c1">#class实例的呼叫
+</span>
+<span class="nb">test</span> <span class="o">=</span> <span class="no">Test</span><span class="p">.</span><span class="nf">new</span>  <span class="c1"># =&gt; #&lt;Test:0x007fd103969840&gt;
+</span>
+<span class="nb">test</span><span class="p">.</span><span class="nf">class_method</span> <span class="c1"># =&gt; undefined method `class_method' for #&lt;Test:0x007fd103969840&gt;
+</span>
+<span class="nb">test</span><span class="p">.</span><span class="nf">instance_method</span> <span class="c1"># =&gt; "instance method"
+</span></pre></div>
+</figure>
+<h3>参考资源</h3>
+<ul>
+<li><a href="http://railstips.org/blog/archives/2009/05/11/class-and-instance-methods-in-ruby" rel="nofollow" target="_blank">http://railstips.org/blog/archives/2009/05/11/class-and-instance-methods-in-ruby</a></li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-6 解说：Instance variable / Class variable
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>简单来说，class variable跟着class走，instance variable跟着实例走。</p>
+
+<p>class variable跟instance variable都可以被继承。但只要是在class底下的任何实例改变了class变数，其他同个class的实例的class变数也会被改变。</p>
+<h3>class variable例子：</h3>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Earth</span>
+    <span class="c1"># class variable用@@定义
+</span>
+  <span class="vc">@@pollution</span> <span class="o">=</span> <span class="s2">"low"</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">HumanBorn</span> <span class="o">&lt;</span> <span class="no">Earth</span>
+    <span class="vc">@@pollution</span> <span class="o">=</span> <span class="s2">"high"</span>
+<span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>让我们查看这时Earth的变数<code>@@pollution</code>就变成了<code>"high"</code>，因为是class variable所以被HumanBorn更改了。</p>
+
+<p>但若class底下的实例是改变实例变数，那么就只会在实例中被改变，不会影响到其他实例。</p>
+<h3>instance variable例子：</h3>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Kid</span>
+    <span class="vi">@age</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">def</span> <span class="nf">grow_up</span>
+    <span class="vi">@age</span> <span class="o">=</span> <span class="vi">@age</span> <span class="o">+</span><span class="mi">1</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show_age</span>
+    <span class="vi">@age</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">wayne</span> <span class="o">=</span> <span class="no">Kid</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">wayne</span><span class="p">.</span><span class="nf">show_age</span> <span class="c1"># =&gt; 1
+</span>
+<span class="n">wayne</span><span class="p">.</span><span class="nf">grow_up</span>
+<span class="n">wayne</span><span class="p">.</span><span class="nf">show_age</span> <span class="c1"># =&gt; 2
+</span>
+
+<span class="n">jason</span> <span class="o">=</span> <span class="no">Kid</span><span class="p">.</span><span class="nf">new</span>
+<span class="c1"># wayne.grow_up改变的是wayne这个实例内的instance variable，所以不影响jason这个实例
+</span>
+<span class="n">jason</span><span class="p">.</span><span class="nf">show_age</span> <span class="c1"># =&gt; 1
+</span></pre></div>
+</figure>
+<h3>参考资源</h3>
+<ul>
+<li><a href="http://railstips.org/blog/archives/2006/11/18/class-and-instance-variables-in-ruby/" rel="nofollow" target="_blank">http://railstips.org/blog/archives/2006/11/18/class-and-instance-variables-in-ruby/</a></li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-7 解说：Mixin / Extend / Inheritance
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>在说明Mixin跟Extend之前我们必须先解释何为Module，因为Mixin跟Extend是在引入module时会使用到的语法，而Inheritance则是继承class时会用到的。</p>
+<h2>Module</h2>
+<p>Module的好处就是可以选择性的引用Module内的方法，不会让Module内的变数或是Method与其他Class互相影响，有点类似class补充包的感觉。而引用Module的方式就是Mixin &amp; Extend。</p>
+<h3>Mixin</h3>
+<p>引用Module的方式有以下两种：</p>
+<h4>1. Class內include Module</h4>
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Include</span> <span class="o">&lt;</span> <span class="no">Example</span>
+    <span class="kp">include</span> <span class="k">module</span>
+<span class="nn">end</span>
+</pre></div>
+</figure>
+
+<p>使用include的方式可以让module的method在class底下被取用，所以我们就可以使用这样的方法</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="n">user</span><span class="p">.</span><span class="nf">module_method</span>
+</pre></div>
+</figure>
+<h4>2. Extend</h4>
+<p>另外一个引用Module方式是Extend，Extend的用法是让Class可以直接取用Module内的Method。</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Extend</span> <span class="o">&lt;</span> <span class="no">Example</span>
+    <span class="kp">extend</span> <span class="k">module</span>
+<span class="nn">end</span>
+</pre></div>
+</figure>
+
+<p>所以这样这个时候我们就可以使用这样的写法：</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="no">Extend</span><span class="p">.</span><span class="nf">module_method</span>
+</pre></div>
+</figure>
+<h3>Inheritance</h3>
+<p>Inheritance（继承）的意思就是继承者拥有被继承者的特性，用于类别(class)的继承，所以子类别可以呼叫父类别的方法</p>
+
+<figure class="figure-code code"><figcaption><span>
+</span></figcaption><div class="highlight"><pre><span class="k">class</span> <span class="nc">Parent</span>
+  <span class="vi">@last_name</span> <span class="o">=</span> <span class="s2">"james"</span>
+  <span class="k">def</span> <span class="nf">laugh</span>
+    <span class="s2">"heeeeeeeeha!"</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">last_name</span>
+    <span class="vi">@last_name</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+<span class="k">end</span>
+
+<span class="n">dad</span> <span class="o">=</span> <span class="no">Parent</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">son</span> <span class="o">=</span> <span class="no">Child</span><span class="p">.</span><span class="nf">new</span>
+<span class="c1">#Child可以呼叫Parent的method
+</span>
+<span class="n">dad</span><span class="p">.</span><span class="nf">laugh</span> <span class="c1"># =&gt; "heeeeeeeeha!"
+</span>
+<span class="n">son</span><span class="p">.</span><span class="nf">laugh</span> <span class="c1"># =&gt; "heeeeeeeeha!"
+</span>
+<span class="c1">#Child也继承了Parent的实例变数
+</span>
+<span class="n">son</span><span class="p">.</span><span class="nf">last_name</span> <span class="c1"># =&gt; "james"
+</span></pre></div>
+</figure>
+<h3>参考资源</h3>
+<ul>
+<li><a href="http://railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/" rel="nofollow" target="_blank">http://railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/</a></li>
+<li><a href="http://stackoverflow.com/questions/14541823/how-to-use-concerns-in-rails-4" rel="nofollow" target="_blank">http://stackoverflow.com/questions/14541823/how-to-use-concerns-in-rails-4</a></li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      4-8 小结技巧
+    </h1><h4>所属章节：4-重构 Part 1</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <ul>
+<li>如果 Model 超过 3 个 PageDown，拆 Module</li>
+<li>如果 Controller 每个 action 都有重复的code，使用 before_filter</li>
+<li>如果多个 Controller 有同样的少样几行 action，如 Admin，考虑用  继承</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      5-1 Helper 收纳篇 - 1. 预先封装
+    </h1><h4>所属章节：5-重构 Part 2</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <h3>Tips 1 : 预先封装会重复写很多次，需要改格式的栏位</h3>
+<p>常见需要包装的地方有：</p>
+
+<ul>
+<li>标题</li>
+<li>叙述</li>
+<li>链接</li>
+<li>图片</li>
+<li>按钮</li>
+</ul>
+
+<p>所以比如我在设计订单页时</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/msFhrie5RCKr7wTbrlRG_order_list.png" title=""></figure></p>
+
+<p>就会先在 <code>app/helpers/orders_helper.rb</code> 定义 <code>render_order_created_time(order)</code></p>
+
+<figure class="figure-code code"><figcaption><span>app/helpers/orders_helper.rb
+</span></figcaption><div class="highlight"><pre>  <span class="k">def</span> <span class="nf">render_order_created_time</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">order</span><span class="p">.</span><span class="nf">created_at</span><span class="p">.</span><span class="nf">to_s</span><span class="p">(</span><span class="ss">:short</span><span class="p">)</span>
+  <span class="k">end</span>
+</pre></div>
+</figure>
+
+<p>这样如果以后全站的订单时间格式需要改，那么只要改一处就行了。</p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      5-2 Helper 收纳篇 - 2. 使用 Ruby Helper 输出代码
+    </h1><h4>所属章节：5-重构 Part 2</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <h3>Tips 2: 不要 HTML 与 Ruby 混杂写 View</h3>
+<p>有很多同学，会这样写 HTML 与 Ruby 混杂，这样写 View。其实这样写 View 是很不好的。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/osB87eJRb6EFNp5Yajzx_ruby-html.png" title=""></figure></p>
+
+<p>你该这样写。尽量都用 Helper 输出逻辑判断类的代码。</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/LTwaJijjRSeJYG0CAx0q_ruby-helper.png" title=""></figure></p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      5-3 小结：如何发觉自己需要 Helper
+    </h1><h4>所属章节：5-重构 Part 2</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <ul>
+<li>HTML 与Ruby 高度混杂</li>
+<li>该段程式码有很多 if / else</li>
+<li>该段程式码衣服穿很多层 <code>simple_format(truncate(auto_link(@post.content), :length =&gt; 30) )</code>
+</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      5-4 但是你千万不能用 Helper 到走火入魔
+    </h1><h4>所属章节：5-重构 Part 2</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <p>但是每次我教大家写完 Ruby 后，就会有人走火入魔写成这样的代码：</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/V515jm83TWms26HKhffx_helpe-chaos.png" title=""></figure></p>
+
+<p>其实这应该用 Helper 与 Partial 互相结合：</p>
+
+<figure class="figure-code code"><figcaption><span>app/helpers/products_helper.rb
+</span></figcaption><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">render_product_item</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+  <span class="n">render</span> <span class="s2">"products/item"</span>
+<span class="k">end</span>
+
+</pre></div>
+</figure>
+
+<figure class="figure-code code"><figcaption><span>app/views/products/_item.html.erb
+</span></figcaption><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-3"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+     <span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="n">render_product_photo_medium</span><span class="p">(</span><span class="n">product</span><span class="p">.</span><span class="nf">default_photo</span><span class="p">),</span> <span class="n">product_path</span><span class="p">(</span><span class="n">product</span><span class="p">))</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;hr&gt;</span>
+   <span class="nt">&lt;strong&gt;</span> <span class="cp">&lt;%=</span> <span class="n">product</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span> <span class="nt">&lt;/strong&gt;</span>
+   <span class="nt">&lt;br&gt;</span>
+   <span class="nt">&lt;span&gt;</span> <span class="cp">&lt;%=</span> <span class="n">product</span><span class="p">.</span><span class="nf">price</span> <span class="cp">%&gt;</span> 元 <span class="nt">&lt;/span&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</figure>
+<h3>如何警觉自己用 Helper 走火入魔</h3>
+<ul>
+<li>程式码出现 html_safe</li>
+<li>content_tag 出现两次</li>
+<li>helper 里面出现纯 HTML</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      5-5 使用 Partial 的原则
+    </h1><h4>所属章节：5-重构 Part 2</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <ul>
+<li>如果 View 超过 2.5 个 PageDown 请拆 Partial</li>
+<li>如果元件需要被复用，也是拆 Partial</li>
+<li>特殊元件可拆 partial</li>
+<li>登入 / 登出 navbar</li>
+<li>Google Analytics</li>
+</ul>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div><div class='frame'><h1>
+      6-1 使用code climate
+    </h1><h4>所属章节：6-动手实作</h4><hr><div class="post group">
+    <div class="post-content markdown">
+      <h2>目标</h2>
+<p>使用code climate为自己的项目评分。这是一个批改代码的服务，除了分数之外，还会标示出哪里需要修改。 </p>
+<h2>步驟</h2>
+<h3>Step 1:登录code climate</h3>
+<p><a href="https://codeclimate.com/" rel="nofollow" target="_blank">https://codeclimate.com/</a></p>
+
+<p>可以直接使用GitHub账号登录</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/bnODlOSRuHhneuriHvAL_Screen%20Shot%202017-03-10%20at%2015.16.31.png" title=""></figure></p>
+<h3>Step 2:添加GitHub repo</h3>
+<p>点击 Add a repository</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/KQaCjcGqQUGmedawEYDM_Screen%20Shot%202017-03-10%20at%2015.20.06.png" title=""></figure></p>
+
+<p>到GitHub复制你的repo名称</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/cvGjSqxPRwEPvwoFi0Ng_Screen%20Shot%202017-03-10%20at%2015.27.57.png" title=""></figure></p>
+
+<p>填写到这里</p>
+
+<p>点击 Import Repo from GitHub</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/a4cuIqNCSfyJ4aS9hXLF_Screen%20Shot%202017-03-10%20at%2015.26.43.png" title=""></figure></p>
+
+<p>画面如下，点击complete</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/5juThnHxR9OifbosAsNG_Screen%20Shot%202017-03-10%20at%2015.35.01.png" title=""></figure></p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/liWeDWuASdCOI1NLOgh1_Screen%20Shot%20on%202017-03-10%20at%2015:32:13.png" title=""></figure></p>
+<h3>Step 3:得到评分</h3>
+<p>GPA是分数，满分为4分</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/DH0rS1S7QBnpqWVBQscg_Screen%20Shot%202017-03-10%20at%2015.58.12.png" title=""></figure></p>
+
+<p>点击issues查看代码评估</p>
+
+<p><figure><img src="https://s3-ap-northeast-1.amazonaws.com/ontrackapp-production/Y2aI0g4QQcyZXFrC3Vr8_Screen%20Shot%20on%202017-03-10%20at%2016:00:20.png" title=""></figure></p>
+
+    </div>
+  </div><div class='end'>
+              <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515845318684&di=399b355dd05f4eeb015b087061656115&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3Dc775b978013b5bb5bed720f606d2d523%2F248ea813632762d018421c6ca2ec08fa503dc64c.jpg'>
+              <p>又学完一篇好开森！</p>
+            </div></div>

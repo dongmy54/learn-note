@@ -42,6 +42,7 @@ end
 A.test
 # 参数是：sd
 
+
 # 在条件判断中，两个并列条件，前者把一个实例赋值给它
 # 后者用这个被赋值的变量，调用实例方法
 # 会报错，a 为空
@@ -54,3 +55,36 @@ end
 if a = A.new && a.test      #  猜测 应该是不是从前往后的逐步判定的，前后条件难道是同时去判断？
   puts "sda"
 end
+
+
+# 模块中用 extend self 定义模块中的模块方法
+module A
+  extend self
+
+  def hu
+    puts "This is hu module method"
+  end
+end
+
+A.hu
+# => This is hu module method
+
+
+# []表示定义 []里面的方法，配和类或模块使用（不能单独使用）
+class A
+
+  def [](name)
+    puts name.to_s
+  end
+end
+
+module B
+  extend self
+
+  def [](name)
+    puts name.to_s
+  end
+end
+
+A.new['class']  # => class
+B['module']     # => module
