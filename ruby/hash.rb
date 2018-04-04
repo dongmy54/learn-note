@@ -3,3 +3,11 @@
   :a => 'A',
   :b => 'B'
   }[:a]   # => 'A'
+
+
+# find/detect方法 返回满足条件的元素 find detect 等价
+h = {:'1' => 'g', :'2' => 'o', :'3' => 'p'}
+k,v = h.find {|k,v| v == 'o'}
+puts k,v
+# :'2'
+# 'o'
