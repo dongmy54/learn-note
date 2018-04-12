@@ -82,4 +82,51 @@ m2(&block_object).call(2,3) # m2(&block_object) 后得到对象
 # => x: 2; y: 3 
 
 
+#===================================================================================#
+# lambda VS proc
+# 凡是lambda 创建的就是 lambda 
+# 其它全为proc
+# 区别一： return
+def lambda_test
+  block_object = lambda { return 'lambda return'}
+  block_object.call     
+  'method end'      # lambda 会执行到代码结束 
+end
+
+def proc_test
+  block_object = proc {return 'proc retrun'}
+  block_object.call # proc 对象会 立即返回
+  'method end'      # 不执行
+end
+
+puts lambda_test
+# => method end
+puts proc_test
+# => proc retrun
+
+def proc_outside_test
+  yield        # 进入方法中 不能回到 顶层作用域 所以会报错
+end
+
+proc_block_object = proc { return 'proc outside block' }
+proc_outside_test # 会报错 proc 的返回 只是能是定义块的地方 
+# => LocalJumpError
+
+
+
+# lambda VS proc
+# 区别二： 参数校验
+# 1、lambda 严格校验
+# 2、proc 可多可少
+# PS: 基于lambda 严格校验参数 和 return返回特性 多用lambda
+lambda_object = lambda {|a,b,c| puts a.to_i + b.to_i + c.to_i}
+proc_object   = proc {|a,b,c| puts a.to_i + b.to_i + c.to_i}
+
+#lambda_object.call(1,2) # lambda 严格校验参数
+# => ArgumentError (given 2, expected 3)
+
+proc_object.call(1,2)     # 参数不够 nil
+# => 3  a = 1 b = 2 c = nil 
+proc_object.call(1,2,3,4) # 参数多 舍弃
+# => 6  a = 1 b = 2 c = 3 
 
