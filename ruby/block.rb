@@ -113,7 +113,7 @@ proc_outside_test # 会报错 proc 的返回 只是能是定义块的地方
 # => LocalJumpError
 
 
-
+#===================================================================================#
 # lambda VS proc
 # 区别二： 参数校验
 # 1、lambda 严格校验
@@ -130,3 +130,45 @@ proc_object.call(1,2)     # 参数不够 nil
 proc_object.call(1,2,3,4) # 参数多 舍弃
 # => 6  a = 1 b = 2 c = 3 
 
+
+#===================================================================================#
+# 方法对象
+class A
+  def initialize(a)
+    @x = a
+  end
+
+  def my_method
+    puts @x
+  end
+end
+
+object = A.new(3)
+# 方法 变成 方法对象
+method_object = object.method :my_method
+# 类似于 块的 呼叫
+method_object.call
+# => 3
+
+# 一般情况下，独立出方法对象 都会用到define_method中
+A.send :define_method,:p,method_object # 这send 接受方法对象
+object.p
+# => 3
+
+
+#===================================================================================#
+# 方法对象 中的 自由方法
+module B
+  def module_method
+    puts "module method"
+  end
+end
+
+# 获取自由方法（从模块中独立出的自由方法 可用于任何对象，而从类中独立出的 只能用于其子类）
+method_object = B.instance_method(:module_method)
+puts method_object.class
+# => UnboundMethod 自由方法
+
+String.send :define_method, :hu, method_object
+"sdas".hu
+# => module method
