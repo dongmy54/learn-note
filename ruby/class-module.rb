@@ -175,3 +175,24 @@ pi   # 直接用
 # => pi
 A.new.pi # 对象 调用都可以
 # => pi
+
+
+
+#===================================================================================#
+# define_method 
+# 在类中定义 和 类.send定义 等价
+# 都是实例方法 
+class A
+  # 直接在类中定义
+  define_method :hu do 
+    puts 'hu'
+  end
+end
+
+# 类.send 写
+A.send :define_method, :bar do
+  puts "bar"
+end
+
+A.new.hu   # => hu
+A.new.bar  # => bar

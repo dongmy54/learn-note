@@ -4,6 +4,7 @@
 # 3、require 加载时可不写后缀名，load必须写
 # 4、require 加载文件时（必须显示的写明路径）
 # 相同点： 加载文件 并 执行文件
+# PS：执行本文件时，终端要到茨木了下（file_load)
 puts require 'uri'
 # => true
 puts require 'uri'
