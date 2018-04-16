@@ -107,7 +107,9 @@ B['module']     # => module
 
 
 #===================================================================================#
-# 不同于虚拟字段可以轻松存取数据，对象中实例变量是被封装的
+# 对象 中实例变量是 被封装 不能随便存取
+# 虚拟字段则可以
+# 操作虚拟字段可借助instance_eval 方法
 class A
   attr_accessor :p,:q
 
@@ -125,37 +127,6 @@ a.q = 'q'
 a.instance_eval { @h = 'h' }   # 赋值可以用 instance_eval
 a.instance_eval { puts @h }   # 取值同理
 => 'h'
-
-
-#===================================================================================#
-# 相比于instance_eval instance_exec 可传参数
-class A
-  def initialize
-    @x = 'x'
-  end
-end
-
-class B
-  def b_method
-    @y = 'y'
-    A.new.instance_exec do 
-      puts "@x: #{@x}; @y: #{@y}" # 这里不能获取到实例变量@y,因为实例变量和对象绑定在一起      
-    end                           # 这里的当前对象是由 A 类生成的
-  end
-end
-
-B.new.b_method
-# @x: x; @y: (并没有打印出@y)
-
-# 用instance_exexc 传参数就行,如
-def b_method
-  @y = 'y'
-  A.new.instance_exec(@y) {|y| puts "@x: #{@x}; @y: #{@y}" }
-  # 下面等价
-  # A.new.instance_exec(@y) do |y|
-  #   puts "@x: #{@x}; @y: #{y}"
-  # end
-end
 
 
 #===================================================================================#
