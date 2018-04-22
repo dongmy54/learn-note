@@ -1,6 +1,69 @@
 # 方法查找链：从类开始 逐级 超类 生成的 祖先链
 # 一般为 A < Object < Kernel < BasciObjext
 
+
+#===================================================================================#
+# 类定义
+# 两种等价写法
+class MyClass < Array
+  def my_method
+    puts 'hello friend'
+  end
+end
+
+# MyClass = Class.new(Array) do  # Class.new 带参数表示 继承于
+#   def my_method                # 等于 给类 命名
+#     puts 'hello friend'
+#   end
+# end
+
+MyClass.new.my_method    # => 'hello friend'
+
+
+#===================================================================================#
+# 类实例变量
+# 只对类可见 实例方法不可用
+class A
+  # 类实例变量
+  @vv = 123
+
+  def m
+    @vv
+  end
+
+  def self.m
+    @vv
+  end
+end
+
+puts A.new.m # => nil
+puts A.m     # => 123
+
+
+#===================================================================================#
+# 类变量
+# 类变量 对类 和 实例 都可见
+# PS：会修改顶层的类变量
+@@vv = 1
+class B
+  # 类变量
+  @@vv = 123
+
+  def m
+    @@vv
+  end
+
+  def self.m
+    @@vv
+  end
+end
+
+puts B.new.m # => 123
+puts B.m     # => 123
+puts @@vv    # => 123（被修改啰）
+
+
+#===================================================================================#
 # self 对象
 puts self 
 # => main
@@ -86,6 +149,27 @@ A.hu
 
 
 #===================================================================================#
+# 细化
+module StringExtensions
+  # refine 细化的类 后接块
+  refine String do
+    
+    def to_s
+      self.reverse
+    end
+  end
+end
+
+puts 'sd'.to_s  
+# => 'sd'
+
+# 使用前要启用（有作用域）
+using StringExtensions
+puts 'sd'.to_s
+# => 'ds'
+
+
+#===================================================================================#
 # []表示定义 []里面的方法，配和类或模块使用（不能单独使用）
 class A
 
@@ -95,6 +179,7 @@ class A
 end
 
 module B
+  # 扩展自己
   extend self
 
   def [](name)
@@ -148,7 +233,6 @@ A.new.pi # 对象 调用都可以
 # => pi
 
 
-
 #===================================================================================#
 # define_method 
 # 在类中定义 和 类.send定义 等价
@@ -167,3 +251,23 @@ end
 
 A.new.hu   # => hu
 A.new.bar  # => bar
+
+
+#===================================================================================#
+# 单件方法
+# 对单个对象 定义的方法
+str = 'a str'
+
+def str.title?
+  self.upcase == self
+end
+
+# class << str        # 和上面等价
+#   def title?        # 实际上类方法 就是单件方法
+#     self.upcase == self
+#   end
+# end
+
+puts str.title?            # => false
+puts str.singleton_methods # => title?
+puts 'qwer'.title?         # => undefined method `title?' for "qwer":String (NoMethodError)

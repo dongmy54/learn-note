@@ -30,3 +30,28 @@ end
 # => I LOVE grape
 
 
+#===================================================================================#
+# 类实例变量 返回常量 串起来
+require 'time'
+class Book
+  def initialize(name)
+    @name = name
+    # 通过类返回 常量串起来
+    @time = Book.time.now
+  end
+
+  def self.time
+    @time ||= Time
+  end
+end
+
+book1 = Book.new('中国简史')
+puts book1.instance_eval { puts @time }
+# => 2018-04-22 11:09:36 +0800
+
+# 设置时间 常量
+Book.class_eval { @time = DateTime}
+book2 = Book.new('中国史纲')
+puts book2.instance_eval { puts @time } 
+# => 2018-04-22T11:09:36+08:00
+
