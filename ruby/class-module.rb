@@ -91,6 +91,105 @@ end
 
 
 #===================================================================================#
+# 别名
+# alias 顶层
+# alias_methods 类中
+def m
+  puts "I'm m method"
+end
+
+alias :n :m  # alias 中间没逗号分隔
+n
+# => I'm m method
+
+class A
+  def a_m
+    puts "I'm a_m method"
+  end
+
+  alias_method 'a_n','a_m' # 中间逗号分隔
+end
+
+A.new.a_n
+# => I'm a_m method
+
+
+#===================================================================================#
+# 环绕别名
+# 在复写的方法中
+# 利用alias新方法 调用旧方法
+class A
+  def m(name)
+    name.reverse.upcase
+  end
+end
+
+class B < A
+  # B类中已有m方法
+  alias_method :m_new,:m
+  
+  # 重写m方法
+  def m(name)
+    name = m_new(name)  # 用别名方法调用旧m方法
+    name + name[0].downcase  # 新m放添加的内容
+  end
+end
+
+puts B.new.m('dmy')
+# => YMDy
+
+
+#===================================================================================#
+# prepend
+# 1、相对于环绕别名更明显、更温和
+# 2、prepend下包含 include 上包含
+# 3、super 等价于 原方法
+class B
+  def mm(str)
+    str + 'a'
+  end
+end
+
+module C
+  def mm(str)
+    str = super(str)  # super 小写 等价于原方法 返回值
+    str + str[0].upcase
+  end
+end
+
+class A < B
+  # prepend下包含
+  prepend C
+end
+
+puts A.new.mm('dmy')
+# => dmyaD
+
+
+#===================================================================================#
+# 细化
+# 拥有作用域
+# 相对于猴子补丁 和 环绕别名安全
+module StringExtensions
+  # refine 细化的类 后接块
+  refine String do
+    
+    def to_s
+      self.reverse
+    end
+  end
+end
+
+puts 'sd'.to_s  
+# => 'sd'
+
+# 使用前要启用（有作用域）
+using StringExtensions
+puts 'sd'.to_s
+# => 'ds'
+
+
+#===================================================================================#
 # ruby test.rb >> log.text
 # >> 符号会将 执行结果输出内容写到某文件中
 puts 'first'
@@ -146,27 +245,6 @@ end
 
 A.hu
 # => This is hu module method
-
-
-#===================================================================================#
-# 细化
-module StringExtensions
-  # refine 细化的类 后接块
-  refine String do
-    
-    def to_s
-      self.reverse
-    end
-  end
-end
-
-puts 'sd'.to_s  
-# => 'sd'
-
-# 使用前要启用（有作用域）
-using StringExtensions
-puts 'sd'.to_s
-# => 'ds'
 
 
 #===================================================================================#
@@ -271,3 +349,41 @@ end
 puts str.title?            # => false
 puts str.singleton_methods # => title?
 puts 'qwer'.title?         # => undefined method `title?' for "qwer":String (NoMethodError)
+
+
+#===================================================================================#
+# extend
+# extend 是将模块 放入 单件类 的快捷方式
+module A
+  def hu
+    puts 'hu'
+  end
+end
+
+class B
+  # 类的单件类
+  class << self
+    include A
+  end
+end
+
+B.hu # => 'hu'
+
+obj = B.new
+# 对象的单件类
+class << obj
+  include A
+end
+
+obj.hu # => hu
+
+# extend 快捷方式（与上等价）
+# class B
+#   extend A
+# end
+
+# B.hu
+
+# obj = B.new
+# obj.extend A
+# obj.hu
