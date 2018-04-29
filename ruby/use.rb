@@ -93,3 +93,41 @@ add_class_instance_method(String,'say_hello')
 
 'asda'.say_hello
 # => I'm a instance method created by add_class_instance_method
+
+
+# 综合使用钩子方法
+#===================================================================================#
+module CheckAttributes
+  def self.included(other_class)
+    # 用钩子方法 当include 模块时 扩展当前类
+    other_class.extend AddAttribute
+  end
+
+  module AddAttribute
+    def check_attr(attribute, &block)
+      # 在类方法中 动态定义两个实例方法
+      define_method "#{attribute}=" do |value|
+        raise 'attribute is invalid' unless block.call(value)
+        instance_variable_set("@#{attribute}", value)
+      end
+
+      define_method attribute do 
+        instance_variable_get "@#{attribute}"
+      end
+    end
+  end
+end
+
+class Person
+  include CheckAttributes
+  check_attr :age do |value| 
+    value > 18 
+  end
+end
+
+p = Person.new
+p.age = 19
+puts p.age
+# => 19
+p.age = 17 # 通不过验证
+# => `block in check_attr': attribute is invalid (RuntimeError)

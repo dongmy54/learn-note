@@ -3,6 +3,27 @@
 
 
 #===================================================================================#
+# 继承
+# 类方法 和 实例方法 都会被继承过来
+class A
+  def self.hu
+    puts 'A class method'
+  end
+
+  def bar
+    puts "A instance method"
+  end
+end
+
+class B < A;end
+
+B.hu
+# => A class method
+B.new.bar
+# => A instance method
+
+
+#===================================================================================#
 # def 定义方法 
 # 方法名 须是确定的
 # 动态方法 去定义动态方法名
@@ -435,3 +456,44 @@ p = Person.new
 p.age = 20
 puts p.age
 # => 20
+
+
+#===================================================================================#
+# 类宏
+# 所有普通类 都是Class 类的实例
+# 在Class类中定义的 实例方法 是普通类的类方法
+class Class
+  def hu
+    puts 'hu method'
+  end
+
+  def bar
+    puts 'bar method'
+  end
+end
+
+class A;end
+
+A.hu   # => hu method 
+A.bar  # => bar method
+
+
+#===================================================================================#
+# 钩子方法
+# 在触发事件（继承 include prepend 添加方法等） 后自动调用
+# 常见
+# include => included
+# prepend => prepended
+# inherited(继承)
+module A
+  # included 必须带参数
+  def self.included(other_class)
+    puts "A is included #{other_class}"
+  end
+end
+
+class B
+  include A
+end
+
+# => A is included B
