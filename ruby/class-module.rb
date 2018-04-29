@@ -3,6 +3,27 @@
 
 
 #===================================================================================#
+# def 定义方法 
+# 方法名 须是确定的
+# 动态方法 去定义动态方法名
+class A
+  hu = 'qwe'
+
+  # def hu      这里方法名 用变量/直接字符串 都不行错误
+  #   puts 'hu' 
+  # end         ❌
+  
+  define_method hu do 
+    puts 'define_method qwe'
+  end
+
+end
+
+A.new.qwe
+# => define_method qwe
+
+
+#===================================================================================#
 # 类定义
 # 两种等价写法
 class MyClass < Array
@@ -387,3 +408,30 @@ obj.hu # => hu
 # obj = B.new
 # obj.extend A
 # obj.hu
+
+
+#===================================================================================#
+# instance_variable_get VS instance_variable_set
+# 取出/设置 实例变量
+def add_attribute_method_for_class(kclass,attribute_name)
+  kclass.class_eval do
+    define_method "#{attribute_name}=" do |value|
+      # 设置实例变量
+      instance_variable_set("@#{attribute_name}", value)
+    end
+
+    define_method attribute_name do
+      # 取出实例变量
+      instance_variable_get "@#{attribute_name}"
+      #instance_eval  "@#{attribute_name}"  和上等价
+    end
+  end
+end
+
+class Person;end
+add_attribute_method_for_class(Person,:age)
+
+p = Person.new
+p.age = 20
+puts p.age
+# => 20

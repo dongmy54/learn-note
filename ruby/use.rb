@@ -55,3 +55,41 @@ book2 = Book.new('中国史纲')
 puts book2.instance_eval { puts @time } 
 # => 2018-04-22T11:09:36+08:00
 
+
+#===================================================================================#
+# 方法中用eval 定义新放方法
+def add_class_instance_method(kclass,method_name)
+  eval "
+    class #{kclass}
+
+      def #{method_name}
+        puts 'Im a instace method create by add_class_instance_method'
+      end
+    end
+  "
+end
+
+add_class_instance_method(String,'say_hello')
+
+'asda'.say_hello
+# => Im a instace method create by add_class_instance_method
+
+
+#===================================================================================#
+# 与上等价写法
+# 用 class_eval 与 define_method
+# 更安全
+def add_class_instance_method(kclass,method_name)
+  # 为了在 deine_method 中能用method_name变量（扁平化处理）
+  # 由于kclass 是一个已经存在的类 不用Class.new
+  kclass.class_eval do
+    define_method method_name do 
+      puts "I'm a instance method created by add_class_instance_method"
+    end
+  end
+end
+
+add_class_instance_method(String,'say_hello')
+
+'asda'.say_hello
+# => I'm a instance method created by add_class_instance_method
