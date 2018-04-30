@@ -31,6 +31,55 @@ end
 
 
 #===================================================================================#
+# tap 用于检查链式调用 中间 值
+"abcdefg".chop.reverse.tap{|n| puts n}.capitalize
+# => fedcba
+# => "Fedcba"
+
+
+#===================================================================================#
+# yield self if block_given?
+# 如果有块 则把self 传入块中
+class A
+  attr_accessor :name
+  
+  def initialize(name='n')
+    self.name = name
+  end
+
+  def hu
+    # 如果给了块 则把self传入块中
+    yield self if block_given?
+  end
+end
+
+a = A.new('dmy')
+a.hu do |object|
+  puts object.name
+end
+# => dmy
+
+
+#===================================================================================#
+# &:(方法名) 写法
+# 还可传参数 如： inject(3,&:+)
+%w(dmy xjj zl).map {|n| n.capitalize}
+# [
+#     [0] "Dmy",
+#     [1] "Xjj",
+#     [2] "Zl"
+# ]
+%w(dmy xjj zl).map(&:capitalize)
+# [
+#     [0] "Dmy",
+#     [1] "Xjj",
+#     [2] "Zl"
+# ]
+(1..3).inject(&:+)    # => 6
+(1..3).inject(3,&:+)  # => 9
+
+
+#===================================================================================#
 # 类实例变量 返回常量 串起来
 require 'time'
 class Book
