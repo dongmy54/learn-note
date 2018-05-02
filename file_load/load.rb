@@ -27,6 +27,31 @@ load 'load/3_load.rb'
 # => 3_load.rb
 load '/Users/dmy/ruby-learn/file_load/1_load.rb'   # 绝对路径(任意目录都可执行)
 # => 1_load.rb
-require_relative 'file_load/1_load.rb'     # 是唯一一个 仅依赖于相对路径的（任意目录执行）
+require_relative '1_load.rb'     # 是唯一一个 仅依赖于相对路径的（任意目录执行）
+
+
+#===================================================================================#
+# 加载某目录下所有 .rb文件
+# File.dirname(__FILE__) 当前文件夹
+# "/load/*.rb" 具体路径
+Dir[File.dirname(__FILE__) + "/load/*.rb"].each {|file| require file}
+# => 3_load.rb
+# => 4_load.rb
+
+
+#===================================================================================#
+# 加载当前目录下的 所有 .rb 文件
+# PS: 
+# 1、当前目录下 目录是不会进去的哦
+# 2、推荐 用 File.dirname 方式（对路径没有要求）
+Dir[File.dirname(__FILE__) + "/*.rb"] {|file| require file}
+# => 1_load.rb
+# => 2_load.rb
+
+
+
+
+
+
 
 
