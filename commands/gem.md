@@ -1,0 +1,1 @@
+gem uninstall rake  卸载gem

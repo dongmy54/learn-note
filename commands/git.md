@@ -1,0 +1,1 @@
+git remote -v 远端机信息
