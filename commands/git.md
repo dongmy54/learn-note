@@ -26,6 +26,8 @@ git push origin xx-branch --force  (在本地分支commit回退，落后于远�
 
 git checkout -   切换到上一个分支
 
+git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
+
 
 ==========================================远端=========================================
 
