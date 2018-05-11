@@ -1,3 +1,12 @@
+# uuid
+# 产生通用唯一标识
+require 'securerandom'
+
+random_str = SecureRandom.uuid
+# => "25987203-5423-4bdd-b7da-f0584ded80cb"
+
+
+#===================================================================================#
 # open-uri 像打开文件一样获取 html
 require 'open-uri'
 url      = "http://www.ruby-lang.org/"
