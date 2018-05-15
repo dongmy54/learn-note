@@ -11,7 +11,8 @@ git add 文件/.        1、追踪文件 2、将文件添加进暂存区
 git commit  -m "xx"   将文件提交到版本库
 git commit -am  "xx"  等同于 git add + git commit -m 一步到位
 
-git status       当前分支状态 
+git status       当前分支状态
+git branch -a    当前本地 和 远端具有的所有分支 
 
 git diff         当前修改 与 暂存区间不同 也就是git add之前
 git diff HEAD    当前修改 与 最新commit（HEAD)不同 也就是git add之后
@@ -23,6 +24,11 @@ git log --graph  查看提交日志 并 图形展示合并流程
 git reflog       查看过去所有git操作
 
 git push origin xx-branch --force  (在本地分支commit回退，落后于远端分支时仍可推)
+
+
+git checkout -b xx-branch                  在当前分支的基础上创建分支
+git checkout -b xx-branch develop          在develop分支上创建分支
+git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
 
 git checkout -   切换到上一个分支
 
@@ -49,6 +55,9 @@ git push -u origin master
 3、以后可直接 git push/git pull
 
 git pull                               推分支到远端
+
+git fetch origin master                获取远端master 到本地
+git merge origin/master                合并origin/master 到当前分支
 
 git branch -a                          查看当前所有分支（本地 和 远端的）
 
