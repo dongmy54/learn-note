@@ -3,6 +3,25 @@ a = b = c = d = 'qwe' # a b c d 都等于 'qwe'
 
 
 #===================================================================================#
+# 产生不重复随机字符串
+arr = ('A'..'Z').to_a
+
+current_own_values = ["ABCDE"]
+is_same = true
+
+while is_same
+  temp_value = Array.new(5){ arr[rand(26)] }.join('')  # 将随机值串起来
+  is_same = current_own_values.include?(temp_value)    # 判断是否相同
+end
+
+current_own_values << temp_value
+# =>    [
+#           [0] "ABCDE",
+#           [1] "CCEOH"
+#       ]
+
+
+#===================================================================================#
 # 函数限制次数 自我调用
 def m(x,limit = 6)
   raise ArgumentError,'调用次数太多' if limit == 1
