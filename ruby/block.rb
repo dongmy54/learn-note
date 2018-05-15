@@ -95,24 +95,24 @@ test 3,&block_object
 
 
 #===================================================================================#
-# 对象 与 块
-# 只有块才能传递
-# 对象只能执行
-block_object = lambda {|x,y| puts "x: #{x}; y: #{y}"} # 对象
+# 带（&) VS 不带
+# 1、带不带都可以，如果方法中带则带
+# 2、通常情况下，是带的（在方法定义时，能很快识别是传块）
+block1 = lambda { puts 'a' }
+block2 = -> {puts 'b' }
 
-def m1(a,b)
-  yield(a,b)
+def direct_pass_params(block)
+  block.call
 end
 
-m1(1,2,&block_object) # &block_object 是 块（+ &符号）
-# => x: 1; y: 2
-
-def m2(&block_object)
-  block_object        # 去掉& 变成 对象
+def as_block_params(&block)
+  block.call
 end
 
-m2(&block_object).call(2,3) # m2(&block_object) 后得到对象
-# => x: 2; y: 3 
+direct_pass_params(block1)
+# => a
+as_block_params(&block2)
+# => b
 
 
 #===================================================================================#
