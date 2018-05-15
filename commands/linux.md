@@ -1,4 +1,6 @@
 ## linux 命令汇集
 ```
-mkdir dir1 创建目录
+nslookup baidu  通过域名查IP
+  
+mkdir dir1  创建目录
 ```
