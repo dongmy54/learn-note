@@ -4,12 +4,15 @@ b = a rescue nil
 
 
 #===================================================================================#
-# e.backtrace
+# message 信息 
+# backtrace 路径
 # 异常追溯 可以用在框架中，又不希望直接报错时
 def t
   a = 3
   p(a)
 rescue => e
+  puts e.message
+  puts "-------------------------"
   puts e.backtrace  # 追溯错误
 end
 
@@ -22,8 +25,10 @@ def q(a,b)
   a + b + c
 end
 
-t    
-# test.rb:14:in `q'  从错误发生的行开始冒泡
-# test.rb:10:in `p'
+t
+# undefined local variable or method `c' for main:Object    信息
+# -------------------------
+# test.rb:16:in `q'                                         路径
+# test.rb:12:in `p'
 # test.rb:3:in `t'
-# test.rb:17:in `<main>'
+# test.rb:19:in `<main>'    
