@@ -9,7 +9,7 @@ git init              git初始化（会在当前目录产生.git文件 ）
 git add 文件/.        1、追踪文件 2、将文件添加进暂存区
 
 git commit  -m "xx"   将文件提交到版本库
-git commit -am  "xx"  等同于 git add + git commit -m 一步到位
+git commit -am  "xx"  等同于 git add + git commit -m 一步到位(PS：新文件不受影响)
 
 git status       当前分支状态
 git branch -a    当前本地 和 远端具有的所有分支 
@@ -76,7 +76,7 @@ git rebase -i HEAD~2               合并最近两个commit为一个（会打开
 ==========================================不常用=========================================
 
 git remote add upstream  仓库地址    添加远端upstream（用于fork别人项目，同步源仓库情况）
-
+git rm xxx文件                      从暂存区中删除某文件（对实际文件不做影响,有时需要用-f）
 
 ```
 

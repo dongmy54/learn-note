@@ -3,6 +3,40 @@ a = b = c = d = 'qwe' # a b c d 都等于 'qwe'
 
 
 #===================================================================================#
+# 长字符处理
+# 法一: 反斜杠\(将多段字符串 串起来)
+# 法二：利用方法 .gsub 和 strip
+str1 = 'as sd safd sad sdfa'\
+       'sdaf sdaf sdfd sdaf sd'\
+       'hu bar ok lla'
+# => "as sd safd sad sdfasdaf sdaf sdfd sdaf sdhu bar ok lla"
+
+str2 = %(asd sd dfsd ff dff               
+         hu ddf dfs sa fdfdf 
+         hu bar ok lallalal ds).gsub(/\s+/,' ').strip  # strip去除首位空行 \s+ 匹配中间空白/换行/空格等
+# => "asd sd dfsd ff dff hu ddf dfs sa fdfdf hu bar ok lallalal ds"
+
+
+#===================================================================================#
+# 产生不重复随机字符串
+arr = ('A'..'Z').to_a
+
+current_own_values = ["ABCDE"]
+is_same = true
+
+while is_same
+  temp_value = Array.new(5){ arr[rand(26)] }.join('')  # 将随机值串起来
+  is_same = current_own_values.include?(temp_value)    # 判断是否相同
+end
+
+current_own_values << temp_value
+# =>    [
+#           [0] "ABCDE",
+#           [1] "CCEOH"
+#       ]
+
+
+#===================================================================================#
 # 函数限制次数 自我调用
 def m(x,limit = 6)
   raise ArgumentError,'调用次数太多' if limit == 1
