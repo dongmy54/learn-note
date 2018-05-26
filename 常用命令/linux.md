@@ -7,6 +7,7 @@
 ```
 cd -            退到上一次目录
 
+mv file1 file2 file3 directory 一次移动多个文件
 
 date            当前日期
 cal             本月日历
