@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>弹弹球游戏</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  
+  <script type="text/javascript">
+      // 发现函数间 不需要分号结尾
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      
+      // 构造球
+      var Ball = function(x,y,color){
+        this.x = x;
+        this.y = y;
+        this.xSpeed = -2;
+        this.ySpeed = 3;
+        this.color = color
+      }
+      // 画圆函数
+      var circle = function(x,y,radius,fillCircle,color) {
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.arc(x,y,radius, 0, Math.PI * 2,false);
+        if (fillCircle) {
+          ctx.fill();     // 填充圆
+        } else {
+          ctx.stroke();   // 只画边框
+        }
+      }
+      
+      // 画球方法绑定到构造方法
+      Ball.prototype.draw = function() {
+        // 将画球函数 绑定到构造方法上
+        circle(this.x,this.y,10, true,this.color);
+      }
+      // 球的移动(改变球的位置)
+      Ball.prototype.move = function() {
+        this.x += this.xSpeed;
+        this.y += this.ySpeed;
+      }
+      
+      // 边界反弹
+      Ball.prototype.boundary_rebound = function() {
+        // 由于球的半径是10 所以挨着边框是10
+        if (this.x <= 10 || this.x >= 390) {
+          this.xSpeed = -this.xSpeed;
+        }  
+
+        if (this.y <= 10 || this.y >= 390) {
+          this.ySpeed = -this.ySpeed;
+        }
+      }
+
+      // 画出球当前位置 并记下下一次位置
+      var draw_current = function(){
+        // 清除上一次球的位置（同时会把边框清理掉，可以简单理解为 球在画布上）
+        ctx.clearRect(0,0,400,400);
+        // 由于边框被清了 这里补画
+        ctx.strokeRect(0,0,400,400);
+        // 画出球
+        ball.draw();
+        // 改变球的位置
+        ball.move();
+        // 边界检查
+        ball.boundary_rebound();
+      }
+
+      var colors = ["red","black",'pink','gold','green','orange','blue','purple']
+      // 随机颜色
+      var random_color = function() {
+        number = Math.floor(Math.random() * colors.length);
+        return colors[number]
+      }
+     
+      ball = new Ball(200,200,random_color());
+      // 动画 间隔执行 实时画出当前球的位置 
+      // setInterval 中只需要输入函数名
+      setInterval(draw_current,10);
+
+  </script>
+</body>
+</html>
