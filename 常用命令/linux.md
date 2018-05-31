@@ -39,6 +39,12 @@ which     命令名                查看命令可执行档位置
 alias foo='cd learn;ls;cd -'   命一个别名代表 一串操作(ps: 关闭终端就失效了)
 unalias foo                    去掉别名foo
 
+grep "test" db_test.rb temp.rb      在文件中匹配字符串(这里只支持文件)
+grep -i "test" db_test.rb temp.rb   忽略大小写
+grep -l "test" db_test.rb temp.rb   列出匹配到的文件
+
+ls learn-not/ruby/语法 | grep rb    过滤出xx目录下 包含rb的文件名
+
 ============================== PS ===========================
 
 cd learn;ls;cd -        # 用分号分隔，一次执行多个命令
