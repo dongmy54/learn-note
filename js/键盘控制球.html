@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>键盘事件</title>
+</head>
+<body>
+  <canvas id="mycanvas" width="400" height="400"></canvas>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  
+  <script>
+
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+
+    var Ball = function() {
+      this.x = width/2;
+      this.y = height/2;
+      this.xSpeed = 5;
+      this.ySpeed = 0;
+    }
+
+    var circle = function(x,y,radius,fillCircle) {
+      ctx.beginPath();
+      ctx.arc(x,y,radius, 0, Math.PI * 2, false);
+
+      if (fillCircle) {
+        ctx.fill();
+      } else {
+        ctx.stroke();
+      }
+    } 
+
+    Ball.prototype.draw = function() {
+      circle(this.x,this.y,10, true);
+    }
+
+    Ball.prototype.move = function() {
+      this.x += this.xSpeed;
+      this.y += this.ySpeed;
+
+      if (this.x < 0) {
+        this.x = width;
+      } else if (this.x > width) {
+        this.x = 0;
+      } else if (this.y < 0) {
+        this.y = height;
+      } else if (this.y > height) {
+        this.y = 0;
+      }
+    }
+
+    Ball.prototype.setDirection = function(direction) {
+      if (direction == 'up') {
+        this.xSpeed = 0;
+        this.ySpeed = -5;
+      } else if (direction == 'down') {
+        this.xSpeed = 0;
+        this.ySpeed = 5;
+      } else if (direction == 'left') {
+        this.xSpeed = -5;
+        this.ySpeed = 0;
+      } else if (direction == 'right') {
+        this.xSpeed = 5;
+        this.ySpeed = 0;
+      }
+    }
+
+    var keyAction = {
+      38: "up",
+      40: "down",
+      39: "right",
+      37: "left"
+    }
+
+    ball = new Ball();
+
+    $("body").keydown(function(event) {
+      var direction = keyAction[event.keyCode]
+      ball.setDirection(direction);
+    })
+
+    setInterval(function() {
+      ctx.clearRect(0,0,width,height);
+      ball.draw();
+      ball.move();
+      ctx.strokeRect(0, 0, width, height);
+    }, 30)
+
+  </script>
+</body>
+
+</html>
