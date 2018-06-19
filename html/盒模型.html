@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>盒模型</title>
+</head>
+
+<style>
+  #box1 {
+    width: 400px;
+    height: 300px;
+    border: 10px solid green;
+    margin-bottom: 5px;
+  }
+
+  #box2 {
+    width: 400px;
+    height: 300px;
+    border: 10px solid green;
+    box-sizing: border-box; // 设置盒子为宽、高为整个盒子高宽
+  }
+</style>
+<body>
+  <div id="box1">
+    我是默认的盒子,box-sizing: content-box
+  </div>
+
+  <div id="box2">
+    盒子等同于宽高大小，所以显的小些：box-sizing: border-box
+  </div>
+
+</body>
+</html>

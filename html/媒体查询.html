@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>媒体查询</title>
+</head>
+
+<style type="text/css">
+
+  #box {
+    width: auto;  /* 盒子也要自动缩放 */
+    width: auto; 
+    max-width: 600px;
+    max-height: 500px; /* 盒子的高度,需要大于图片100%宽度时 图片的高度 */
+    border: 5px solid yellow;
+  }
+
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%; /* 只要宽度100% 结合前面 auto就可以了 */
+  }
+
+</style>
+<body>
+  <div id="box">
+    <img src="https://i.loli.net/2018/06/17/5b2639a6e6c61.jpeg" alt="timg.jpeg" title="timg.jpeg" />
+    下面的文字
+  </div>
+</body>
+</html>
