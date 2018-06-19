@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>position定位</title>
+</head>
+
+<style>
+  #relative {
+    position: relative;  // 相对定位
+    padding: 10px;
+    top: 20px;
+    left: 50px;
+    border: 5px solid green;
+    width: 300px;
+  }
+
+  #absolute-parent {
+    position: relative; // 父元素定位
+    top: 10px;
+    border: 5px solid;
+    width: 300px;
+    height: 300px;
+  }
+
+  #absolute {
+    position: absolute; // 绝对定位
+    padding: 10px;
+    top: 50px;
+    left: 50px;
+    border: 5px solid red;
+  }
+
+  #fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border: 5px solid red;
+  }
+  
+</style>
+<body>
+  <div>
+    <p>相对定位的前一个内容</p>
+    <p id="relative">我是相对定位, 本来默认应该紧紧挨在p下的</p>
+  </div>
+
+  <div id="absolute-parent">
+    <p>绝对定位的前一个内容</p>
+    <div id="absolute">
+      绝对定位元素
+    </div>
+    <p>我是绝对定位后的元素，我会与绝对定位内容重复，应为它不占文档流</p>
+  </div>
+
+  <div id="fixed">
+    固定定位
+  </div>
+
+</body>
+</html>
