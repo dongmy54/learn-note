@@ -1,6 +1,7 @@
-current_retry = 0 
-        max_retry = 10   # 最多重试10次
-        while  max_retry > current_retry
-          puts current_retry
-          current_retry += 1
-        end
+# %开头的
+%w(abc dsa sdaf sdaf)   # 数组
+# => ['abc','dsa',sdaf','sdaf']
+%r(^a*b$)               # 正则
+# => /^a*b$/
+%(saf sdaf saf sda)     # 字符串
+# => "saf sdaf saf sda"
