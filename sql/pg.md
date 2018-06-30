@@ -1,13 +1,13 @@
 ### postgresql 常用语法
 
 #### 时间通识
-> YYYY-MM-DD HH24:MI:SS  24小时制
-  YYYY-MM-DD HH12:MI:SS  12小时制
+> *  YYYY-MM-DD HH24:MI:SS  24小时制
+> *  YYYY-MM-DD HH12:MI:SS  12小时制
 
 #### to_char函数
-> 用途：按一定格式转换成字符串
-  用法：to_char(时间戳/时间间隔/整数,字符串)
-  返回： 字符串
+> * 用途：按一定格式转换成字符串
+> * 用法：to_char(时间戳/时间间隔/整数,字符串)
+> * 返回：字符串
 
 ```
 // 当前时间戳
@@ -28,9 +28,9 @@ select to_char(23,'100');
 ```
 
 #### cast 函数
-> 用途：将数据转换成 某种类型
-  用法：cast(转换对象,text/timestamp/date/integer/numeric)
-  返回：返回指定类型
+> * 用途：将数据转换成 某种类型
+> *  用法：cast(转换对象,text/timestamp/date/integer/numeric)
+> *  返回：返回指定类型
 ```
 // 时间戳转 字符串
 select cast(created_at as text) from accounts limit 1;
@@ -54,10 +54,10 @@ select cast('4.3' as numeric);
 ```
 
 #### to_timestamp 函数
-> 用途：将字符串转换为特定的时间戳格式
-  用法：to_timestamp(text,text时间格式)
-  返回：时间戳
-  PS: 第一个参数只能为字符串
+> *  用途：将字符串转换为特定的时间戳格式
+> *  用法：to_timestamp(text,text时间格式)
+> *  返回：时间戳
+> *  PS: 第一个参数只能为字符串
 
 ```
 // 字符串转 时间戳格式
@@ -73,9 +73,9 @@ select to_timestamp(cast (created_at as text),'YYYY-MM-DD') from accounts limit 
 ```
 
 #### date_trunc 函数
-> 用途：将时间戳 或 时间间隔 截取到指定精度（该精度以下忽略）
-  用法：date_trunc(精度,时间戳/时间间隔)
-  返回：对什么类型截取就返回什么
+> * 用途：将时间戳 或 时间间隔 截取到指定精度（该精度以下忽略）
+> * 用法：date_trunc(精度,时间戳/时间间隔)
+> * 返回：对什么类型截取就返回什么
 
 ```
 // 通用截取精度
@@ -92,10 +92,10 @@ select date_trunc('day', interval '3years 5months 23days 6hours 5minutes');
 ```
 
 #### date_part 函数
-> 用途：从时间戳 或 时间间隔 中取出指定精度（小时、天...)
-  用法：date_part(精度, 时间戳/时间间隔)
-  返回：double类型
-  PS: 和date_trunc 区别在于 它只去除需要的精度单元
+> * 用途：从时间戳 或 时间间隔 中取出指定精度（小时、天...)
+> * 用法：date_part(精度, 时间戳/时间间隔)
+> * 返回：double类型
+> * PS: 和date_trunc 区别在于 它只去除需要的精度单元
 
 ```
 select date_part('hours',timestamp '2018-6-10 15:36:23');
@@ -112,9 +112,9 @@ select date_part('days',interval '3years 6months 5days ');
 ```
 
 #### date 函数
-> 用途：将时间戳 或 字符串 转换为日期（年-月-日）
-  用法：date(时间戳/字符串)
-  返回：date类型
+> * 用途：将时间戳 或 字符串 转换为日期（年-月-日）
+> * 用法：date(时间戳/字符串)
+> * 返回：date类型
 
 ```
 select date('2018-3-10 15:25:06');
@@ -127,9 +127,9 @@ select created_at::date from accounts limit 1;
 ```
 
 #### age 函数
-> 用途：计算两个时间戳的 间隔
-  用法：age(减数时间戳, 被减数时间戳)
-  返回：时间间隔
+> * 用途：计算两个时间戳的 间隔
+> * 用法：age(减数时间戳, 被减数时间戳)
+> * 返回：时间间隔
 
 ```
 // 两个定义好的时间戳
@@ -142,8 +142,8 @@ select age(last_in,created_at) from accounts limit 1;
 ```
 
 #### interval 加减时间间隔
-> 用途：在一个时间戳 或 日期 上加减获取一个新的 时间戳/日期
-  PS：加减对象: 时间戳 或日期
+> * 用途：在一个时间戳 或 日期 上加减获取一个新的 时间戳/日期
+> * PS：加减对象: 时间戳 或日期
 
 ```
 select timestamp '2018-6-20' + interval '1 day';
