@@ -17,7 +17,9 @@
 
 cd -            退到上一次目录
 
-mv file1 file2 file3 directory 一次移动多个文件
+mv ~/temp.rb ~/tp.rb             更改文件名（相同目录时）
+                                 如果，在更改目录下已有，这个新名字的文件，会只保留现在的这个文件
+mv file1 file2 file3 directory   一次移动多个文件
 
 date            当前日期
 cal             本月日历
@@ -49,6 +51,13 @@ chmod 640 foo.text    更改文件权限
                       rwx代表 读 写 执行，数字是 4 2 1
                       640分三位：6 4 0 即是 4 + 2、2、0 也就是 读写、写、无权限
                       对应拥有者、组、其它人权限
+
+tail -n 5 temp.rb     打印出temp.rb文件的 最后 5行(默认10行)
+tail -n +5 temp.rb    打印出temp.rb文件 第5行 开始的内容
+sed '5d' temp.rb      和上等价
+tail -100f temp.rb    动态追踪temp.rb 最后100行
+
+
 > foo.txt             输入信息，换行输入ctrol + D（创建并写入foo.txt文件）
 cat > foo.txt         输入信息，换行输入ctrol + D 创建并写入foo.txt          
 
