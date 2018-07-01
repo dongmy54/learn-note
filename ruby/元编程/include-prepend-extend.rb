@@ -2,6 +2,7 @@
 # include 上包含
 # prepend 下包含
 # extend  扩充类方法
+# PS： 多重包含时：已处于x类/模块中的模块，不受新加入的影响
 module A
   def foo
     puts 'foo'
