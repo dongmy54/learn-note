@@ -156,3 +156,18 @@ select created_at - interval '5days' from accounts limit 1;
 // 2016-03-26 14:22:50.126631
 ```
 
+#### coalesec 转换null为其它值
+> * 用途：常用来将一个为空（null)的行替换为其它值
+> * 用法：coalesec(value1,value2,value3...) 里面可以放许多个值
+> * 返回：值的类型（返回其中第一个不为null的值，如果所有都为null,则返回null)
+
+```
+select coalesce(mobile,email,name) from accounts limit 10;
+// 这里的含义是 如果表中，mobile为null,则去判断email是否为null，如果email不为null,则返回email,否则就去判断name；依次类推
+```
+
+
+
+
+
+
