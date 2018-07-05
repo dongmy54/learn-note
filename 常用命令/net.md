@@ -14,7 +14,9 @@ dig baidu.com       详细的查找域名 ip信息
 
 dig @a.root-servers.net baidu.com   从顶层开始查起
 
-curl -v https://www.baidu.com/\?tn\=sitehao123_15                 # 将请求结果打印在终端
+curl https://www.baidu.com/\?tn\=sitehao123_15                    # 只将返回内容打印在终端
+
+curl -v https://www.baidu.com/\?tn\=sitehao123_15                 # 将请求结果打印在终端(包含请求、响应头等信息)
 
 curl -o curl_test.txt https://www.baidu.com/\?tn\=sitehao123_15   # 将请求结果保存到 curl_test.txt 文件
 
