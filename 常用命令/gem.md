@@ -21,4 +21,6 @@ gem list rails                   列出名字中包含rails的gem
 rake build                       gem 打包（在gem的当前目录下）
 rake install                     gem 打包 + install（本地）
 
+gem unpack rake -v 12.3.1        将gem解压到本地当前目录
+
 ```
