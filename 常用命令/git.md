@@ -5,6 +5,7 @@
 
 ```
 git init              git初始化（会在当前目录产生.git文件 ）
+rm -rf .git           移除所有git 数据
 
 git add 文件/.        1、追踪文件 2、将文件添加进暂存区
 
