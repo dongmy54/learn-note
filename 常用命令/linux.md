@@ -27,8 +27,6 @@ df              磁盘空间情况
 free            空闲内存情况（mac终端没法用）
 
 history         命令行历史
-
-nslookup baidu  通过域名查IP
   
 mkdir dir1  创建目录
 mkdir -p dir1 创建目录（如果目录已存在也不会报错，它只是默默的不创建）
@@ -36,6 +34,14 @@ mkdir -p dir1 创建目录（如果目录已存在也不会报错，它只是默
 less 文件名/路径       page up/page down 翻页；g/G 首尾; 
 
 file 文件名/目录       文件的信息
+
+find ~                                                  列出家目录下所有文件和目录
+find ~ -name learn-note                                 列出家目录下 文件名/目录名是 learn-note的 文件/目录
+find learn-note -name '*test.rb'                        列出learn-note 目录下 文件名/目录 是test.rb结尾的文件
+find learn-note -type d -name '*s*'                     列出learn-note 目录下 名字中包含s 的目录
+find learn-note -type f -name '*s*'                     列出learn-note 目录下 名字中包含s 的文件
+find learn-note -type f -name '*s*' -exec cat '{}' +    将learn-note目录下 名字中包含s 的文件找出，然后所有文件执行 cat 操作
+                                                        {} 代表 当前路径；+表示这些文件全部(整体）找到后,执行一次cat
 
 ps                    列出与当前终端相关的进程
 ps x                  初略（数据列少）的列出所有进程
