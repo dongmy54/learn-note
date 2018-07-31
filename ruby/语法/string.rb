@@ -1,13 +1,86 @@
-# 反转字符串顺序
-"dmy".reverse   # => "ymd"
+#===================================================================================#
+# 多行字符串
+# %{} 和 <<EOS 写法
+# 都可插值
+name = 'dmy'
+str1 = %{
+  #{name} hello 
+  ni hao ma
+  ha ha!
+}
+
+str2 = <<EOS
+  #{name} hello 
+  ni hao ma
+  ha ha! 
+EOS
+
+puts str1  # 注意由于 上面%{}写法换行写 所以会有空行
+#
+#  dmy hello
+#  ni hao ma
+#  ha ha!
+puts str2
+#  dmy hello
+#  ni hao ma
+#  ha ha!
+puts str1.gsub(/\s+/,' ')       # 去除换行
+# dmy hello ni hao ma ha ha!
+
+
+#===================================================================================#
+# index 定位字符串
+# 可接 正则/字符
+str = 'asdahcfldddf'
+puts str.index('ddd')
+# 8
+puts str.index(/[abc]f/)
+# 5
+
+
+#===================================================================================#
+# insert 在指定索引处插入
+str = 'sadfdmydsa'
+str.insert(str.index('dmy'),'X')
+puts str
+# sadfXdmydsa
 
 
 #===================================================================================#
 # start_with? 以什么开头
 "dsaf sdaf".start_with? 'dsa'
 # => true
-"dmy sda".start_with? 'hj'
-# => false
+
+
+#===================================================================================#
+# end_with? 以什么结尾
+str = 'safdasdf'
+puts str.end_with?('sdf')
+# true
+
+
+#===================================================================================#
+# include？是否包含
+str = 'safdmysaf'
+puts str.include?('dmy')
+# true
+
+
+#===================================================================================#
+# []多种用法
+str = "absadffgh"
+puts str[2]         # str[index]
+# s
+puts str[0,3]       # str[index,length]
+# abs
+puts str[1..3]      # str[range]
+# bsa
+puts str[/b(sa)/,0] # str[regex,0] 匹配内容
+# bsa
+puts str[/b(sa)/,1] # str[regex,1] 捕获内容
+# sa
+puts str['adf']     # str[str] 字符串中 字符串内容 替换时非常有用
+# adf
 
 
 #===================================================================================#
@@ -70,14 +143,59 @@ d.chop            # => ""
 
 
 #===================================================================================#
-# 与 chomp 相对应
-# 删除 字符串首部的空白
-a = "     sdafsd"
-a.lstrip          # => "sdafsd"
-
-
-#===================================================================================#
 # 删除字符串 前后的空行
 a = " dsa sdd ddsa  "
 a.strip          # => "dsa sdd ddsa"
 
+
+#===================================================================================#
+# match
+# 1、拿到匹配的 结果值
+# 2、具名捕获 可 符号 可 字符串
+# 3、可接块（匹配到的内容）
+# PS: 它只匹配一次
+str     = 'abkddfhps'
+regex   = /(?<first>[abc]k).*(?<second>[juh]p)/
+results = str.match(regex)
+# => #<MatchData "bkddfhp" first:"bk" second:"hp">
+puts results[0]
+# bkddfhp
+puts results[:first]
+# bk
+puts results[:second]
+# hp
+str.match(regex) {|m| puts m }
+# bkddfhp
+
+
+#===================================================================================#
+# sub 只替换首次匹配
+# 有！方法
+str   = 'hdmykahddmyib'
+regex = /(dmy).[ab]/
+puts str.sub(regex,'H')
+# hHhddmyib
+
+
+#===================================================================================#
+# gsub 替换所有匹配
+# 有！方法
+str   = 'hdmykahddmyib'
+regex = /(dmy).[ab]/
+puts str.gsub(regex,'H')
+# hHhdH
+
+
+#===================================================================================#
+# scan 匹配所有
+# 返回数组
+# 可接块
+str   = 'hdmykahddmyib'
+regex = /((dmy).[ab])/
+puts str.scan(regex).inspect
+# [["dmyka", "dmy"], ["dmyib", "dmy"]]
+str.scan(regex) {|m| puts m}
+# dmyka
+# dmy
+# dmyib
+# dmy
