@@ -67,6 +67,40 @@ puts str.include?('dmy')
 
 
 #===================================================================================#
+str = 'abc ef'
+str.each_char {|c| puts "char is '#{c}'"}
+# char is 'a'
+# char is 'b'
+# char is 'c'
+# char is ' '
+# char is 'e'
+# char is 'f'
+
+
+#===================================================================================#
+# each_line 每行
+str = %{first line
+second line
+end ...
+}
+
+str.each_line {|line| puts line}
+# first line
+# second line
+# end ...
+
+
+#===================================================================================#
+# split 劈开字符串 数组
+# 第二参数 数组长度
+str = "ab cd ef k cddo"
+puts str.split(' ').inspect
+# ["ab", "cd", "ef", "k", "cddo"]
+puts str.split(' ',2).inspect
+# ["ab", "cd ef k cddo"]
+
+
+#===================================================================================#
 # []多种用法
 str = "absadffgh"
 puts str[2]         # str[index]
@@ -110,6 +144,15 @@ arr1 = (1..3).to_a
 arr2 = (4..6).to_a
 puts arr1.concat(arr2)
 # 1 2 3 4 5 6
+
+
+#===================================================================================#
+# upto 由当前 字符串 推导出后续字符
+# 字母 a..z 数组 0..9
+puts 'a1'.upto('b1').to_a.inspect
+# ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "b0", "b1"]
+puts 'aa'.upto('aq').to_a.inspect
+# ["aa", "ab", "ac", "ad", "ae", "af", "ag", "ah", "ai", "aj", "ak", "al", "am", "an", "ao", "ap", "aq"]
 
 
 #===================================================================================#
