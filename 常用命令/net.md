@@ -23,4 +23,10 @@ curl -o curl_test.txt https://www.baidu.com/\?tn\=sitehao123_15   # 将请求结
 curl -O https://www.baidu.com/\?tn\=sitehao123_15   # 将请求结果保存到，url末尾名称（?tn\=sitehao123_15） 这里的 O 是大写
 
 curl -so curl_test.txt https://www.baidu.com/\?tn\=sitehao123_15  # 静静地将结果保存到 curl_test.txt s 表示静默
+
+curl -u user_name:password https://example.com                    # 可以登录服务器 或 破除网页基本认证
+
+curl -d 'loginid=dmy&password=123456' https://example.com         # 发送 post 提交表单参数
+
+curl -c cookie.txt  https://example.com                           # 将cookie 信息保存到本地 cookie.txt
 ```
