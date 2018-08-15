@@ -4,175 +4,203 @@
 # PS: 块不是对象
 
 
-#===================================================================================#
-# 定义块有两种基本方式
-1、do .. end 或 
-2、{ }
+#===================================== block/proc/lambda ==========================#
+#====================== block ===================#
+# 1、do..end {} 两种创建块方式
+# 2、块不能单独存在 只能寄生于 proc/lambda对象
+# 3、方法末尾的块 会被转换为proc 对象
+3.times do
+  puts 'hello'
+end
+# hello
+# hello
+# hello
+
+3.times { puts 'hello'}
+# hello
+# hello
+# hello
+
+[1,3,6].each do |x|
+  puts x
+end
+# 1
+# 3
+# 6
+
+[1,3,6].each {|x| puts x}
+# 1
+# 3
+# 6
+
+a = {puts 'hello'}   # 块不能单独 存在
+# syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
 
 
-#===================================================================================#
-# 单个{} 不能传参数的
-# 可改成 ->(param) 或 lambda 等等
-# block_object = {|value| puts "值是: #{value}"}  ❌
-block_object = ->(value) { puts "值是: #{value}"} 
+#====================== proc ==========================#
+# 1、它是 对象
+# 2、由 Proc.new + 块 产生
+p = Proc.new {puts 'qwert'}
+p.call
+# qwert
 
 
-#===================================================================================#
-# 块中定义实例变量
-# 外界是可读取的
-lambda { @x = 3 }.call
-puts @x
-# => 3
+#====================== lambda =========================#
+# 1、它是 对象
+# 2、由 lambda + 块 产生
+# 3、等价 写法 ->
+l = lambda {puts 'sdfg'}
+l.call
+# sdfg
+
+l = -> {puts 'sdfg'}     # ->  <=> lambda 写法
+l.call
+# sdfg
+
+l = ->(x) {puts 'asd'}   # 注意传参位置 -> {|x| puts 'asd'} ❌
+l.call('p')
+# asd
 
 
-#===================================================================================#
-# [参数] 呼叫块
-lock = lambda {|h| puts "参数是：#{h}"}
-block['dmy']
-# 参数是：dmy
+#================ lambda/proc 调用 =======================#
+# 四种：
+# 1、call (推荐)
+# 2、[]
+# 3、()
+# 4、===
+l = lambda {|x| puts "x: #{x}"}
+
+l.call(2)      # x: 2
+l[2]           # x: 2
+l.(2)          # x: 2
+l.===(2)       # x: 2
 
 
-#===================================================================================#
-# 定义块时 一般而言块的参数都是在{} /  do .. end ||中写
-block1 = lambda {|a,b| p a,b }
-block2 = lambda do |a,b|
-          p a,b
-         end
+#====================== proc VS lambda ===================#
+# 相同： 同属于 Proc
+# 不同：
+# 1、proc 不验证参数 lambda 验证
+# 2、方法中定义的块：proc 会退出 整个方法
+# PS: lambda 更接近一个方法，推荐使用 
+p = Proc.new {|x,y| puts "x: #{x};y: #{y}"}
+l = lambda {|x,y| puts "x: #{x};y: #{y}"}
 
-block1.call(1,2)    # => 1,2
-block2.call(1,2)    # => 1,2
+# ========同类
+p.class      
+# => Proc
+l.class              # lambda 属 Proc
+# => Proc
 
+# =========参数
+p.call()             # proc 不验证 参数(没有：nil,多：忽略)
+# x: ;y:
+l.call()             # lambda 验证            
+# wrong number of arguments (given 0, expected 2) (ArgumentError)
 
-#===================================================================================#
-# 创建 代码块对象 几种方法
-object1 = Proc.new { |x| puts x + 1 }
-object2 = proc { |x| puts x + 1 }
-object3 = lambda { |x| puts x +1 }
-object4 = ->(x) { puts x + 1 }  # -> 传递参数在{}外面
-#object4 = -> { |x| puts x + 1}  PS: 不能这样写 
-
-object1.call(2) # => 3
-object2.call(2) # => 3
-object3.call(2) # => 3
-object4.call(2) # => 3
-
-
-#===================================================================================#
-# 块 传递 单层方法
-# 1、方法中都不需 定义块参数
-# 2、呼叫块 直接 yield
-def m(x) 
-  yield(x) 
+# =========return
+def proc_test
+  puts "这是proc_test"
+  p = Proc.new {return "proc会整个退出方法"}
+  p.call
+  puts "这句不会执行"
 end
 
-m(3) { |x| puts "x = #{x}"}
-# => x = 3
+def lambda_test
+  puts "这是lambda_test"
+  l = lambda {return "lambda 不会退出方法"}
+  l.call
+  puts "这句会执行"
+end
+
+proc_test
+# 这是proc_test
+# 这是lambda_test
+lambda_test
+# 这句会执行
 
 
-#===================================================================================#
-# 块 传递 多层方法
-def m1(x)
+
+#===================================== yield =====================================#
+# 1、yield 会捕获 方法末尾/最后参数 块
+# 2、yield 快捷 调用块
+# 3、常与 block_given? 配合
+def test1
+  yield
+end
+
+test1 do                # 末尾 块
+  puts 'test1 yield'
+end
+# test1 yield
+
+def test2(a,&block)
+  yield
+end
+
+block = lambda {puts 'test2 yield'} 
+test2('a',&block)       # 最后参数 块
+# test2 yield
+
+def test3
+  yield if block_given? # 是否有块
+end
+
+test3
+test3 {puts 'test3 yield'}
+# test3 yield
+
+
+
+#===================================== 闭包特性 ====================================#
+# 1、可以绑定外部作用域 变量
+# 2、但外部 不能获取块 内部变量(局部)
+def test(x,&block)
   yield(x)
 end
 
-def m2(x,&block_object) # 传递多层时 须定义 块参数
-  m1(x,&block_object)
+number = 10
+l = lambda do |x|
+  puts x * number     # 引用外部 number
+  a   = 3             # 内部定义 局部变量
+  @hu = 4             # 内部定义 实例变量 
+  $h = 2
 end
 
-m2(3) {|x| puts "x + #{x}"}
-# => x + 3
+test(2,&l)
+# 20
+puts @hu
+# 4
+puts a   # 不能获取 块内局部变量
+# undefined local variable or method `a' for main:Object (NameError)
 
 
-#===================================================================================#
-# 向方法中传递块  两种（常见）
-#1、 do ..end
-#2、 实现定义好 用& 当作参数传
-def test(value, &block)
-  block.call(value)
-end
 
-test 3 do |value|
-  puts "值是：#{value}"
-end
-# => 值是：3
-
-block_object = ->(value) { puts "值是：#{value}"}
-test 3,&block_object
-# => 值是：3
-
-
-#===================================================================================#
-# 带（&) VS 不带
-# 1、带不带都可以，如果方法中带则带
-# 2、通常情况下，是带的（在方法定义时，能很快识别是传块）
-block1 = lambda { puts 'a' }
-block2 = -> {puts 'b' }
-
-def direct_pass_params(block)
+#===================================== 方法中 ========================================#
+# ======= test(block) VS test(&block) ===========#
+# 1、既可以传 对象(proc/lambda) 也 可传块
+# 2、&block 含义： 对象 转 块
+# 3、参数中 &block 表示 明确接收块
+# PS: 传对象时  block_given? 方法为 false
+def test1(block)
   block.call
 end
 
-def as_block_params(&block)
+l1 = lambda {puts 'test1'}
+test1(l1)
+# test1
+
+def test2(&block)
   block.call
 end
 
-direct_pass_params(block1)
-# => a
-as_block_params(&block2)
-# => b
+l2 = lambda {puts 'test2'}
+test2(&l2)
+# test2
 
 
-#===================================================================================#
-# lambda VS proc
-# 凡是lambda 创建的就是 lambda 
-# 其它全为proc
-# 区别一： return
-def lambda_test
-  block_object = lambda { return 'lambda return'}
-  block_object.call     
-  'method end'      # lambda 会执行到代码结束 
-end
 
-def proc_test
-  block_object = proc {return 'proc retrun'}
-  block_object.call # proc 对象会 立即返回
-  'method end'      # 不执行
-end
-
-puts lambda_test
-# => method end
-puts proc_test
-# => proc retrun
-
-def proc_outside_test
-  yield        # 进入方法中 不能回到 顶层作用域 所以会报错
-end
-
-proc_block_object = proc { return 'proc outside block' }
-proc_outside_test # 会报错 proc 的返回 只是能是定义块的地方 
-# => LocalJumpError
-
-
-#===================================================================================#
-# lambda VS proc
-# 区别二： 参数校验
-# 1、lambda 严格校验
-# 2、proc 可多可少
-# PS: 基于lambda 严格校验参数 和 return返回特性 多用lambda
-lambda_object = lambda {|a,b,c| puts a.to_i + b.to_i + c.to_i}
-proc_object   = proc {|a,b,c| puts a.to_i + b.to_i + c.to_i}
-
-#lambda_object.call(1,2) # lambda 严格校验参数
-# => ArgumentError (given 2, expected 3)
-
-proc_object.call(1,2)     # 参数不够 nil
-# => 3  a = 1 b = 2 c = nil 
-proc_object.call(1,2,3,4) # 参数多 舍弃
-# => 6  a = 1 b = 2 c = 3 
-
-
-#===================================================================================#
-# 方法对象
+#===================================== 类似 ===============================================#
+# 方法对象 类似 块对象
 class A
   def initialize(a)
     @x = a
