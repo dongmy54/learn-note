@@ -163,7 +163,6 @@ l = lambda do |x|
   puts x * number     # 引用外部 number
   a   = 3             # 内部定义 局部变量
   @hu = 4             # 内部定义 实例变量 
-  $h = 2
 end
 
 test(2,&l)
