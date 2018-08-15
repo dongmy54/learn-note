@@ -67,6 +67,21 @@ puts res.body
 
 
 #===================================================================================#
+# Net::HTTP.new  出http 不用块 写法
+require 'net/http'
+
+uri = URI('http://dmy.t.yurl.vip/marketing/short_url/create')
+
+http = Net::HTTP.new(uri.host, uri.port)  # new http
+req = Net::HTTP::Post.new(uri)
+req.set_form_data(source_url: 'https://www.baidu.com/?tn=sitehao123_15',name: '测试')
+res = http.request(req)
+
+puts res.body
+# {"data":{"code":200,"msg":{"id":97}}}
+
+
+#===================================================================================#
 # 响应类型 处理
 def res_method(uri)
   uri = URI(uri)
