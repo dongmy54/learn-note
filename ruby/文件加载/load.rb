@@ -39,16 +39,6 @@ Dir[File.dirname(__FILE__) + "/load/*.rb"].each {|file| require file}
 # => 4_load.rb
 
 
-#===================================================================================#
-# 加载当前目录下的 所有 .rb 文件
-# PS: 
-# 1、当前目录下 目录是不会进去的哦
-# 2、推荐 用 File.dirname 方式（对路径没有要求）
-Dir[File.dirname(__FILE__) + "/*.rb"] {|file| require file}
-# => 1_load.rb
-# => 2_load.rb
-
-
 
 
 
