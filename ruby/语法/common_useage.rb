@@ -37,7 +37,7 @@ b = a rescue nil
 def test
   puts '做一些事...'
 ensure              
-  puts 'xx事情已做完'    # 一定要执行（但不做为返回值）
+  puts 'xx事情已做完'    # 无论如何（即使前面发生了异常）都会执行（但不做为返回值）
 end
 
 test
