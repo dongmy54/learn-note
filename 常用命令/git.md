@@ -69,6 +69,7 @@ git checkout -b develop origin/develop 以远端develop来创建本地develop分
 
 git commit --amend                 修改上一次commit信息 会打开编辑器
 
+git reset --hard HEAD^              回滚到上一个commit
 git reset --hard 哈希id(7位/所有位)  回到某个commit时间点
 
 git rebase -i HEAD~2               合并最近两个commit为一个（会打开编辑器，最后一行用fixup替换pick 下面有命令说明）
