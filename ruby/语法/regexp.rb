@@ -101,14 +101,51 @@ puts str[regex2,0]
 
 
 #===================================================================================#
-# scan 对字符串不做处理，但可以校验字符串
-str = 'adhwadadsawea'
-count = 0
-str.scan(/a/) do
-  count += 1
+# match 只匹配首个
+# 无块 => 对象
+# 有块 => 对象入块
+str   = 'ddjikkqodkddjkklod'
+regex = /dd(.*?)kk(.o)/
+
+match_object = str.match(regex)
+puts match_object[0]           # 0 匹配
+# ddjikkqo 
+puts match_object[1]           # 1 第一捕获
+# ji
+puts match_object[2]           # 2 第二捕获
+# qo
+
+str.match(regex) do |m|    # 对象入块
+  puts m
+  # puts m[0]/[1]/[2]
 end
-puts "str中包含#{count}个字符串"
-# str中包含5个字符串
+# ddjikkqo
+
+
+#===================================================================================#
+# scan 
+# 无块 => 多维数组（PS:首层:匹配; 下层:捕获)
+# 有块 => 元素入块
+str   = 'ddjikkqodkddjkklod'
+regex = /dd(.*?)kk(.o)/
+
+str.scan(regex)
+# => [
+# =>     [0] [
+# =>         [0] "ji",
+# =>         [1] "qo"
+# =>     ],
+# =>     [1] [
+# =>         [0] "j",
+# =>         [1] "lo"
+# =>     ]
+# => ]
+
+str.scan(regex) do |m|
+  puts m.inspect     # 元素入块
+end
+# ["ji", "qo"]
+# ["j", "lo"]
 
 
 #===================================================================================#
