@@ -228,18 +228,3 @@ str   = 'hdmykahddmyib'
 regex = /(dmy).[ab]/
 puts str.gsub(regex,'H')
 # hHhdH
-
-
-#===================================================================================#
-# scan 匹配所有
-# 返回数组
-# 可接块
-str   = 'hdmykahddmyib'
-regex = /((dmy).[ab])/
-puts str.scan(regex).inspect
-# [["dmyka", "dmy"], ["dmyib", "dmy"]]
-str.scan(regex) {|m| puts m}
-# dmyka
-# dmy
-# dmyib
-# dmy
