@@ -9,6 +9,8 @@ module A
   end
 end
 
+
+
 # =========================================
 class B
   include A  # 模块加到当前类 上方
@@ -17,6 +19,8 @@ end
 puts B.ancestors
 # [B,A,Object,Kernel,BasicObject]
 
+
+
 # =========================================
 class C
   prepend A  # 模块加到当前类 下方
@@ -24,6 +28,8 @@ end
 
 puts C.ancestors
 # [A,C,Object,Kernel,BasicObject]
+
+
 
 # =========================================
 class D
