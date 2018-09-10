@@ -26,3 +26,4 @@ end
 bar = 'balabal..'
 ok(binding)          # binding 将本地变量bar 带出作用域(进方法)
 # balabal..
+
