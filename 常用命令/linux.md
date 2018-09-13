@@ -77,6 +77,9 @@ tail -100f temp.rb    动态追踪temp.rb 最后100行
 cat > foo.txt         输入信息，换行输入ctrol + D 创建并写入foo.txt
 ls >> foo.txt         追加信息 到foo.txt 末尾       
 
+scp hu.txt root@120.69.192.128:.        将本地   hu.txt 文件 上传到服务器 当前目录(.)
+scp root@120.68.192.128:hu.txt hu.txt   将服务器 hu.txt 文件 下载到本地 文件（hu.txt）
+
 ===============================较少用到======================
 
 type      命令名                查看命令类型（shell的？还是其它）
