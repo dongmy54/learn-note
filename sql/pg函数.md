@@ -141,6 +141,17 @@ select age(last_in,created_at) from accounts limit 1;
 // 00:17:56.889344
 ```
 
+#### current_date 当前时间
+> * 用途：当前时间日期
+
+```
+select current_date;
+// 2018-09-28
+
+select current_date + interval '7' day;
+// 2018-10-05 00:00:00
+```
+
 #### interval 加减时间间隔
 > * 用途：在一个时间戳 或 日期 上加减获取一个新的 时间戳/日期
 > * PS：加减对象: 时间戳 或日期
