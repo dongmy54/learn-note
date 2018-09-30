@@ -3,6 +3,9 @@
 - `~`  家目录（每个用户进来的目录）
 - `#`  表示 管理员权限 
 
+### 命令组成
+一般为：`命令名 -选项 参数  文件`
+
 ### 查看命令文档的三种方式
 1. `help cd`    help 开头
 2. `cd --help`  --help 结尾
@@ -17,6 +20,18 @@
 2. echo "this is this $USER is $100.20 and $((2+3));cd"       双引号: 部分展开（除 参数展开/算术展开/命令替换）
 3. echo 'this is this $USER is $100.20 and $((2+3));cd'       单引号: 不展开
 PS: 可在双引号("")中用`/` 转义
+
+### 输入/输出
+1. stdin 标准输入（0）
+2. stdout 标准输出 （1）
+3. stderr 标准错误输出 （2）
+`>`   标准输输出重定向到文件, eg: `cat tp.rb > t.html`
+`>>`  标准输出重定向追加
+`2>`  标准错误输出重定向,    eg: `cat not_exist_file.txt 2> err.txt`
+`2>>` 标准错误输出重定向追加, eg: `cat p.md >> results.txt 2>> err.txt` 分别存储
+`2>&1` 标准输出 和 标准错误输出同一文件, eg: `cat p.md >> results.txt 2>&1`
+`|` 管道, 前一个命令输出 做 后一个命令输入
+
 
 
 ```
@@ -81,6 +96,14 @@ scp hu.txt root@120.69.192.128:.        将本地   hu.txt 文件 上传到服�
 scp root@120.68.192.128:hu.txt hu.txt   将服务器 hu.txt 文件 下载到本地 文件（hu.txt）
 
 ===============================较少用到======================
+du                             列出当前目录下 所有文件
+
+sort t.html                    对文件内容排序
+sort -nr t.html                n(数字排序) r(倒叙)
+
+cut -d , -f 1 notes.csv        将notes.csv 文件内容（1、以逗号分隔 2、取首列）
+head                           默认取前十行
+ 
 
 type      命令名                查看命令类型（shell的？还是其它）
 which     命令名                查看命令可执行档位置
@@ -90,6 +113,7 @@ unalias foo                    去掉别名foo
 grep "test" db_test.rb temp.rb      在文件中匹配字符串(这里只支持文件)
 grep -i "test" db_test.rb temp.rb   忽略大小写
 grep -l "test" db_test.rb temp.rb   列出匹配到的文件
+grep hu -Ir log                     I（忽略二进制文件）r（递归文件） 检索hu
 
 ls learn-not/ruby/语法 | grep rb    过滤出xx目录下 包含rb的文件名
 
@@ -102,5 +126,6 @@ touch photo-{2010..2018}-{0{1..9},{10..12}}    # {} 展开 创建 类似 phtoto-
 
 ls b*                                          # 通配符 列出 b 开头文件 其下目录
 ls blog/*/models                               # 列出 文件路径 符合 blog/任意/models 文件
+
 
 ```

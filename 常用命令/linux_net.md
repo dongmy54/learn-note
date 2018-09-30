@@ -16,11 +16,13 @@ dig @a.root-servers.net baidu.com   从顶层开始查起
 
 curl https://www.baidu.com/\?tn\=sitehao123_15                    # 只将返回内容打印在终端
 
+curl -I https://www.baidu.com/\?tn\=sitehao123_15                 # 只返回请求头
+
 curl -v https://www.baidu.com/\?tn\=sitehao123_15                 # 将请求结果打印在终端(包含请求、响应头等信息)
 
 curl -o curl_test.txt https://www.baidu.com/\?tn\=sitehao123_15   # 将请求结果保存到 curl_test.txt 文件
 
-curl -O https://www.baidu.com/\?tn\=sitehao123_15   # 将请求结果保存到，url末尾名称（?tn\=sitehao123_15） 这里的 O 是大写
+curl -O https://www.baidu.com/\?tn\=sitehao123_15                 # 将请求结果保存到，url末尾名称（?tn\=sitehao123_15） 这里的 O 是大写
 
 curl -so curl_test.txt https://www.baidu.com/\?tn\=sitehao123_15  # 静静地将结果保存到 curl_test.txt s 表示静默
 
