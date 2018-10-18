@@ -25,6 +25,8 @@ PS: 可在双引号("")中用`/` 转义
 1. stdin 标准输入（0）
 2. stdout 标准输出 （1）
 3. stderr 标准错误输出 （2）
+
+>
 `>`   标准输输出重定向到文件, eg: `cat tp.rb > t.html`
 `>>`  标准输出重定向追加
 `2>`  标准错误输出重定向,    eg: `cat not_exist_file.txt 2> err.txt`
