@@ -26,13 +26,12 @@ PS: 可在双引号("")中用`/` 转义
 2. stdout 标准输出 （1）
 3. stderr 标准错误输出 （2）
 
->
-`>`   标准输输出重定向到文件, eg: `cat tp.rb > t.html`
-`>>`  标准输出重定向追加
-`2>`  标准错误输出重定向,    eg: `cat not_exist_file.txt 2> err.txt`
-`2>>` 标准错误输出重定向追加, eg: `cat p.md >> results.txt 2>> err.txt` 分别存储
-`2>&1` 标准输出 和 标准错误输出同一文件, eg: `cat p.md >> results.txt 2>&1`
-`|` 管道, 前一个命令输出 做 后一个命令输入
+* `>`   标准输输出重定向到文件, eg: `cat tp.rb > t.html`
+* `>>`  标准输出重定向追加
+* `2>`  标准错误输出重定向,    eg: `cat not_exist_file.txt 2> err.txt`
+* `2>>` 标准错误输出重定向追加, eg: `cat p.md >> results.txt 2>> err.txt` 分别存储
+* `2>&1` 标准输出 和 标准错误输出同一文件, eg: `cat p.md >> results.txt 2>&1`
+* `|` 管道, 前一个命令输出 做 后一个命令输入
 
 
 
