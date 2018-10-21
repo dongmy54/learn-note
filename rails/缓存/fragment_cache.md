@@ -1,6 +1,7 @@
 #### 片段缓存
 >1. rails默认启用的缓存方式
 >2. 使用：将页面上，一段内容缓存（包含一些动态数据组合成的html)
+
 ps: 开发环境测试缓存，`rake dev:cache`(会创建tmp/caching-dev.txt)
 ```
 <% cache project do %>
