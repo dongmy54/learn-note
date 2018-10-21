@@ -1,8 +1,8 @@
 #### 请求头缓存
 >1. 利用 HTTP_IF_NONE_MATCH 与 HTTP_IF_MODIFIED_SINCE 实现
 >2. 原理：
->>首次访问时，服务器端返回 etag(内容标识符) last_modified(最后修改时间),分别存入 HTTP_IF_NONE_MATCH、HTTP_IF_MODIFIED_SINCE;
->>下次请求时,请求头带上 HTTP_IF_NONE_MATCH、HTTP_IF_MODIFIED_SINCE,服务端去判断内容是否更新,如果没更新则返回304（未更改）
+>> * 首次访问时，服务器端返回 etag(内容标识符) last_modified(最后修改时间),分别存入 HTTP_IF_NONE_MATCH、HTTP_IF_MODIFIED_SINCE;
+>>* 下次请求时,请求头带上 HTTP_IF_NONE_MATCH、HTTP_IF_MODIFIED_SINCE,服务端去判断内容是否更新,如果没更新则返回304（未更改）
 
 #### 用法
 `stale?` 搭配 respond_to
@@ -19,7 +19,7 @@ class JobsController < ApplicationController
 end
 ```
 
-`fresh_when`不分响应
+`fresh_when`不分响应类型
 ```ruby
 class JobsController < ApplicationController
   @job = Job.find_by_id(params[:id])
