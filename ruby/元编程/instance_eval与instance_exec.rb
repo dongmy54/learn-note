@@ -22,3 +22,13 @@ obj.m
 
 # 获取/改变实例变量
 obj.instance_eval { puts @x}
+
+
+# instance_exec
+# 和instance_eval 主要区别在于：它可传递参数
+class A;end
+
+A.new.instance_exec('hello') do |y|
+  puts y
+end
+# hello
