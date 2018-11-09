@@ -1,3 +1,9 @@
+# rspec 项目下(所有测试)
+# rspec 路径(单个测试)
+# ps：
+# 1、本地运行rspec命令,是不需要requrie 'rspec'；
+# 2、这里require 目的是让ruby xx/rspec.rb 可用
+
 # describle 类
 # context   内容快
 # it        测试细节
