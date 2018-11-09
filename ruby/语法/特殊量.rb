@@ -1,3 +1,4 @@
+#===================================================================================#
 # ARGV 
 # 1、命令行传入参数
 # 2、数组
@@ -6,7 +7,7 @@
 puts ARGV.inspect     # ["ab", "cd"]  
 
 
-
+#===================================================================================#
 # gets
 # 运行中获取参数
 # (PS: 用gets不能传命令行参数)
@@ -14,6 +15,7 @@ temp_arg = gets.chomp
 puts temp_arg
 
 
+#===================================================================================#
 # ENV
 # 1、存环境信息
 # 2、hash
@@ -23,5 +25,39 @@ ENV['hubar'] = 'kkop'
 puts ENV['hubar']    # kkop
 
 
+#===================================================================================#
+# $LOAD_PATH
+# 1、require gem时提供搜索路径
+# 2、成功require xx_gem 后,该gem的lib文件夹路径会被加入 $LOAD_PATH
+# 3、数组
+
+puts $LOAD_PATH.inspect
+# [
+#     [0] "/Users/dmy/.rvm/gems/ruby-2.3.3@global/gems/did_you_mean-1.0.0/lib",
+#     [1] "/Users/dmy/.rvm/gems/ruby-2.3.3/gems/awesome_print-1.8.0/lib",
+#     [2] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0",
+#     [3] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0/x86_64-darwin16",
+#     [4] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby",
+#     [5] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby/2.3.0",
+#     [6] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby/2.3.0/x86_64-darwin16",
+#     [7] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby",
+#     [8] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/2.3.0",
+#     [9] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/2.3.0/x86_64-darwin16"
+# ]
+require 'rake'
+puts $LOAD_PATH.inspect
+#[
+#    [ 0] "/Users/dmy/.rvm/gems/ruby-2.3.3@global/gems/did_you_mean-1.0.0/lib",
+#    [ 1] "/Users/dmy/.rvm/gems/ruby-2.3.3/gems/awesome_print-1.8.0/lib",
+#    [ 2] "/Users/dmy/.rvm/gems/ruby-2.3.3/gems/rake-12.3.1/lib",
+#    [ 3] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0",
+#    [ 4] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0/x86_64-darwin16",
+#    [ 5] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby",
+#    [ 6] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby/2.3.0",
+#    [ 7] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby/2.3.0/x86_64-darwin16",
+#    [ 8] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/vendor_ruby",
+#    [ 9] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/2.3.0",
+#    [10] "/Users/dmy/.rvm/rubies/ruby-2.3.3/lib/ruby/2.3.0/x86_64-darwin16"
+#]
 
 
