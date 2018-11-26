@@ -6,3 +6,4 @@
 * bcrypt         账号认证
 * pdfkit         转html 成 pdf
 * fastimage      通过链接计算图片类型、尺寸等
+* timecop        测试中冻结时间
