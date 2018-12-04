@@ -4,6 +4,7 @@
 
 ```
 ruby -v                         # 当前ruby 版本
+rvm list                        # 列出当前环境下，所有安装的ruby版本
 rvm 2.3.3                       # 切换到ruby 2.3.3版本
 rvm install 2.5.1               # 安装ruby 2.5.1版本
 rvm remove 2.3.3                # 卸载ruby 2.3.3版本，包括其下的gem
