@@ -38,4 +38,18 @@ $("#first input[name=radio1]")   |id为first里 name属性等于 radio1的 input
 $("input[type=checkbox]")        |type 属性等于 checkbox的 input标签         |
 $("input[type=checkbox]:checked")|type 属性 checkbox 且选中                 |
 
+#### 4.批量选择器
+样式               | 说明                   |其它|
+------------------|------------------------|----|
+$('[id*="default-config"')    | id 中包含default-config|
+
+
+
+
+
+
+
+
+
+
 
