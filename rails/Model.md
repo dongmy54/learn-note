@@ -7,3 +7,9 @@
 - 'Model.column_names'  等价于  `Model.attribute_names` 展示model字段列表
 - 'object.as_json' 等价于 'object.serializeble_hash' 对象转json格式序列
 - 'Model.pluck(:attribute)' 只能用于Modle 或 where 关系
+
+##### update VS update_all
+1. user.update(yy) 单个 返回 true/false
+2. User.where(name: 'xx').update(yy) 关系 返回对象数组，不管成功与否
+3. update 验证 回调都会触发
+4. update_all 验证回调都不会触发
