@@ -100,6 +100,11 @@ puts str.split(' ').inspect
 puts str.split(' ',2).inspect
 # ["ab", "cd ef k cddo"]
 
+# 同时多个分隔符
+str2 = "sa,sda，sawe.sda"
+puts str2.split(/[,，.]/).inspect
+# ["sa", "sda", "sawe", "sda"]
+
 
 #===================================================================================#
 # []多种用法

@@ -1,4 +1,4 @@
-#### Model 相关
+#### 相关method
 
 ##### decrement VS decrement!
 1. decrement 不会将数据立马更新到数据库, decrement! 会将数据立马更新到数据库
