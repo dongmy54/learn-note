@@ -10,7 +10,7 @@ class xxController < ApplicationController
   private
     def show_error_flash(exception)          # 默认异常参数
       flash[:warning] = exception.messages
-      redirect_to xx_path                    # 可render/redirect_to
+      redirect_to xx_path                    # 必须有render/redirect_to,捕获异常后 action将不再执行
     end
 end
 

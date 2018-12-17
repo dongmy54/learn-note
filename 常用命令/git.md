@@ -26,6 +26,8 @@ git reflog       查看过去所有git操作
 
 git push origin xx-branch --force  (在本地分支commit回退，落后于远端分支时仍可推)
 
+git stash        将改变暂时存在git剪贴板（ps:确保修改全部处于 git add .状态)
+git stash pop    恢复之前的临时存储
 
 git checkout -b xx-branch                  在当前分支的基础上创建分支
 git checkout -b xx-branch develop          在develop分支上创建分支
