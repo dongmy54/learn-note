@@ -32,3 +32,11 @@ f.select :game_type_id, GameType.all.map{|gt| [gt.name, gt.id]}, {}, class: 'fro
 
 # 让类/其它 选项起作用
 ```
+
+##### form_for 中查看对象属性
+`f.object.name`
+
+
+
+
+

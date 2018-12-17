@@ -14,5 +14,8 @@
 3. update 验证 回调都会触发
 4. update_all 验证回调都不会触发
 
-##### order 对具体某表排序
-usage: `GameType.includes(:game_sublevels).order('game_sublevels.name')`
+##### order 
+对具体某表排序
+- usage: `GameType.includes(:game_sublevels).order('game_sublevels.name')`
+按优先级别对多个字段排序
+- `GameType.all.order(:name).order(:id)` 名字优先,然后id
