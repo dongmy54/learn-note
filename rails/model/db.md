@@ -9,3 +9,16 @@ add_column :game_sublevels, :bets, :integer, array: true, default: []
 # 存方式
 # GameSublevel.create(bets: [12,34,455])
 ```
+
+##### 整型 与 大整型
+```ruby
+add_column :video_records, :bet, :integer, limit: 8, comment: '押注'
+
+# limit 8 biginit
+# limit 4 init
+```
+
+##### 改变已有数据类型
+```ruby
+change_column :game_sublevels, :bets, :integer, limit: 8, array: true, comment: '分级赌注列表'
+```
