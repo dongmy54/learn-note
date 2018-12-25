@@ -1,4 +1,5 @@
-#### db
+#### migrate
+- 迁移中可编写,修复数据，运行迁移顺带修复了数据
 ##### 存数组类型
 ```ruby
 add_column :game_sublevels, :bets, :integer, array: true, default: []
@@ -21,4 +22,9 @@ add_column :video_records, :bet, :integer, limit: 8, comment: '押注'
 ##### 改变已有数据类型
 ```ruby
 change_column :game_sublevels, :bets, :integer, limit: 8, array: true, comment: '分级赌注列表'
+```
+
+##### 删除列
+```ruby
+remove_column :game_sublevels, :min_bet
 ```
