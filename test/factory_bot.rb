@@ -22,18 +22,22 @@ FactoryBot.define do
     thumbnail {VideoRecord.thumbnail_url(guid)}
     association :game_sublevel
     association :user
-    bet {200}
+    bet {200}              # {} 代表惰性加载；相反 bet 200
     win {10}
   end
 end
 
+
 # 简单创建
 create(:video_record)
 
+
 # 已有属性可覆盖
 create(:video_record, win: 200)
+build(:video_record, bet_level: 'op')   # 在factory中,没有列出的属性也可赋值
 
-# 重复利用 另一已有属性
+
+# 属性依赖
 FactoryBot.define do
   factory :video_record do
     date {3.day.ago}
@@ -43,6 +47,7 @@ FactoryBot.define do
   end
 end
 
+
 # 序列化属性
 FactoryBot.define do
   factory :video_record do
@@ -51,6 +56,9 @@ FactoryBot.define do
     end
   end
 end
+
+sequence(:guid) {|i| "1001#{i}"}  # 一行写法 带括号
+
 
 # 关联
 FactoryBot.define do
