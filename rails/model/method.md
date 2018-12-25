@@ -19,3 +19,23 @@
 - usage: `GameType.includes(:game_sublevels).order('game_sublevels.name')`
 按优先级别对多个字段排序
 - `GameType.all.order(:name).order(:id)` 名字优先,然后id
+
+##### deletate
+```ruby
+class User < ActiveRecord::Base
+  has_many :posts
+
+  def title
+    "bud-#{title}"
+  end
+end
+
+class Post < ActiveRecord::Base
+  belongs_to :user
+
+  delegate :title, to: :user # to 委托于另外关联对象
+                             # 直接将 user 中方法引入到 post 中
+end
+
+Post.first.title             # 可这样用
+```

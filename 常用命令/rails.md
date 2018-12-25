@@ -5,6 +5,7 @@ RAILS_ENV=staging bundle exec rails c                                    服务�
 rails g controller api::v5::notifications --no-assets --no-view-specs    跳过view 和 assets
 rails g helper hu_bar                                                    创建页面helper文件
 rails db                                                                 进rails 数据库
+rails test                                                               运行rails 测试
 
 
 
