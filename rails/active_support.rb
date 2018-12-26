@@ -1,18 +1,5 @@
-#### 全部加载
-require 'active_support/all'
-
-#### 核心加载
 require 'active_support'
 require 'active_support/core_ext'
-
-#### 类加载
-require 'active_support'
-require 'active_support/core_ext/object'
-
-#### 文件加载
-require 'active_support'
-require 'active_support/core_ext/object/blank.rb'
-
 
 # 数组中 不包含
 %w(sda sdaf sdaf).exclude?('qw') 
