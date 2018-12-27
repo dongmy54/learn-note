@@ -74,8 +74,12 @@ git commit --amend                 修改上一次commit信息 会打开编辑�
 git reset --hard HEAD^              回滚到上一个commit
 git reset --hard 哈希id(7位/所有位)  回到某个commit时间点
 
-git rebase -i HEAD~2               合并最近两个commit为一个（会打开编辑器，最后一行用fixup替换pick 下面有命令说明）
-
+git rebase -i HEAD~3               合并最近三个commit为一个（会打开编辑器，s-保留commit信息,f-不要commit信息）
+                                   PS: 1、合并几个commit对应几行
+                                       2、除第一行外,其它行命令全部改成s(保留commit信息)
+                                       3、wq保存
+                                       4、修改commit 信息，
+                                       5、wq离开
 
 ==========================================不常用=========================================
 
