@@ -8,3 +8,5 @@
 * fastimage      通过链接计算图片类型、尺寸等
 * timecop        测试中冻结时间
 * font-awesome-rails  用于向rails 提供图表样式
+* kaminari            分页
+* kramdown            markdown支持
