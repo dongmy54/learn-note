@@ -20,6 +20,7 @@
 按优先级别对多个字段排序
 - `GameType.all.order(:name).order(:id)` 名字优先,然后id
 
+
 ##### deletate
 ```ruby
 class User < ActiveRecord::Base
@@ -39,3 +40,18 @@ end
 
 Post.first.title             # 可这样用
 ```
+
+##### find_by_sql 方法
+- 1. 数据会被实例化
+- 2. 可用占位符（用数组写法）
+```ruby
+sql =<<-SQL
+  select * from game_types where name = ?
+SQL
+
+GameType.find_by_sql([sql, "classic"])
+```
+
+
+
+
