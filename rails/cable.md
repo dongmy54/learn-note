@@ -95,6 +95,8 @@ $(document).on 'turbolinks:load', ->
   submit_message()
 ```
 
+##### 逻辑流程
+> broadcast(action中) -> redis -> 频道 -> xx.coffee(app/assets/javascripts/channels/xx.coffee) 
 
 
 
