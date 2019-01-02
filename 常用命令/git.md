@@ -36,7 +36,7 @@ git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
 git checkout -   切换到上一个分支
 
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
-
+git branch -m new_branch_name                     修改本地分支名
 
 ==========================================远端=========================================
 
