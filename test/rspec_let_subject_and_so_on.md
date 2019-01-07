@@ -30,3 +30,43 @@ end
 # =======同一示例随机字符串1e8e0bc067efb645a4f4b6b9cb885ff82
 #   示例三
 ```
+
+#### each VS all
+>1、all中的数据会持续存入数据库中（当运行多个文件时，会干扰）;each则不会
+>2、在it 内和外是不同的，内-数据同步；外-数据会有延迟
+>ps: a. 在测试时，尽量避免直接使用`User.count`这种方式（很脆弱）
+>ps: b. 在同时执行多个测试文件时,it外的部分是在所有测试具体it 之前运行的,所以有延迟（异步）
+>ps: c. 可用`after(:all)`清除这些干扰数据
+```ruby
+# 外
+require 'rails_helper'
+
+RSpec.describe BetItem, type: :model do
+  # 
+  before(:all) do
+    @user1 = create(:user, :normal_user)
+  end
+  
+  it 'sd' do
+    @user1
+  end
+
+  puts User.count  # 外，执行在所有示例之前（更新before中内容，有延迟）
+end
+```
+```ruby
+# 内
+require 'rails_helper'
+
+RSpec.describe BetItem, type: :model do
+  # 
+  before(:all) do
+    @user1 = create(:user, :normal_user)
+  end
+
+  it 'sd' do
+    puts User.count     # 内 和before同步
+  end
+
+end
+```
