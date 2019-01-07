@@ -151,8 +151,17 @@ scroll_bottom = () ->
   $("#messages").scrollTop(scroll_height)
 ```
 
-##### 逻辑流程
-> broadcast(action中) -> redis -> 频道 -> xx.coffee(app/assets/javascripts/channels/xx.coffee) 
+##### 整个流程
+> 1. 客户端：通过`app/assets/javascripts/cable.js`连到服务器
+> 2. 客户端：通过`app/assets/javascripts/channels/room.coffee`订阅频道
+> 3. 服务端：`app/channels/room_channel.rb`中`subscribed`方法被触发回调，为客户端创建特定流
+> 4. 客户端：`app/assets/javascripts/channels/room.coffee`中`connect`方法被触发回调,完成连接过程
+>ps: a.客户端和服务端都可相互调用对方的方法；
+>    b.客户端通过`@perform('服务端xx_method', hu: 'sd', bar: 'sd')`方法调用服务端方法
+>    c.服务端通过 `broadcast`,去回调客户端 `received`部分
+
+
+
 
 
 
