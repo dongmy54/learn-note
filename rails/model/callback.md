@@ -18,3 +18,7 @@ end
 ```
 ##### after_initialize
 >PS: 特别注意，不仅仅是只有new对象时，才会调用；更新数据也会调用
+
+##### after_create
+> 避免每次都做回调操作,仅在创建时执行,用 `after_save`
+
