@@ -70,7 +70,7 @@ describe Person do
 
     # xit 临时跳过
     it "出生年份方法" do
-      expect(@person.birth_year).to eq(2012)
+      expect(@person.birth_year).to eq(2013)
     end
   end
 
@@ -83,7 +83,7 @@ describe Person do
       expect('adaddf').to       match(/^a.*/)
       expect(true).to           be true
       expect { raise 'sda' }.to raise_error(RuntimeError)
-      expect([1,3,5]).to        contain_exactly(1,3,5)      # 精准匹配 PS: 里面不是数组
+      expect([1,3,5]).to        contain_exactly(1,3,5)      # 精准匹配 PS: 里面不是数组，且里面元素和顺序无关
       expect([1,3,5]).to        match_array([1,3,5])        # 数组匹配
     end
   end
