@@ -16,6 +16,7 @@ rails test                                                               运行r
 
 rake db:reset               去掉数据库 + 新建数据库 + 执行迁移 + 运行(rake db:seed)
 rake db:seed                运行种子数据
+rake db:rollback            迁移回退一步          
 
 
 bundle exec sidekiq                                   启动sidekiq服务 (根据 config/sidekiq.yml)
