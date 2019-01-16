@@ -15,6 +15,7 @@ A.new.test('a','b')
 #### 帮助
 - `help`  (pry环境下) 
 - `command -help` 单个命令帮助（如：ls -help)
+- 输入/输出在`_in_`/`_out_`中,它们可做数组,比如：`_in_[0]`
 
 #### 常用命令
 > 流程
@@ -50,18 +51,35 @@ A.new.test('a','b')
 - `cd User.first` 切实例
 
 >退出
+- `!`         输入终止
 - `exit`
 - `finish`
-- `!!!` 等价于 `exit-all` 暴力退出
+- `!!!`       等价于 `exit-all` 暴力退出
 
 >深层调用切换
 - `up 2` 向上切两层(用于一个方法，调用另一个方法，另一个方法又调用另外的方法)
 - `down 2` 向下调两层（一般`step`步进到深入层)
 
 >编辑
+- `edit`                                      在输入方法时,进入编辑模式
 - `edit spec/models/bet_event_spec.rb`        编辑文件（ctrl + x、Y、enter)
 - `edit spec/models/bet_event_spec.rb:10`     编辑文件指定行数
 
+>返回值
+- `_` 上一次返回值
+
+>综合
+- `show-input`                    在输入方法中途,查看输入了哪些部分
+- `amend-line puts 'dddd'`        默认修改上一行代码
+- `amend-line 2 puts 'dddd'`      修改第二行代码(输入方法时)  
+- `amend-line 2..3 puts 'dddd'`   修改第二..三行为
+- `amend-line 2 !`                清除第二行
+
+>输入历史
+- `history`                所有历史记录
+- `hist -tail 2`           最后两行历史
+- `hist -n -tail 2`        最后两行输入（去掉行号）
+- `hist --replay 1..10`    1..10行的返回值
 
 
 
