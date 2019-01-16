@@ -84,7 +84,13 @@ describe Person do
       expect(true).to           be true
       expect { raise 'sda' }.to raise_error(RuntimeError)
       expect([1,3,5]).to        contain_exactly(1,3,5)      # 精准匹配 PS: 里面不是数组，且里面元素和顺序无关
-      expect([1,3,5]).to        match_array([1,3,5])        # 数组匹配
+      expect([1,3,5]).to        match_array([3,1,5])        # 数组匹配 仍然无序
+      expect([1,3,5]).to        include(3)                  # 包含某元素
+
+      # 测试 ActionCable
+      # expect {
+      #   post '/api/v5/redemptions', params: {code: user1.refers_code}
+      # }.to have_broadcasted_to("redeem_code_channel_#{user1.id}")
     end
   end
 
