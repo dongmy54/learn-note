@@ -58,6 +58,10 @@ SQL
 GameType.find_by_sql([sql, "classic"])
 ```
 
-
+##### exists? 可与 where搭配使用
+> PS: exists?为复数
+```ruby
+User.first.used_codes.where(tag: 'fb').exists?
+```
 
 
