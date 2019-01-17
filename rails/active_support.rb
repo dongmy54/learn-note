@@ -22,3 +22,27 @@ require 'active_support/core_ext'
 h = {'a' => 'aww', 'b' => 'qww'}
 puts h.symbolize_keys
 # {:a=>"aww", :b=>"qww"}
+
+#deep_dup(避免修改副本元素，引起原值改变)
+# 比如
+a = %w(hu)
+b = a.clone
+
+b << 'bar'                   # 这个时候 a 仍不受影响
+b.first.gsub!('hu', 'kkk')   # a值改变了
+
+a  # => ["kkk"]
+b  # => ["kkk", "bar"]
+
+c = %w(hu)
+d = c.deep_dup
+
+d << 'bar'
+d.first.gsub!('hu', 'kkk')    # 改变元素 c 不受影响
+
+c # => ["hu"]
+d # => ["kkk", "bar"]
+
+
+
+

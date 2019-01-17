@@ -74,6 +74,9 @@ class MessagesController < ApplicationController
       message.mentions.each do |user|
         ActionCable.server.broadcast "room_channel_user_#{user.id}",
                                       mention: true
+
+        # 还可以播出非 hash 格式
+        # ActionCable.server.broadcast "notification", [event_hash] 这里是数组
       end
 
     end

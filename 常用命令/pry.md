@@ -5,12 +5,13 @@ require 'pry'
 
 class A
   def test(a,b)
-    binding.pry    # 设置测试点
+    binding.pry    # 设置测试点 
     puts a,b
   end
 end
 
 A.new.test('a','b')
+# 还可以在 对象上调用 如：2.pry
 ```
 #### 帮助
 - `help`  (pry环境下) 
@@ -74,6 +75,7 @@ A.new.test('a','b')
 - `amend-line 2 puts 'dddd'`      修改第二行代码(输入方法时)  
 - `amend-line 2..3 puts 'dddd'`   修改第二..三行为
 - `amend-line 2 !`                清除第二行
+- `whereami 10`                   显示唤醒位置（binding.pry)前后10行代码
 
 >输入历史
 - `history`                所有历史记录
