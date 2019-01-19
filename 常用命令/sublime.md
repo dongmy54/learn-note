@@ -6,6 +6,7 @@
 - command + 下方向 页尾
 - command + [ 左缩进
 - command + ] 右缩紧
+- command + T 快速文件查找
 
 - 命令可到 tools/gists 下查看
 - command + ki 新建公开gist
