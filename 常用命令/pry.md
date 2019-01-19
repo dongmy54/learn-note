@@ -37,9 +37,11 @@ A.new.test('a','b')
 - `ls -m --grep current` 过滤出某方法
 
 > 查看代码
-- `show-source`                  切到某类下,展示类文件
-- `show-source BetEvent`         展示某个类源码
-- `show-source current_event`    切到某类上，展示方法源码
+- `show-source`                  什么都不接-回到唤醒（binding.pry)处
+- `show-source current_event`    方法名-当前作用域此方法
+- `show-source obj.xx_method`    obj.xx_method-显示该对象调用的方法
+- `show-source BetEvent`         类名-显示类源码
+- `show-source @bet_event`       实例-显示该实例对应类源码
 
 > 查找方法
 - `find-method current_event`              如果不在某个作用域中，最好不要这样查，很费时间
