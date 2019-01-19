@@ -10,3 +10,4 @@
 * font-awesome-rails  用于向rails 提供图表样式
 * kaminari            分页
 * kramdown            markdown支持
+* pickup              根据概率和来选择元素
