@@ -64,4 +64,18 @@ GameType.find_by_sql([sql, "classic"])
 User.first.used_codes.where(tag: 'fb').exists?
 ```
 
+##### first_or_create
+> 1、没有记录则，创建一条
+> 2、拥有 `first_or_create!` 方法
+```ruby
+User.where(nickname: 'zhangsan').first_or_create                   # 与where搭配
+PromotionItem.bronze.where(user_id: 1).first_or_create             # 与 enum（bronze为促销条目状态）搭配
+PromotionItem.bronze.where(user_id: 2).first_or_create(times: 2)   # 外部还可接参数
+```
+
+
+
+
+
+
 
