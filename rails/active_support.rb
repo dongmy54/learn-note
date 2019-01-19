@@ -43,6 +43,10 @@ d.first.gsub!('hu', 'kkk')    # 改变元素 c 不受影响
 c # => ["hu"]
 d # => ["kkk", "bar"]
 
+# with_indifferent_access 字符串、符号都可以访问到
+h = {a: '12', b: '34'}.with_indifferent_access
+h[:a]
+h['a']
 
 
 
