@@ -24,4 +24,9 @@ bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队�
 
 
 sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
+
+ctrl + a rails c模式回行首
+ctrl + e rails c模式回行尾
+
+rails c -sb rails 沙盒模式
 ```
