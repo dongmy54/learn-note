@@ -4,6 +4,8 @@ rails new test                                                           创建r
 rails g scaffold article title:string content:string                     脚手架（测试新功能不错）
 
 rails c                                                                  进入控制台
+rails c -sb                                                              沙盒模式
+rails c -e test                                                          测试环境控制台
 RAILS_ENV=staging bundle exec rails c                                    进控制台（带环境）
 reload!                                                                  控制台重新加载
 rails g controller api::v5::notifications --no-assets --no-view-specs    跳过view 和 assets
@@ -25,8 +27,26 @@ bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队�
 
 sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
 
+
+
+#======================================= 控制台下 =================================#
 ctrl + a rails c模式回行首
 ctrl + e rails c模式回行尾
 
-rails c -sb rails 沙盒模式
+User.first
+user = _          把上一个输出赋值给当前user
+
+app.get '/redeem_code'                                                                  get  请求
+app.post '/api/v5/bonus_machine/enter', params: {device_id: 'device_dd'}                post 请求
+app.put '/api/v5/bonus_machine/spin', params: {name: 'bronze', device_id: 'device_dd'}  put  请求 
+
+app.session[:user_id]         查看session id
 ```
+
+
+
+
+
+
+
+
