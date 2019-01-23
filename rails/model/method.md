@@ -77,5 +77,3 @@ PromotionItem.bronze.where(user_id: 2).first_or_create(times: 2)   # 外部还�
 
 
 
-
-
