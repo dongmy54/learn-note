@@ -12,6 +12,7 @@ end
 
 A.new.test('a','b')
 # 还可以在 对象上调用 如：2.pry
+# binding.pry => 会停留在,还未执行的行
 ```
 #### 帮助
 - `help`  (pry环境下) 
@@ -26,7 +27,7 @@ A.new.test('a','b')
 - `exit`       退出
 
 >断点
-- `break 4`   第四行加断点,运行过程中加   
+- `break 4`   第四行加断点,运行过程中加（配合 `continue`使用)
 
 > 检查
 - `ls`          列出所有信息(方法/常量/私有变量/实例变量...)
@@ -60,8 +61,11 @@ A.new.test('a','b')
 - `!!!`       等价于 `exit-all` 暴力退出
 
 >深层调用切换
+- `up`   上一层
+- `down` 下一层
 - `up 2` 向上切两层(用于一个方法，调用另一个方法，另一个方法又调用另外的方法)
 - `down 2` 向下调两层（一般`step`步进到深入层)
+
 
 >编辑
 - `edit`                                      在输入方法时,进入编辑模式
@@ -77,7 +81,7 @@ A.new.test('a','b')
 - `amend-line 2 puts 'dddd'`      修改第二行代码(输入方法时)  
 - `amend-line 2..3 puts 'dddd'`   修改第二..三行为
 - `amend-line 2 !`                清除第二行
-- `whereami 10`                   显示唤醒位置（binding.pry)前后10行代码
+- `whereami 10`                   实时查看位置
 
 >输入历史
 - `history`                所有历史记录
