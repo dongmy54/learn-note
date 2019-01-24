@@ -44,6 +44,12 @@ A.new.test('a','b')
 - `show-source BetEvent`         类名-显示类源码
 - `show-source @bet_event`       实例-显示该实例对应类源码
 
+> 查看文档
+> PS: 1、文档中要有说明存在,才能找到
+> PS: 2、ruby 内部方法需安装 `pry-doc`
+- `show-doc Hash.from_xml` 查看类方法
+- `show-doc Hash#deep_dup` 查看实例方法
+
 > 查找方法
 - `find-method current_event`              如果不在某个作用域中，最好不要这样查，很费时间
 - `find-method current_event BetEvent`     在BetEvent中找 current_event 方法
