@@ -88,6 +88,7 @@ A.new.test('a','b')
 - `amend-line 2..3 puts 'dddd'`   修改第二..三行为
 - `amend-line 2 !`                清除第二行
 - `whereami 10`                   实时查看位置
+- `cat --ex`                      打印异常（附带指定行）
 
 >输入历史
 - `history`                所有历史记录
@@ -95,8 +96,10 @@ A.new.test('a','b')
 - `hist -n -tail 2`        最后两行输入（去掉行号）
 - `hist --replay 1..10`    1..10行的返回值
 
-
-
+> shell相关
+> PS: 所有shell命令在这里都需要加上`.`
+- `gem-cd redis`     切入redis这个gem目录
+- `.ls`              列出当前目录文件
 
 
 
