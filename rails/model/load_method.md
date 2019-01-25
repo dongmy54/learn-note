@@ -27,15 +27,19 @@ u[0].addresses
 # User.includes(:addresses).where('addresses.country = ?', 'Poland').references(:addresses)
 ```
 
-#### 其中一个满足条件的所有
-> 先找出地址中含有'Poland' 的 user id
-> 再 includes addesses
+#### joins
+> 1、内部层级是model 关联关系
+> 2、以那个model做关联,默认以那个model数据做返回
 ```ruby
-user_ids = User.joins(:addresses).where('addresses.country = ?', 'Poland').ids.uniq
+# sum 只能放最后
+IapPurchase.joins(user: :used_codes).where('redeem_codes.id = ?', RedeemCode.find(10).sum(:price)
 
-users = User.where(id: user_ids).includes(:addresses)
+# 等价
+IapPurchase.joins(user: {redeemptions: :redeem_code}).where('redeem_codes.id = ?', RedeemCode.find(10)).sum(:price)
+
+# 先找出符合条件user 再includes其所有iap_purchases
+ User.joins(:iap_purchases).where('iap_purchases.price > ?', 12).includes(:iap_purchases)
 ```
-
 
 
 
