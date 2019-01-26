@@ -49,4 +49,43 @@ h[:a]
 h['a']
 
 
+#=========================================== 查看 ==========================================#
+# instance_values 查看内部变量
+class A
+  def initialize(x,y)
+    @x, @y = x,y
+  end
+end
+
+a = A.new(1,2)
+a.instance_values # => {"x"=>1, "y"=>2}
+
+
+# Module
+# parent          父模块 
+# parents_name    父模块(字符串)
+# parents         所有父模块(数组)
+module M
+  module N
+    module A
+    end
+  end
+end
+
+M::N::A.parent           # => M::N
+M::N::A.parent_name      # => "M::N"
+M::N::A.parents          # => [M::N, M, Object]
+
+
+# class
+# subclasses     子类
+# descendants    后裔类
+class C;end
+class B < C;end
+class A < B;end
+class D < C;end
+
+C.subclasses            # => [B, D]
+C.descendants           # => [B, A, D]
+
 
