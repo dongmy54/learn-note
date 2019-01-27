@@ -1,22 +1,6 @@
 require 'active_support'
 require 'active_support/core_ext'
 
-# 数组中 不包含
-%w(sda sdaf sdaf).exclude?('qw') 
-# => true
-
-# 字符串中 不包含
-"sdaf".exclude?('sd')
-# => false
-
-# 字符串转常量
-'Module'.constantize
-# Module 常量
-
-#驼峰命令
-'active_record'.camelize
-# => "ActiveRecord"
-
 # symbolize_keys 将 字符串键 转 符号
 # 有 symbolize_keys 方法
 h = {'a' => 'aww', 'b' => 'qww'}
@@ -87,5 +71,44 @@ class D < C;end
 
 C.subclasses            # => [B, D]
 C.descendants           # => [B, A, D]
+
+
+#=========================================== 字符串 ==========================================#
+# 数组中 不包含
+%w(sda sdaf sdaf).exclude?('qw') 
+# => true
+
+# 字符串中 不包含
+"sdaf".exclude?('sd')        # => false
+
+# 字符串转常量
+'Module'.constantize         # Module 常量
+
+# 驼峰命令
+'active_record'.camelize
+# => "ActiveRecord"
+
+# first 前面x个字符串
+"hello world".first(3)       # => "hel"
+
+# last 后多x个字符串
+'hello world'.last(3)        # => "rld"
+
+# from index--末尾
+'hello world'.from(3)        # => "lo world"
+
+# 首字母大写
+"alice in wonderland".titleize  # => "Alice In Wonderland"
+
+# truncate 截取词
+str = '那是一个青春少女拥有爱时的喜悦，对对方的肯定，和父母的交心，
+对未来美好的展望，以及担心父母反对的羞涩。你或许忘了吧，
+你有过那样开心、可爱、羞涩、坚定而又矛盾的复杂心情。'.gsub(/\s+/, '')
+
+str.truncate(15)               # => "那是一个青春少女拥有爱时..."
+
+
+
+
 
 
