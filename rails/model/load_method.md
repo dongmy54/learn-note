@@ -1,11 +1,38 @@
 #### 总述
 - `preload` 无论何时都是单db（无join)查询
 - `eager_load` 首先left join,其次左边会去重
-- `includes` 建立在前两者之上（rails 动态决定）,PS: join时需指明引用（references)
+- `includes` 建立在前两者之上（rails 动态决定
+
+#### includes
+1. 可以解决 n + 1 查询
+2. 但,当用其它表字段做条件查询时，select失效
+3. 前面查询结果，会对后面关联产生影响
+```ruby
+GameType.includes(:game_sublevels).where(game_sublevels: {active: true})                                     # where中关联查询 不用加 references
+GameType.includes(:game_sublevels).references(:game_sublevels).where('game_sublevels.active = ?', true)      # where中字符串查询加 references
+
+
+GameType.select(:name).includes(:game_sublevels)          # select 有效
+#GameType Load (0.6ms)  SELECT "game_types"."name" FROM "game_types"
+GameType.select(:name).includes(:game_sublevels).where(game_sublevels: {active: true})         # select 无效（返回所有字段）
+#SELECT "game_types"."name", "game_types"."id" AS t0_r0, "game_types"."name" AS t0_r1, "game_types"."created_at" AS t0_r2, "game_types"."updated_at" AS t0_r3, "game_types"."is_room" AS t0_r4, "game_types"."scene" AS t0_r5, "game_types"."bundle" AS t0_r6, "game_types"."min_bet_level" AS t0_r7, "game_types"."metadata" AS t0_r8, "game_types"."bet_type" AS t0_r9, "game_sublevels"."id" AS t1_r0, "game_sublevels"."created_at" AS t1_r1, "game_sublevels"."updated_at" AS t1_r2, "game_sublevels"."game_type_id" AS t1_r3, "game_sublevels"."active" AS t1_r4, "game_sublevels"."bets" AS t1_r5, "game_sublevels"."level" AS t1_r6, "game_sublevels"."title" AS t1_r7 FROM "game_types" LEFT OUTER JOIN "game_sublevels" ON "game_sublevels"."game_type_id" = "game_types"."id" WHERE "game_sublevels"."active" = $1  [["active", true]]
+
+
+GameType.includes(:game_sublevels).references(:game_sublevels).where('game_sublevels.active = ?', true).each do |gt|
+  gt.game_sublevels       # 这里按照关联返回的game_sublevels active 都是 true
+end
+```
 
 #### eager_load
-> 1、where 条件筛选的是（右边所有满足的条件）
-> 2、虽然与`includes` 加 references 等价, 但`eager_load` 更简洁点
+1. 能解决 n + 1 查询
+2. select 无效
+3. where 条件筛选的是（右边所有满足的条件）
+4. 与`includes` 加 references等价
+```ruby
+ GameType.select(:name).eager_load(:game_sublevels)     # 返回所有字段
+ # SELECT "game_types"."name", "game_types"."id" AS t0_r0, "game_types"."name" AS t0_r1, "game_types"."created_at" AS t0_r2, "game_types"."updated_at" AS t0_r3, "game_types"."is_room" AS t0_r4, "game_types"."scene" AS t0_r5, "game_types"."bundle" AS t0_r6, "game_types"."min_bet_level" AS t0_r7, "game_types"."metadata" AS t0_r8, "game_types"."bet_type" AS t0_r9, "game_sublevels"."id" AS t1_r0, "game_sublevels"."created_at" AS t1_r1, "game_sublevels"."updated_at" AS t1_r2, "game_sublevels"."game_type_id" AS t1_r3, "game_sublevels"."active" AS t1_r4, "game_sublevels"."bets" AS t1_r5, "game_sublevels"."level" AS t1_r6, "game_sublevels"."title" AS t1_r7 FROM "game_types" LEFT OUTER JOIN "game_sublevels" ON "game_sublevels"."game_type_id" = "game_types"."id"
+```
+
 ```ruby
 u = User.eager_load(:addresses).where('addresses.country = ?', 'Poland')
 #SQL (0.2ms)  SELECT  DISTINCT "users"."id" FROM "users" LEFT OUTER JOIN "addresses" ON "addresses"."user_id" = "users"."id" WHERE (addresses.country = 'Poland') LIMIT ?  [["LIMIT", 11]]
@@ -28,8 +55,10 @@ u[0].addresses
 ```
 
 #### joins
-> 1、内部层级是model 关联关系
-> 2、以那个model做关联,默认以那个model数据做返回
+1. 内部层级是model 关联关系
+2. 以那个model做关联,默认以那个model数据
+3. select 有效
+4. 不能避免n + 1 查询，可用它取出其它表中有用字段
 ```ruby
 # sum 只能放最后
 IapPurchase.joins(user: :used_codes).where('redeem_codes.id = ?', RedeemCode.find(10).sum(:price)
