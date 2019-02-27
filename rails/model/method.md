@@ -73,6 +73,16 @@ PromotionItem.bronze.where(user_id: 1).first_or_create             # 与 enum（
 PromotionItem.bronze.where(user_id: 2).first_or_create(times: 2)   # 外部还可接参数
 ```
 
+##### xxfield_changed?
+> 某某字段改变了？
+```ruby
+u = User.first
+u.age_changed?
+# => false
+u.age = 12
+u.age_changed?
+# => true
+```
 
 
 
