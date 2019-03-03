@@ -84,6 +84,34 @@ u.age_changed?
 # => true
 ```
 
+##### attributes 
+> 1. 查看对象所有字段值
+> 2. 相比于 `as_json`更完整
+```ruby
+a = Article.first
+
+a.attributes
+
+# => {"id"=>1,
+#  "title"=>"测试800",
+#  "quote"=>"9999",
+#  "content"=>"<p>99999</p>",
+#  "published"=>true,
+#  "position"=>0.0,
+#  "cover"=>nil,
+#  "user_id"=>1,
+#  "created_at"=>Mon, 20 Feb 2017 13:06:05 CST +08:00,
+#  "updated_at"=>Mon, 20 Feb 2017 13:06:05 CST +08:00,
+#  "ptype"=>0,
+#  "plan_project_id"=>nil,
+#  "status"=>nil,
+#  "nopass_reason"=>nil,
+#  "land_haus_code"=>nil,
+#  "file_names"=>nil,
+#  "cgxs"=>nil,
+#  "yx_article_remake"=>nil}
+```
+
 
 
 
