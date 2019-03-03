@@ -27,7 +27,7 @@ bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队�
 
 sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
 
-
+rake secret  创建密匙
 
 #======================================= 控制台下 =================================#
 ctrl + a rails c模式回行首
