@@ -1,4 +1,5 @@
 ## git 命令汇集
+>流程：文件未追踪 -> 文件被追踪 -> 文件进暂存区（git add.) -> 文件进版本库/分支（git commit)
 - 冲突： 只有同时修改同一文件 同一位置时会产生
 - 合并时打开编辑器： 会出现在A 分支上切 B分支后，A分支又做了修改，当要把B分支改动内容合并A时会出现。
 
@@ -8,6 +9,8 @@ git init              git初始化（会在当前目录产生.git文件 ）
 rm -rf .git           移除所有git 数据
 
 git add 文件/.        1、追踪文件 2、将文件添加进暂存区
+
+git reset 文件1 文件二 仅将文件从暂存区中撤离出来
 
 git commit  -m "xx"   将文件提交到版本库
 git commit -am  "xx"  等同于 git add + git commit -m 一步到位(PS：新文件不受影响)
