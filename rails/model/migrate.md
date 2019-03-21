@@ -29,9 +29,14 @@ change_column :game_sublevels, :bets, :integer, limit: 8, array: true, comment: 
 remove_column :game_sublevels, :min_bet
 ```
 
-##### 改表明
+##### 改表名
 ```ruby
 rename_table :bet_records, :bet_choices   # 旧表名 新表名
 # 修改后表中数据,会迁移到新表中
+```
+
+##### 改列名
+```ruby
+rename_column :table, :old_column, :new_column
 ```
 
