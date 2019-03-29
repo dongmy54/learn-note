@@ -11,3 +11,4 @@
 * kaminari            分页
 * kramdown            markdown支持
 * pickup              根据概率和来选择元素
+* spreadsheet    导入导出电子表格
