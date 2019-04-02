@@ -12,3 +12,5 @@
 * kramdown            markdown支持
 * pickup              根据概率和来选择元素
 * spreadsheet    导入导出电子表格
+* ransack        搜索
+* useragent      user-agent解析(设备、系统、浏览器等)
