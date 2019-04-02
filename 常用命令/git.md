@@ -10,6 +10,7 @@ rm -rf .git           移除所有git 数据
 
 git add 文件/.        1、追踪文件 2、将文件添加进暂存区
 
+git reset 将git add .中所有文件退出来
 git reset 文件1 文件二 仅将文件从暂存区中撤离出来
 
 git commit  -m "xx"   将文件提交到版本库
