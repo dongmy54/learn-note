@@ -3,7 +3,7 @@ require 'logger'
 
 #################### 初始化 ######################
 logger = Logger.new(STDOUT)
-# logger = Logger.new('foo.log') 将日志记录到文件
+# logger = Logger.new('foo.log') 将日志记录到文件(会在当前目录下创建文件)
 # logger = Logger.new('foo.log', 'daily') weekly monthly 日志按周期更新
 
 
