@@ -14,3 +14,5 @@
 * spreadsheet    导入导出电子表格
 * ransack        搜索
 * useragent      user-agent解析(设备、系统、浏览器等)
+* ancestry       将记录以树形结构方式组织
+
