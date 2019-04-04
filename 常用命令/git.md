@@ -28,8 +28,6 @@ git log --graph  查看提交日志 并 图形展示合并流程
 
 git reflog       查看过去所有git操作
 
-git push origin xx-branch --force  (在本地分支commit回退，落后于远端分支时仍可推)
-
 git stash        将改变暂时存在git剪贴板（ps:确保修改全部处于 git add .状态)
 git stash pop    恢复之前的临时存储
 
@@ -79,12 +77,16 @@ git reset --hard HEAD^              回滚到上一个commit
 git reset --hard 哈希id(7位/所有位)  回到某个commit时间点
 
 git rebase -i HEAD~3               合并最近三个commit为一个（会打开编辑器，s-保留commit信息,f-不要commit信息）
+                                   仅适用于本地commit
                                    PS: 1、合并几个commit对应几行
                                        2、除第一行外,其它行命令全部改成s(保留commit信息)
                                        3、wq保存
                                        4、修改commit 信息，
                                        5、wq离开
 
+git push origin xx-branch --force  (在本地分支commit回退，落后于远端分支时仍可推)
+                                    实用于已将错误内容推到github,本地回到前一个commit,强推
+                                    
 ==========================================不常用=========================================
 
 git remote add upstream  仓库地址    添加远端upstream（用于fork别人项目，同步源仓库情况）
