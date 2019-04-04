@@ -88,6 +88,10 @@ C.descendants           # => [B, A, D]
 'active_record'.camelize
 # => "ActiveRecord"
 
+# 驼峰转下划线
+'PublicBidNotice'.underscore
+# => "public_bid_notice"
+
 # first 前面x个字符串
 "hello world".first(3)       # => "hel"
 
