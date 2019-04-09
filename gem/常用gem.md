@@ -15,4 +15,5 @@
 * ransack        搜索
 * useragent      user-agent解析(设备、系统、浏览器等)
 * ancestry       将记录以树形结构方式组织
+* workflow       工作流（有限状态机）
 
