@@ -370,6 +370,15 @@ puts [2,4,6].inject(Hash.new(0)) {|h,e| h[e] +=2; h}
 # {2=>2, 4=>2, 6=>2}
 
 
+#===================================================================================#
+# group_by 按条件分组
+# 返回hash value是数组
+names = %w(Bob ZhangLong BoLi ZhangHan)
+puts names.group_by{|name| name[0]}.inspect
 
+# {
+#   "B"=>["Bob", "BoLi"], 
+#   "Z"=>["ZhangLong", "ZhangHan"]
+# }
 
 

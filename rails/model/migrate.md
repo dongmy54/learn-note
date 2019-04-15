@@ -40,3 +40,8 @@ rename_table :bet_records, :bet_choices   # 旧表名 新表名
 rename_column :table, :old_column, :new_column
 ```
 
+##### 唯一索引
+```ruby
+add_index :table_name, :column_name, unique: true
+add_index :table_name, [:column_name_a, :column_name_b], unique: true  # 多列同时索引
+```
