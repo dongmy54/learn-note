@@ -40,6 +40,9 @@ git checkout -   切换到上一个分支
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
 git branch -m new_branch_name                     修改本地分支名
 
+git cherry-pick 76b53de95710166d6f58951d26298e058fa734e6 挑选commit合并到当前分支
+                                                         ps:1. 合并完直接 git push
+                                                            2. 可多次使用，以便合并多个commit
 ==========================================远端=========================================
 
 git remote -v                                远端机信息
