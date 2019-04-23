@@ -10,6 +10,7 @@ RAILS_ENV=staging bundle exec rails c                                    进控�
 reload!                                                                  控制台重新加载
 rails g controller api::v5::notifications --no-assets --no-view-specs    跳过view 和 assets
 rails g model demand_opinion_notice --parent article                     继承model
+rails g model push_notice_log --no-test-framework                        不要测试
 rails g job test                                                         新增test job
 rails g channel Room                                                     创建Room通道
 rails g helper hu_bar                                                    创建页面helper文件
