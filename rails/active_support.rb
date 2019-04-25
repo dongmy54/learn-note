@@ -153,7 +153,20 @@ A.hu = 'sd'
 
 
 
+#=========================================== 查询字符串 ==========================================#
+# 解析查询字符串
+Rack::Utils.parse_nested_query("hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8")
+# {"hu"=>["2", "4", "8"]}
 
+# 数组
+[2,4,8].to_query('hu')
+# => "hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8"
+# {"hu"=>["2", "4", "8"]}
+
+# hash
+{name: 'zhanglong', age: 18}.to_query('user')
+# => "user%5Bage%5D=18&user%5Bname%5D=zhanglong"
+# {"user"=>{"age"=>"18", "name"=>"zhanglong"}}
 
 
 
