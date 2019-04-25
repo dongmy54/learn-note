@@ -52,6 +52,7 @@ git remote add origin github仓库网址/ssh地址   添加远端连接
 git remote remove origin                     删除远端连接
 
 git clone  克隆远端仓库ssh/网址 
+git clone address new_folder_name            克隆并命名文件夹名称
 1、默认分支为master 
 2、自动建立本地分支与远端上游upstream
 
