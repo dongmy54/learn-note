@@ -26,6 +26,20 @@ GameType.where(condition)
 按优先级别对多个字段排序
 - `GameType.all.order(:name).order(:id)` 名字优先,然后id
 
+##### group vs group_by
+- group_by是ruby方法
+- group 和 group_by得出都是hash
+- group_by接块
+```ruby
+# group 搭配 聚合方法
+TaskList.group(:task_type).count  # => {1=>11, 2=>13, 3=>53}
+
+# group_by 按什么分组（接块）,注意不能直接接model后（需先all)
+TaskList.all.group_by(&:task_type)
+# => {1=> [tasklist 实例数组],
+#     2=> [tasklist 实例数组],
+#     3=> [tasklist 实例数组]} 
+```
 
 ##### deletate
 ```ruby
