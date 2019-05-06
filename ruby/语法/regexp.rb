@@ -2,6 +2,7 @@
 #（abc) 圆括号 全匹配 abc 一连
 # [abc] 方括号 选择性匹配 a b c 中一个
 # [^ahu] 非ahu
+# (?!not-mathch) 不匹配某词组(这里：not-match）
 # a|b 竖线  a 或 b 中一个 通常这样用 （abc|huj)
 # \d 数字
 # \w 匹配 字母 数字 下划线（_)
