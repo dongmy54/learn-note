@@ -5,6 +5,14 @@
 2. `$(this).html();` 取html
 3. `$(this).text();` 取/存标签文本内容
 
+##### each 循环
+```js
+// 合同确认时间倒计时
+  $(".contract_confirm_expired_time").each(function(){
+    console.log(1);
+  });
+```
+
 ##### 下拉框值改变
 ```html
 <p>Car:
