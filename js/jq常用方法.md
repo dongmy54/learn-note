@@ -4,7 +4,7 @@
 1. `$(this).val();` 取值
 2. `$(this).html();` 取html
 3. `$(this).text();` 取/存标签文本内容
-
+4. `$("#property_submit").parent().parent()[0].id;` 获取id值
 ##### each 循环
 ```js
 // 合同确认时间倒计时
