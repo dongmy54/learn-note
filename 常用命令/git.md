@@ -83,7 +83,7 @@ git reset --hard 哈希id(7位/所有位)  回到某个commit时间点
 git rebase -i HEAD~3               合并最近三个commit为一个（会打开编辑器，s-保留commit信息,f-不要commit信息）
                                    仅适用于本地commit
                                    PS: 1、合并几个commit对应几行
-                                       2、除第一行外,其它行命令全部改成s(保留commit信息)
+                                       2、除第一行外,其它行命令全部改成s(保留commit信息) 如果改成f则弃用（可省略第4步）
                                        3、wq保存
                                        4、修改commit 信息，
                                        5、wq离开
