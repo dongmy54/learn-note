@@ -31,6 +31,8 @@ sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
 
 rake secret  创建密匙
 
+rake assets:precompile 编译静态资源文件（css/js/图片等）
+
 #======================================= 控制台下 =================================#
 ctrl + a rails c模式回行首
 ctrl + e rails c模式回行尾
