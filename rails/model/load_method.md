@@ -55,8 +55,8 @@ u[0].addresses
 ```
 
 #### joins
-1. 内部层级是model 关联关系
-2. 以那个model做关联,默认以那个model数据
+1. 两种写法：a.直接接关联 `User.joins(:emall)` b. 接sql`User.joins('joins emalls on emalls.id = users.emall_id')`
+2. `User.joins(xx)`默认返回User相关的字段
 3. select 有效
 4. 不能避免n + 1 查询，可用它取出其它表中有用字段
 ```ruby
@@ -67,7 +67,7 @@ IapPurchase.joins(user: :used_codes).where('redeem_codes.id = ?', RedeemCode.fin
 IapPurchase.joins(user: {redeemptions: :redeem_code}).where('redeem_codes.id = ?', RedeemCode.find(10)).sum(:price)
 
 # 先找出符合条件user 再includes其所有iap_purchases
- User.joins(:iap_purchases).where('iap_purchases.price > ?', 12).includes(:iap_purchases)
+User.joins(:iap_purchases).where('iap_purchases.price > ?', 12).includes(:iap_purchases)
 ```
 
 
