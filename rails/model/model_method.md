@@ -19,3 +19,13 @@ class Article
 end
 ```
 
+#### assign_attributes 批量赋值
+```ruby
+user = User.new
+user.assign_attributes email: '23@qq.com', status: 1
+user.email     # "23@qq.com"
+user.status    # 1
+
+user.new_record?  # true
+```
+
