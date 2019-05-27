@@ -45,6 +45,9 @@ app.post '/api/v5/bonus_machine/enter', params: {device_id: 'device_dd'}        
 app.put '/api/v5/bonus_machine/spin', params: {name: 'bronze', device_id: 'device_dd'}  put  请求 
 
 app.session[:user_id]         查看session id
+
+include xxHelper        引入自定义helper模块
+helper.xx_method
 ```
 
 

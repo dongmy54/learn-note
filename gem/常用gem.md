@@ -17,5 +17,6 @@
 * ancestry       将记录以树形结构方式组织
 * workflow       工作流（有限状态机）
 * nested_form    管理多个模型嵌套表单
+* pundit         权限控制（个人感觉比cancancan好）
 
 
