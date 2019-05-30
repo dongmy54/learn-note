@@ -30,6 +30,7 @@ GameType.where(condition)
 - group_by是ruby方法
 - group 和 group_by得出都是hash
 - group_by接块
+
 ```ruby
 # group 搭配 聚合方法
 TaskList.group(:task_type).count  # => {1=>11, 2=>13, 3=>53}
@@ -64,6 +65,7 @@ Post.first.title             # 可这样用
 ##### find_by_sql 方法
 - 1. 数据会被实例化
 - 2. 可用占位符（用数组写法）
+
 ```ruby
 sql =<<-SQL
   select * from game_types where name = ?
@@ -74,6 +76,7 @@ GameType.find_by_sql([sql, "classic"])
 
 ##### exists? 可与 where搭配使用
 > PS: exists?为复数
+
 ```ruby
 User.first.used_codes.where(tag: 'fb').exists?
 ```
@@ -81,6 +84,7 @@ User.first.used_codes.where(tag: 'fb').exists?
 ##### first_or_create
 > 1、没有记录则，创建一条
 > 2、拥有 `first_or_create!` 方法
+
 ```ruby
 User.where(nickname: 'zhangsan').first_or_create                   # 与where搭配
 PromotionItem.bronze.where(user_id: 1).first_or_create             # 与 enum（bronze为促销条目状态）搭配
@@ -89,6 +93,7 @@ PromotionItem.bronze.where(user_id: 2).first_or_create(times: 2)   # 外部还�
 
 ##### xxfield_changed?
 > 某某字段改变了？
+
 ```ruby
 u = User.first
 u.age_changed?
@@ -101,6 +106,7 @@ u.age_changed?
 ##### attributes 
 > 1. 查看对象所有字段值
 > 2. 相比于 `as_json`更完整
+
 ```ruby
 a = Article.first
 
@@ -126,6 +132,21 @@ a.attributes
 #  "yx_article_remake"=>nil}
 ```
 
+##### unscoped
+> 移除此前所有,查询条件
 
+```ruby
+Project.where(name: 'hu').order(:created_at).select(:id).unscoped
+# sql
+# Project Load (31ms)  SELECT `zcl_bid`.`projects`.* FROM `zcl_bid`.`projects`
+```
 
+##### unscope
+> 比unscoped力度稍弱,只移除指定的
+
+```ruby
+Project.where(name: 'hu').order(:created_at).select(:id).unscope(:order, where: :name)
+# sql
+# Project Load (10.6ms)  SELECT `zcl_bid`.`projects`.`id` FROM `zcl_bid`.`projects` WHERE `zcl_bid`.`projects`.`is_deleted` = FALSE
+```
 
