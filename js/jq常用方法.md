@@ -5,6 +5,21 @@
 2. `$(this).html();` 取html
 3. `$(this).text();` 取/存标签文本内容
 4. `$("#property_submit").parent().parent()[0].id;` 获取id值
+
+##### 判断
+isEmpty 是否为空
+```js
+isEmpty("ds")
+// false
+isEmpty(" ")
+// true
+```
+##### 去除字符串首尾空格
+```js
+"   sdafs 我 是 adf dsfs  ".replace(/^\s*|\s*$/g,"");
+// "sdafs 我 是 adf dsfs"
+```
+
 ##### each 循环
 ```js
 // 合同确认时间倒计时
