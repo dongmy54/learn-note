@@ -4,6 +4,7 @@
 >3. `brew services start mysql` 启动mysql
 >4. `mysql -uroot` 用户名进控制台
 >5. `mysql -uroot -p1234` 用户名 密码进入控制台
+>6. `mysql --version`版本查看
 >PS: 启动后不要关闭(重新启动会报错)，进程默认在后台启动
 
 ### mysql 卸载
