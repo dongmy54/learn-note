@@ -10,4 +10,9 @@ rvm 2.3.3                       # 切换到ruby 2.3.3版本
 rvm install 2.5.1               # 安装ruby 2.5.1版本
 rvm remove 2.3.3                # 卸载ruby 2.3.3版本，包括其下的gem
 rvm --default 2.5.1             # 默认使用ruby 2.5.1版本
+
+rvm get stable  # 获取当前稳定rvm版本（有时不能成功安装某ruby版本,需升级rvm)
 ```
+
+
+
