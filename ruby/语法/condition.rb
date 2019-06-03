@@ -32,4 +32,15 @@ case
     puts 'other'
 end
 
+# 可用块
+case 2
+when ->(x) { x < 0}
+  puts 1
+when ->(x) { x < 6}
+  puts 2
+when ->(x) { x > 10 }
+  puts 3
+end
+
+# => 2
 
