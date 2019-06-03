@@ -45,3 +45,10 @@ rename_column :table, :old_column, :new_column
 add_index :table_name, :column_name, unique: true
 add_index :table_name, [:column_name_a, :column_name_b], unique: true  # 多列同时索引
 ```
+
+##### 改字符集
+```ruby
+def up
+  execute "ALTER TABLE `zcl_bid`.`package_bid_notes` CONVERT TO CHARACTER SET utf8;"
+end
+```
