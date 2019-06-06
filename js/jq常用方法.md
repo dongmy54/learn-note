@@ -7,6 +7,7 @@
 4. `$("#property_submit").parent().parent()[0].id;` 获取id值
 5. `$("#create_project").attr('action');` 取属性（`"/ancient/projects/91"`）
 6. `$("#create_project").prop('action');` 和上类似(`"http://localhost:3000/ancient/projects/91"`)
+7. `$('input[name="columns[]"]').attr('checked', true);` 选中
 
 ##### 判断
 ```js
@@ -16,9 +17,15 @@ isEmpty("ds")
 isEmpty(" ")
 // true
 
+typeof('sdf');
+// 'string'
+
 // 是否包含类
 $("#project_purchase_department_name").hasClass('hu');
 // false
+
+// 是否选中
+$('input[name=all_check_box').is(':checked');
 ```
 
 ##### 解析
@@ -40,6 +47,14 @@ $.parseJSON('{"json_class": "Department"}');
   $(".contract_confirm_expired_time").each(function(){
     console.log(1);
   });
+```
+
+##### 数据缓存
+```js
+$( "body" ).data( "foo", 52 );
+$( "body" ).data( "bar", { isManual: true } );
+$( "body" ).data( { baz: [ 1, 2, 3 ] } );
+$( "body" ).data(); // { foo: 52, bar: { isManual: true }, baz: [ 1, 2, 3 ] }
 ```
 
 ##### 下拉框值改变
