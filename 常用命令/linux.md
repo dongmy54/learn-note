@@ -72,10 +72,16 @@ ps                    列出与当前终端相关的进程
 ps x                  初略（数据列少）的列出所有进程
 ps aux                详细（数据列多）的列出所有进程
 ps aux |grep sidekiq  从所有进程中过滤出 sidekiq相关进程
+ps aux | less         太长分页查看
 
 kill 1024             杀死（终止）进程号为1024进程
 kill -stop 1024       停止1024号进程
 kill -cont 1024       继续1024号进程
+kill -9 1024          确认1024进程是否存在,若存在强制删除
+
+lsof -i               列出所有网络连接
+lsof -i :3000         列出端口3000占用情况
+lsof -i :3000 -t      端口3000所占用的进程id
 
 id                    用户id信息
 chmod 640 foo.text    更改文件权限
