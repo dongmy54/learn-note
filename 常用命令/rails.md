@@ -14,6 +14,7 @@ rails g model push_notice_log --no-test-framework                        不要�
 rails g job test                                                         新增test job
 rails g channel Room                                                     创建Room通道
 rails g helper hu_bar                                                    创建页面helper文件
+rails g helper ancient::brand_catalog_store                              创建嵌套helper
 rails db                                                                 进rails 数据库
 rails test                                                               运行rails 测试
 
