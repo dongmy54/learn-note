@@ -28,6 +28,13 @@ $("#project_purchase_department_name").hasClass('hu');
 $('input[name=all_check_box').is(':checked');
 ```
 
+#### 阻止默认行为
+```js
+$(".form_submit").click(function(e){
+  e.preventDefault();
+}
+```
+
 ##### 解析
 ```js
 // 解析
