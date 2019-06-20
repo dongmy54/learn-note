@@ -24,6 +24,12 @@ add_column :video_records, :bet, :integer, limit: 8, comment: '押注'
 change_column :game_sublevels, :bets, :integer, limit: 8, array: true, comment: '分级赌注列表'
 ```
 
+##### 去除唯一索引
+```ruby
+remove_index :brands, :name # 去掉name唯一索引
+add_index    :brands, :name #
+```
+
 ##### 删除列
 ```ruby
 remove_column :game_sublevels, :min_bet
