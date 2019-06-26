@@ -19,8 +19,9 @@ git commit -am  "xx"  等同于 git add + git commit -m 一步到位(PS：新文
 git status       当前分支状态
 git branch -a    当前本地 和 远端具有的所有分支 
 
-git diff         当前修改 与 暂存区间不同 也就是git add之前
-git diff HEAD    当前修改 与 最新commit（HEAD)不同 也就是git add之后
+git diff                                                 当前修改 与 暂存区间不同 也就是git add之前
+git diff HEAD                                            当前修改 与 最新commit（HEAD)不同 也就是git add之后
+git diff brand1 brand2 app/controllers/xx_controller.rb  显示不同分支中同一文件差异
 
 git log          查看提交日志
 git log -p       查看提交日志 并 展示修改信息 
@@ -36,6 +37,9 @@ git checkout -b xx-branch develop          在develop分支上创建分支
 git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
 
 git checkout -   切换到上一个分支
+
+git checkout test --        消除歧义（切换到test分支）
+git checkout -- test        消除歧义（恢复test文件内容到commit版本）
 
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
 git branch -m new_branch_name                     修改本地分支名
@@ -78,7 +82,7 @@ git checkout -b develop origin/develop 以远端develop来创建本地develop分
 git commit --amend                 修改上一次commit信息 会打开编辑器
 
 git reset --hard HEAD^              回滚到上一个commit
-git reset --hard 哈希id(7位/所有位)  回到某个commit时间点
+git reset --hard 哈希id(7位/所有位)   回到某个commit时间点
 
 git rebase -i HEAD~3               合并最近三个commit为一个（会打开编辑器，s-保留commit信息,f-不要commit信息）
                                    仅适用于本地commit
