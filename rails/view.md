@@ -6,7 +6,6 @@
 基本用法
 ```
 form_tag xx_url, method: :put do
-  ...
 ```
 好处
 1. 可以发送任意类型的请求（put/get/post..)
@@ -17,6 +16,8 @@ form_tag xx_url, method: :put do
 ```ruby
 # 一般用法
 select_tag :name, options_for_select(NameList, 'zhanghong')
+select_tag :state,options_for_select([['审核通过',1],['审核不通过',-1]]),{id: "audit_status"}
+# 加id
 
 # 1、数组列表可以为单维数组，如：[1,2,3]
 # 2、options_for_select 第二个参数为选项
