@@ -92,6 +92,50 @@
 </div>
 ```
 
+##### fixed
+> 固定定位（和绝对定位唯一区别在于：参照定位的是视口）
+
+```html
+<style type="text/css">
+  .absolute{
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
+    border: 5px solid black;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+
+  .fixed{
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
+    border: 5px solid black;
+    position: fixed;    /* 定位参照为视口 */
+    top: 20px;
+    left: 20px;
+  }
+
+  body{
+    height: 900px;
+    background: blue;
+  }
+</style>
+
+<body>
+  <div class="absolute">
+    绝对定位
+  </div>
+  
+  <div class="fixed">
+    固定定位
+  </div>
+</body>
+```
+
 ##### sticky
 > 1. 实现滚动吸附效果
 > 2. 定位依据（最近祖先定位元素，否则以视口）
