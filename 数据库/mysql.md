@@ -27,3 +27,23 @@ brew cleanup
 
 解决办法：
 `'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';`
+
+
+#### 常用命令
+>1. `mysql --version` 版本
+2. `mysql -u root`进默认localhost console
+3. `show databases;`所有databse
+4. `use database_name`使用xx数据库
+5. `show tables;`
+6. `show columns from tabale_name;`一个表有哪些列
+7. `\q`退出
+
+#### 导入数据
+> 第一种一步到位（前提：数据库已存在）
+> `mysql -h xx_host_name -u user_name -p database_name < sql_path/xx.sql`
+
+> 第二种
+>1. 进入console `mysql -h xx_host_name -u user_name -p`
+2. 创建database `create database database_name;`
+3. 使用database `use database_name;`
+4. 导入`source sql_path/xx.sql`
