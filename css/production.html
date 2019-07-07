@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS布局</title>
+    <style type="text/css">
+      *{
+        margin: 0;
+        padding: 0;
+      }
+
+      .header,.footer{
+        height: 80px;
+        width: 100%;
+        background: #07cbc9;
+      }
+
+      .footer{
+        text-align: center;
+        line-height: 80px;
+        font-size: 16px;
+        color: #fff;
+        font-weight: 300;
+      }
+
+      .logo{
+        float: left;
+      }
+
+      .nav-link{
+        float: right;
+      }
+
+      .nav-link-item{
+        float: left;
+        width: 120px;
+        line-height: 80px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .nav-link-item:hover{
+        color: yellow;
+        cursor: pointer;
+      }
+
+      .logo{
+        margin-top: 16px;
+        margin-left: 20px;
+      }
+
+      .banner img{
+        width: 100%;
+        height: 600px;
+      }
+
+      .layer{
+        width: 100%;
+        height: 600px;
+        background: black;
+        opacity: 0.5;
+        position: absolute;
+        top: 80px;
+      }
+      
+      .form{
+        position: absolute;
+        top: 248.5px;
+        z-index: 2;
+        width: 100%;
+      }
+
+      .form-detail{
+        width: 400px;
+        margin: 0 auto;
+      }
+
+      .field, .submit{
+        width: 250px;
+        margin: 0 auto;
+      }
+
+      .field{
+        margin-bottom: 20px;
+      }
+
+      .field input, .field textarea,.submit input{
+        background: transparent;
+        border: 1px solid #d2d4d6;
+      }
+
+      .field input, .field textarea {
+        width: 250px;
+      }
+
+      .field input:hover,.field textarea:hover{
+        border-color: #07cbc9;
+      }
+
+      .field input{
+        height: 30px;
+      }
+
+      .field textarea{
+        height: 50px;
+      }
+
+      .submit input{
+        height: 30px;
+        width: 100px;
+        color: #fff;
+        margin-left: 75px;
+      }
+
+      .submit input:hover{
+        background: #07cbc9;
+        border: none;
+      }
+
+      .about{
+        padding-top: 20px;
+        width: 100%;
+      }
+
+      .up{
+        margin-bottom: 30px;
+      }
+
+      .up .title{
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .up .text{
+        width: 600px;
+        font-size: 18px;
+        color: #898c8c;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .line{
+        width: 60px;
+        margin: 0 auto;
+        padding-top: 10px;
+        margin-bottom: 10px;
+        border-bottom: 3px solid #07cbc9;
+      }
+
+      .middle{
+        width: 80%;
+        margin: 0 auto;
+        overflow: hidden;
+        zoom: 1;
+      }
+
+      .m-left,.m-middle,.m-right{
+        float: left;
+      }
+
+      .m-left{
+        width: 25%;
+        height: 300px;
+      }
+
+      .m-middle{
+        width: 50%;
+      }
+
+      .m-right{
+        width: 25%;
+      }
+      
+      .m-left .title{
+        font-size: 40px;
+        font-weight: 400;
+        margin-bottom: 20px;
+      }
+
+      .m-left .text{
+        padding: 20px;
+        border: 1px solid #abafb0;
+        background: transparent;
+        position: relative; /* 让文字位于中间图片上 */
+        width: 300px;
+        background-color: rgba(237,241,247,.3); /* 背景透明 */
+      }
+
+      .m-left .btn{
+        height: 50px;
+        width: 100px;
+        margin-top: 20px;
+        padding: 0 10px;
+        line-height: 50px;
+        text-align: center;
+        background: #3b3b39;
+        font-size: 16px;
+        color: #fff;
+      }
+
+      .m-left .btn:hover{
+        border: 1px solid #3b3b39;
+        background: transparent;
+        color: #3b3b39;
+      }
+
+      .m-middle img{
+        width: 100%;
+      }
+
+      .stats-box{
+        width: 200px;
+        height: 150px;
+        border: 1px solid #07cbc9;
+        margin-bottom: 20px;
+        text-align: center;
+        margin-left: 20px;
+      }
+
+      .stats-box .title{
+        font-size: 32px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .stats-box .desc{
+        font-size: 25px;
+      }
+
+      .down{
+        margin-top: 60px;
+        overflow: hidden;
+        zoom: 1;
+      }
+
+      .down .item{
+        float: left;
+        width: 33.3%;
+        height: 390px;
+      }
+
+      .down .item img{
+        width: 100%;
+        height: 390px;
+      }
+
+      .down .item .container{
+        padding: 20px;
+        height: 370px;
+        background: #07cbc9;
+        color: #fff;
+      }
+
+      .down .item .container .title{
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .down .item .container .desc{
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .down .item .container .info{
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      .down .item .container .btn{
+        width: 100px;
+        height: 60px;
+        line-height: 60px;
+        margin: 0 auto;
+        text-align: center;
+        background: #3b3b39;
+      }
+
+      .down .item .container .btn:hover{
+        background: transparent;
+        border: 1px solid #3b3b39;
+        color: #3b3b39;
+      }
+
+      .gallery{
+        margin-top: 50px;
+      }
+
+      .gallery .text-content .title{
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .gallery .text-content .text{
+        width: 600px;
+        font-size: 18px;
+        color: #898c8c;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .pic{
+        margin-left: 10%;
+        margin-right: 10%;
+        overflow: hidden;
+        zoom: 1;
+      }
+
+      .pic .item{
+        width: 33.3%;
+        float: left;
+      }
+
+      .pic .item .container{
+        margin: 20px; 
+      }
+
+      .pic .item .container img{
+        width: 100%;
+      }
+
+      .pic .item .container .desc{
+        height: 60px;
+        background: #3b3b39;
+        color: #fff;
+        font-size: 20px;
+        line-height: 60px;
+        padding-left: 10px;
+        font-weight: bold;
+        margin-top: -5px; /* 弥补缝隙 */
+      }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="https://i.loli.net/2019/07/06/5d206ae00ddab35759.png">
+    </div>
+
+    <div class="nav-link">
+      <div class="nav-link-item">HOME</div>
+      <div class="nav-link-item">ABOUT</div>
+      <div class="nav-link-item">GALLERY</div>
+      <div class="nav-link-item">FACULTY</div>
+      <div class="nav-link-item">EVENTS</div>
+      <div class="nav-link-item">CONTACT</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <img src="https://i.loli.net/2019/07/06/5d206ee03faad72611.jpg">
+  </div>
+
+  <div class="form">
+    <form action="form_deal.php" method="post" class="form-detail">
+      <div class="field">
+        <input type="text" name="name" placeholder="your Name">
+      </div>
+      <div class="field">
+        <input type="text" name="phone" placeholder="your Phone">
+      </div>
+      <div class="field">
+        <input type="text" name="email" placeholder="your Email">
+      </div>
+
+      <div class="field">
+        <textarea name='comment' placeholder="Write Your Comment Here"></textarea>
+      </div>
+
+      <div class="submit">
+        <input type="submit" name="submit" value="SEND MESSAGE">
+      </div>
+    </form>
+  </div>
+
+  <!-- 遮罩 -->
+  <div class="layer">
+  </div>
+
+  <div class="about">
+    <div class="up">
+      <div class="title">ABOUT</div>
+      <div class="line"></div>
+      <div class="text">
+        lorem Ipsum simplye dummhy text of the printing and typesetting industry.Lorem Ipsum has been the
+        inudstry's standard dummy text ever since the 1500s.
+      </div>
+    </div>
+
+    <div class="middle">
+      <div class="m-left">
+        <div class="title">A WORD ABOUT US</div>
+        <div class="text">
+          Praesent dignissim viverra est. sed bibendum ligula congue non.Sed ac nislet felis
+          gravida commodo? Suspendisse eget ullamcorper ipsum. Suspendisse diam ament.
+
+          <div class="btn">
+            EXPLORE
+          </div>
+        </div>
+      </div>
+
+      <div class="m-middle">
+        <img src="https://i.loli.net/2019/07/06/5d20864e52ae143222.jpg">
+      </div>
+
+      <div class="m-right">
+        <div class="stats-box">
+          <div class="title">70000</div>
+          <div class="line"></div>
+          <div class="desc">Students</div>
+        </div>
+        <div class="stats-box">
+          <div class="title">600</div>
+          <div class="line"></div>
+          <div class="desc">Faculty</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="down">
+      <div class="item">
+        <img src="https://i.loli.net/2019/07/07/5d2157f3497ab68999.jpg">
+      </div>
+      <div class="item">
+        <div class="container">
+          <div class="title">Library</div>
+          <div class="desc">Lorem Ipsum is Simply dummy text of the printing and typesetting industry</div>
+          <div class="info">Lorem Ipsum has been industry's standard dummy text ever since the 1500s,when an 
+            unknown printer took a galley of type and screambled it to make a type specimen book.
+          </div>
+          <div class="btn">
+            EXPLORE
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://i.loli.net/2019/07/07/5d2160fb7375919404.jpg">
+      </div>
+      
+      <div class="item">
+        <div class="container">
+          <div class="title">Library</div>
+          <div class="desc">Lorem Ipsum is Simply dummy text of the printing and typesetting industry</div>
+          <div class="info">Lorem Ipsum has been industry's standard dummy text ever since the 1500s,when an 
+            unknown printer took a galley of type and screambled it to make a type specimen book.
+          </div>
+          <div class="btn">
+            EXPLORE
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://i.loli.net/2019/07/07/5d2157f34a6d547162.jpg">
+      </div>
+      <div class="item">
+        <div class="container">
+          <div class="title">Library</div>
+          <div class="desc">Lorem Ipsum is Simply dummy text of the printing and typesetting industry</div>
+          <div class="info">Lorem Ipsum has been industry's standard dummy text ever since the 1500s,when an 
+            unknown printer took a galley of type and screambled it to make a type specimen book.
+          </div>
+          <div class="btn">
+            EXPLORE
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery">
+    <div class="text-content">
+      <div class="title">GALLERY</div>
+      <div class="line"></div>
+      <p class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the
+        industry's standard dummy text ever since the 1500s.
+      </p>
+    </div>
+
+    <div class="pic">
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/0N8qTkD9/03-02.jpg">
+          <div class="desc">SCIENCELAB</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/Xqx2yWXk/03-03.jpg">
+          <div class="desc">INDOOR STADIUM</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/9QwpcZPp/03-05.jpg">
+          <div class="desc">TRANSOORTATIONM</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/0N8qTkD9/03-02.jpg">
+          <div class="desc">SCIENCELAB</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/Xqx2yWXk/03-03.jpg">
+          <div class="desc">INDOOR STADIUM</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="container">
+          <img src="https://i.postimg.cc/9QwpcZPp/03-05.jpg">
+          <div class="desc">TRANSOORTATIONM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy2016 imooc.com 京ICP备13046642
+  </div>
+
+</body>
+</html>
