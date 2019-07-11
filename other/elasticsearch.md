@@ -24,5 +24,18 @@ brew services start elasticsearch@2.3
 brew uninstall elasticsearch@2.3
 ```
 
-#### NoMethodError: undefined method `get_aliases' for #<Elasticsearch::API::Indices::IndicesClient:0x007ffaf84d7ee8
+#### NoMethodError: undefined method get_aliases' for #<Elasticsearch::API::Indices::IndicesClient:0x007ffaf84d7ee8
 > 解决办法：`gem 'elasticsearch', '6.2.0'` 高版本会有问题
+
+#### 相关操作
+```
+curl 'localhost:9200/_cat/indices?v'                    查有哪些索引
+curl -XDELETE 'localhost:9200/你的索引名?pretty'          删除某些索引
+
+Good.reindex                       对modle索引
+Good.first.reindex                 对单个实例索引
+Good.reindex(resume: true)         rails c打断的情况下，重新执行索引
+                                   PS: 对relation对象执行索引，会重新建新的索引（需要注意）
+
+```
+
