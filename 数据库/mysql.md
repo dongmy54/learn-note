@@ -38,7 +38,7 @@ brew cleanup
 >6. `show columns from tabale_name;`一个表有哪些列
 >7. `\q`退出
 
-#### 导入数据
+#### 导入
 > 第一种一步到位（前提：数据库已存在）
 > `mysql -h xx_host_name -u user_name -p database_name < sql_path/xx.sql`
 
@@ -48,5 +48,7 @@ brew cleanup
 >3. 使用database `use database_name;`
 >4. 导入`source sql_path/xx.sql`
 
-
+#### 导出
+> 1. `mysqldump -u root -h 1x1.23x.2x5.1x6 -p yixyyy users > hubar.txt` 导表
+> 2. `mysqldump -u root -h 1x1.23x.2x5.1x6 -p yixyyy > hubar.txt` 导库
 
