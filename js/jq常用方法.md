@@ -8,6 +8,7 @@
 5. `$("#create_project").attr('action');` 取属性（`"/ancient/projects/91"`）
 6. `$("#create_project").prop('action');` 和上类似(`"http://localhost:3000/ancient/projects/91"`)
 7. `$('input[name="columns[]"]').attr('checked', true);` 选中
+8. `$("#session_type").val('1')` select选项可选中值
 
 ##### 判断
 ```js
