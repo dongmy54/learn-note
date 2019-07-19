@@ -144,13 +144,19 @@ h.select {|k,_| h[k] > 3}
 
 
 #===================================================================================#
-# delete_if 删除 hash
-# 返回：未删除部分
+# delete_if VS reject!
+# 1. 等价
+# 2. 都返回剩余部分
 h = {:a => 1, :b => 6, :c => 12}
-puts h.delete_if {|_,v| v < 10}
-# {:c=>12}
-puts h
-# {:c=>12}
+return_h = h.delete_if{|_,v| v < 10}
+puts h.inspect                 # {:c => 12}
+puts return_h.inspect          # {:c => 12}
+
+h = {:a => 1, :b => 6, :c => 12}
+return_h = h.reject!{|_,v| v < 10}
+puts h.inspect                 # {:c => 12}
+puts return_h.inspect          # {:c => 12}
+
 
 
 #===================================================================================#
