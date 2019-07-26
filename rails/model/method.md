@@ -1,5 +1,9 @@
 #### 相关method
 
+##### assign_attributes
+> 赋值属性
+`self.assign_attributes(from_type: 1, status: 1, check_status: 1, change_to_status: 2)`
+
 ##### where
 - 可接数组
 ```ruby
