@@ -24,6 +24,7 @@ class Attachment < ActiveRecord::Base
   # 单个文件
   # file是attachment字段
   # file类型 string
+  # file 存的是文件名比如： java_base_supplier-e6c6a2671c908632853ec8456ea9f701-6b6a2684eb6890ffd557d42873612682.jpg
 end
 ```
 
