@@ -21,6 +21,7 @@ end
 # model
 class Attachment < ActiveRecord::Base
   mount_uploader :file, AttachmentUploader
+  # mount_uploader :file, AttachmentUploader, mount_on: :file_store_column_name # mount_on 可指定文件上传的指定列
   # 单个文件
   # file是attachment字段
   # file类型 string
@@ -42,7 +43,12 @@ a.file_url  # 文件相对地址
 # 可打开 http://localhost:3000/http://localhost:3000/ancient 
 a.file.current_path  # 文件绝对地址
 # => "/Users/dongmingyan/yg/guonengegou/public/uploads/images/attachment-e6c6a2671c908632853ec8456ea9f701-529f0043ff2f707f8ee4e370a12d7bdd.jpg"
-a.a.file_indentifier  # 文件路径去处路径剩下的文件名（服务器）
+a.a.file_identifier  # 文件路径去处路径剩下的文件名（服务器）
+# attachment-e6c6a2671c908632853ec8456ea9f701-529f0043ff2f707f8ee4e370a12d7bdd.jpg
+a.file.size
+# => 11689 文件大小 字节
+a.file.origin_name
+# => "e6c6a2671c908632853ec8456ea9f701.jpg" 原文件名
 
 f = File.open a.file.current_path  # 再次读取成文件
 a.remove_file!      # 删除文件
