@@ -49,12 +49,23 @@ $.parseJSON('{"json_class": "Department"}');
 // "sdafs 我 是 adf dsfs"
 ```
 
-##### each 循环
+##### 循环
 ```js
 // 合同确认时间倒计时
   $(".contract_confirm_expired_time").each(function(){
     console.log(1);
   });
+
+// each循环
+$.each([ 52, 97 ], function( index, value ) {
+  alert( index + ": " + value );
+});
+
+// forEach
+var data = [{'id': 1,'name': 'zs'},{'id': 2, 'name': 'hubar'}]
+data.forEach(function(element){
+  console.log(element.id + element.name);
+})
 ```
 
 ##### 数据缓存
