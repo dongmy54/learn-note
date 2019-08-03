@@ -19,5 +19,6 @@
 * nested_form    管理多个模型嵌套表单
 * pundit         权限控制（个人感觉比cancancan好）
 * rails-erd      将model关联关系以图形方式输出（pdf)
+* select2-rails  下拉列表多选
 
 

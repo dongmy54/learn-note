@@ -13,7 +13,7 @@
 #  ancestry: "13/14/17",
 #  ancestry_depth: 3>
 
-# ancestry          斜线分割每个节点id(从上到下)
+# ancestry          斜线分割每个节点id(从上到下) root节点 ancestry: nil
 # ancestry_depth    代表当前节点深度
 ```
 
