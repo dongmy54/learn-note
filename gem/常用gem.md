@@ -20,5 +20,5 @@
 * pundit         权限控制（个人感觉比cancancan好）
 * rails-erd      将model关联关系以图形方式输出（pdf)
 * select2-rails  下拉列表多选
-
+* active_model_serializers  接口中用来序列化json数据
 
