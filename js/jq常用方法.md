@@ -81,6 +81,19 @@ $( "body" ).data(); // { foo: 52, bar: { isManual: true }, baz: [ 1, 2, 3 ] }
 window.location.href = "/companies/new?category_ids=" + ids.join(',');
 ```
 
+##### 读取cookie
+```js
+document.cookie
+```
+
+#### localStorage
+> 本地存储
+```js
+localStorage.setItem("name","Amy")
+localStorage.name
+// 'Amy'
+```
+
 ##### 下拉框值改变
 ```html
 <p>Car:
