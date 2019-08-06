@@ -53,7 +53,7 @@ $.parseJSON('{"json_class": "Department"}');
 ```js
 // 合同确认时间倒计时
   $(".contract_confirm_expired_time").each(function(){
-    console.log(1);
+    console.log(1); // 里面用 $(this)获取当前元素
   });
 
 // each循环
@@ -74,6 +74,11 @@ $( "body" ).data( "foo", 52 );
 $( "body" ).data( "bar", { isManual: true } );
 $( "body" ).data( { baz: [ 1, 2, 3 ] } );
 $( "body" ).data(); // { foo: 52, bar: { isManual: true }, baz: [ 1, 2, 3 ] }
+```
+
+##### 重定向页面
+```js
+window.location.href = "/companies/new?category_ids=" + ids.join(',');
 ```
 
 ##### 下拉框值改变
