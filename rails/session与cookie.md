@@ -16,3 +16,14 @@ rails中session存储有以下几种方式：
 >4. memcached(集群)
 
 > 默认下，通过cookie 进行存储，最简单、也轻量；rails 会利用 config/secrets.yml 对 session 进行 加密和解密
+
+##### 设置过期时间
+```ruby
+# session 配置
+# app/config/initializers/session_store.rb
+Rails.application.config.session_store :active_record_store, key: '_zhu_hai', expire_after: 1.hour
+
+# cookie
+cookies[:token]   = {value: data['token'], expires: 1.hour.from_now} # 这里expires为时间实例 不能用1.hour
+```
+
