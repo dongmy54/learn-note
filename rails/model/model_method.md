@@ -29,3 +29,9 @@ user.status    # 1
 user.new_record?  # true
 ```
 
+#### alias_attribute
+> 属性名称别名
+```ruby
+alias_attribute :loginname, :login_name
+```
+
