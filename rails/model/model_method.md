@@ -35,3 +35,19 @@ user.new_record?  # true
 alias_attribute :loginname, :login_name
 ```
 
+#### reflect_on_association
+> 返回关联relation关系
+```ruby
+Article.reflect_on_association(:user)
+# => #<ActiveRecord::Reflection::BelongsToReflection:0x007fdee1fb56e0
+```
+
+#### klass
+> 关联关系后面返回类
+```ruby
+Article.reflect_on_association(:user).klass
+# => User
+```
+
+
+
