@@ -44,3 +44,13 @@ end
 
 # => 2
 
+# 匹配多个
+name = 'wangwu'
+
+case name
+when 'lisi'
+  puts 'lisi'
+when 'zhangsan','wangwu' # 匹配多个
+  puts 'zhangsan or wangwu'
+end
+
