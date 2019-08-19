@@ -43,6 +43,11 @@ $.parseJSON('{"json_class": "Department"}');
 // {json_class: "Department"}
 ```
 
+#### 触发改变
+```js
+$("#xj_department_id").change();
+```
+
 ##### 去除字符串首尾空格
 ```js
 "   sdafs 我 是 adf dsfs  ".replace(/^\s*|\s*$/g,"");
