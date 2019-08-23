@@ -4,6 +4,12 @@
 > 赋值属性
 `self.assign_attributes(from_type: 1, status: 1, check_status: 1, change_to_status: 2)`
 
+##### 全部更新
+```ruby
+# Modle.updata_all
+JavaBaseSupplier.update_all(status: 3)
+```
+
 ##### where
 - 可接数组
 ```ruby
