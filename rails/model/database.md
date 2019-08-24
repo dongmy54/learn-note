@@ -11,7 +11,7 @@ end
 
 # 方式二
 Thread.new do 
-  ActiveRecord::Base.with_connection do
+  ActiveRecord::Base.connection_pool.with_connection do
     User.first
   end
 end
