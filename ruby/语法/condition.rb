@@ -41,7 +41,6 @@ when ->(x) { x < 6}
 when ->(x) { x > 10 }
   puts 3
 end
-
 # => 2
 
 # 匹配多个
@@ -53,4 +52,26 @@ when 'lisi'
 when 'zhangsan','wangwu' # 匹配多个
   puts 'zhangsan or wangwu'
 end
+
+
+# 匹配块简写
+class Fixnum
+  # 比5大
+  def is_greated_than_five?
+    self > 5
+  end
+
+  # 普通数字
+  def common_num?
+    self != 5
+  end
+end
+
+case 6
+when proc(&:is_greated_than_five?)
+  puts 'greated 5'
+when proc(&:common_num?)
+  puts 'common num'
+end
+# greated 5
 
