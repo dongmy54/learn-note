@@ -1,0 +1,69 @@
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+<style type="text/css">
+  .left-content {
+    background: pink;
+    width: 150px;
+    height: 800px;
+    float: left;
+  }
+
+  .right-content{
+    /*background: yellow;*/
+    width: 100%;
+    height: 800px;
+  }
+</style>
+<div class="left-content">
+  <ul class="sidebar-nav">
+    <li class="sidebar-nav-link">
+      <a href="javascript:;" class="js-list active" go="https://mp.weixin.qq.com/" data-m="home">
+        <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+      </a>
+    </li>
+ 
+    <li class="sidebar-nav-link">
+      <a href="javascript:;" class="js-list" go="https://www.baidu.com/" data-m="tryout">
+        <i class="am-icon-ticket sidebar-nav-link-logo"></i> 试用
+      </a>
+    </li>
+ 
+    <li class="sidebar-nav-link">
+      <a href="javascript:;" class="js-list" go="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik" data-m="report">
+        <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 报告
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="right-content">
+  <iframe id="iframe_list"
+    title="Inline Frame Example"
+    width="600"
+    height="800"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik">
+  </iframe>
+</div>
+ 
+<script type="text/javascript">
+//动态绑定
+$('body').on('click','.js-list',function(){
+
+    var active_list = ['home','user','invite','tryout','report'];
+    var len = active_list.length;
+    var parameter = $(this).attr('data-m');
+ 
+    for(var i = 0;i < len;i++){
+      if(active_list[i] == parameter){
+        $('a[data-m="' + active_list[i] + '"]').addClass('active');
+      }else{
+        $('a[data-m="' + active_list[i] + '"]').removeClass('active');
+      }
+    }
+ 
+    //iframe局部刷新页面
+    var me = $(this).attr('go');
+    $('#iframe_list').attr('src',me);
+      //操作iframe中的元素
+    $('#iframe_list').contents().find('body').attr('class', 'theme-color');
+});
+</script>
