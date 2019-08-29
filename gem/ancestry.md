@@ -53,6 +53,7 @@ sub1.parent     # 父节点
 sub1.children   # 自己的子 
 sub112.root     # 根节点
 sub11.ancestors # 从自己往上所有人
+sub1.descendants # 所有子（直接/间接）
 
 # 类方法
 Permission.roots   # 返回所有根节点（ancestry 为nil)
