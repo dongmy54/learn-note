@@ -120,3 +120,12 @@ method_name
 # 捕获异常：#<RuntimeError: 写法测试>
 
 
+#===================================================================================#
+# ensure 放rescue之后
+begin
+  puts a
+rescue => e
+  puts '发送错误'
+ensure
+  puts 'hh'
+end
