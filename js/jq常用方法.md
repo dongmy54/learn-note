@@ -99,6 +99,11 @@ localStorage.name
 // 'Amy'
 ```
 
+#### jquery 父文档值
+```js
+$("#anchor", window.parent.document).val("xj_remark");
+```
+
 ##### 下拉框值改变
 ```html
 <p>Car:
