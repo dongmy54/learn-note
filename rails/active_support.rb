@@ -3,7 +3,7 @@ require 'active_support/core_ext'
 
 
 #=========================================== 查看 ==========================================#
-# instance_values 查看内部变量
+# instance_values 以实例变量名 - 值 hash方式输出
 class A
   def initialize(x,y)
     @x, @y = x,y
@@ -102,6 +102,12 @@ Time.now.utc                       # => 2019-01-28 03:43:37 UTC
 
 # to_date(日期)
 '2019-1-28 11:39:23'.to_date       # => Mon, 28 Jan 2019 
+
+# 一天的开始
+Time.now.beginning_of_day          # => 2019-09-06 00:00:00 +0800
+
+# 一天的结束
+Time.now.end_of_day                # => 2019-09-06 23:59:59 +0800
 
 # from_now(多久后)
 (1.days + 2.months + 3.years).from_now
