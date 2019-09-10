@@ -11,3 +11,10 @@ Rails.application.routes.recognize_path '/'
 helper.sanitize '<p>sdaf</p><script>sdaf</script>'
 # => "<p>sdaf</p>sdaf"
 ```
+#### strip_tags
+> 去除所有html标签
+
+```ruby
+helper.strip_tags("Strip <i>these</i> tags!")
+# => "Strip these tags!"
+```
