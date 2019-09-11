@@ -94,6 +94,23 @@ Time.current
 # utc(时间)
 Time.now.utc                       # => 2019-01-28 03:43:37 UTC
 
+
+#------------------------ 时间判断
+# past? 过去
+t1.past?   
+# => true
+# => true
+
+# future? 将来
+t2 = Time.now + 1.day
+t2.future?      # => true
+
+# today? 今天
+Time.new(2018,3,6).today?  # false
+Time.now.today?            # true
+
+
+#------------------------ 时间转换
 # to_time(自动转换时区)
 '2019-1-28 11:39:23'.to_time       # => 2019-01-28 11:39:23 +0800
 
@@ -103,11 +120,35 @@ Time.now.utc                       # => 2019-01-28 03:43:37 UTC
 # to_date(日期)
 '2019-1-28 11:39:23'.to_date       # => Mon, 28 Jan 2019 
 
-# 一天的开始
+
+#------------------------ 时间开始/结束
+# 小时开始
+Time.now.beginning_of_hour
+# => => 2019-09-11 18:00:00 +0800
+
+# 小时结束
+Time.now.end_of_hour
+# => 2019-09-11 18:59:59 +0800
+
+# 天的开始
 Time.now.beginning_of_day          # => 2019-09-06 00:00:00 +0800
 
-# 一天的结束
+# 天的结束
 Time.now.end_of_day                # => 2019-09-06 23:59:59 +0800
+
+# 月开始
+Time.now.beginning_of_month
+# => 2019-09-01 00:00:00 +0800
+
+# 月结束
+Time.now.end_of_month
+# => 2019-09-30 23:59:59 +0800
+
+
+#------------------------ 时间增减
+# 加上某个时间
+Time.now.advance(days: 1, hours: 1, seconds: 1, minutes: 10)
+# => 2019-09-12 19:55:26 +0800
 
 # from_now(多久后)
 (1.days + 2.months + 3.years).from_now
@@ -115,6 +156,30 @@ Time.now.end_of_day                # => 2019-09-06 23:59:59 +0800
 
 # ago(多久前)
 3.day.ago
+
+# change 改变时间
+Time.new(2018,3,4).change(year: 2019, month: 6,day: 4, hour: 14, min: 16, sec: 35)
+# => 2019-06-04 14:16:35 +0800
+
+
+#--------------- 时间范围
+# 整天
+Time.current.all_day
+# => Wed, 11 Sep 2019 00:00:00 CST +08:00..Wed, 11 Sep 2019 23:59:59 CST +08:00
+
+# 整月
+Time.current.all_month
+# => Sun, 01 Sep 2019 00:00:00 CST +08:00..Mon, 30 Sep 2019 23:59:59 CST +08:00
+
+# 整年
+Time.current.all_year
+# => Tue, 01 Jan 2019 00:00:00 CST +08:00..Tue, 31 Dec 2019 23:59:59 CST +08:00
+
+
+#--------------- 时间格式
+Time.now.to_formatted_s(:time) # => "18:50"
+Time.now.to_formatted_s(:db)   # => "2019-09-11 18:49:40"
+
 
 
 
