@@ -1,9 +1,11 @@
 #### 片段缓存
 >1. rails默认启用的缓存方式
 >2. 使用：将页面上，一段内容缓存（包含一些动态数据组合成的html)
+>3. 可以以单个对象做为缓存单位，也可是一组对象（这里的组对象通常是所属关系/在内部找寻数据集）
 
 ps: 开发环境测试缓存，`rake dev:cache`(会创建tmp/caching-dev.txt)
-```
+
+```ruby
 <% cache project do %>
    ...
 <% end %>
@@ -12,23 +14,30 @@ ps: 开发环境测试缓存，`rake dev:cache`(会创建tmp/caching-dev.txt)
 
 ##### 使用
 cache后 什么也不接
-```
+```ruby
 <% cache do %>
   <p> hello welcome cache </p>
 <% end %>
 ```
 
 cache后 接对象
-```
+```ruby
 <% cache project do %>
   <b>All the topics on this project</b>
   <%= render project.topics %>
 <% end %>
 
+# 缓存时间
+<% @products.each do |product| %>
+  <% cache(product, expires_in: 1.day) do %>
+    <p><%= project.name %></p>
+    # ...
+  <% end %>
+<% end %>
 ``` 
 
 cache后 接数组
-```
+```ruby
 <% cache [project, current_user] do %>
   <b>All the topics on this project</b>
   <%= render project.topics %>
