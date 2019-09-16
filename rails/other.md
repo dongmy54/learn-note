@@ -9,6 +9,8 @@
 
 ##### model中用helper
 `ActionController::Base.helpers.sanitize content, tags: []`
+`ApplicationController.helpers.get_jc_way(xj.cg.try(:bzj_type))`
+
 
 ##### model中用render
 `ApplicationController.new.render_to_string(partial: "/shared/template/zzyq_show", locals: {xj: self.xj}, :layout => false)`
