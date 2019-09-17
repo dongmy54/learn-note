@@ -18,13 +18,13 @@ class LoginLogsController
   def index
     # 传入参数 放入q中 比如：
     # {"utf8"=>"✓", "q"=>{"user_loginname_cont"=>"yx_admin", "operate_eq"=>"0", "created_at_gteq"=>"2019-04-11", "created_at_lteq"=>"2019-04-12"}}
-    @query      = LoginLog.ransck(params[:q])
+    @query      = LoginLog.ransack(params[:q])
     @login_logs = @query.result.incldues(:user) # result后才会执行sql
   end
 end
 ```
 ```html
-<%= from_for @query, url: login_logs_path do |f| %>
+<%= search_form_for @query, url: transaction_statis_ancient_reports_path, class: "well form-search"  do |f| %>
   <span>
     用户名：<%= f.text_field :user_loginname_cont %> <!-- 关联前为关联名 -->
   </span>
