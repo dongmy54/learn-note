@@ -214,10 +214,33 @@ Rack::Utils.parse_nested_query("hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8")
 
 
 #============================================== hash ==============================================#
-# symbolize_keys 符号化键
-h = {'a' => 'aww', 'b' => 'qww'}
-puts h.symbolize_keys
-# {:a=>"aww", :b=>"qww"}
+# compact 去除nil值 
+# 有 ！ 方法
+h = {a: 1, b: 2, c: nil}
+h.compact   # => {:a=>1, :b=>2}
+
+h.compact!
+h # => {:a=>1, :b=>2}
+
+
+# symbolize_key 键转符号
+# PS: !改值
+h = {'a' => 1, 'b' => 2}
+h.symbolize_keys
+h # => {"a"=>1, "b"=>2}
+
+h.symbolize_keys!
+h # => {:a=>1, :b=>2}
+
+
+# stringify_keys 键转字符串
+h = {1 => 3, a: :b}
+h.stringify_keys
+h # => {1=>3, :a=>:b}
+
+
+h.stringify_keys!
+h # => {"1"=>3, "a"=>:b}
 
 
 # deep_dup(避免修改副本元素，引起原值改变)
@@ -263,6 +286,16 @@ rest = h.extract!(:a, :b)
 # => {:a=>1, :b=>6}
 h
 # => {:c=>12}
+
+
+# to_xml 转xml
+# PS: 数组、对象等
+{foo: 1, bar: 2}.to_xml
+# <?xml version="1.0" encoding="UTF-8"?>
+# <hash>
+#   <foo type="integer">1</foo>
+#   <bar type="integer">2</bar>
+# </hash>
 
 
 # 类方法 from_xml xml 转hash
