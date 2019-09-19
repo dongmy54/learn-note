@@ -78,12 +78,23 @@ puts File.expand_path("../语法/arry.rb",__FILE__)
 
 
 #===================================== 目录下文件 =====================================#
-
 # [绝对路径] 获取 文件（绝对路径）
 puts Dir["/Users/dmy/learn-note/*"].inspect      # 所有文件
 # ["/Users/dmy/learn-note/js", "/Users/dmy/learn-note/html", ..., "/Users/dmy/learn-note/sql"]
 puts Dir["/Users/dmy/learn-note/*.md"].inspect   # 所有 md结尾文件
 # ["/Users/dmy/learn-note/README.md", "/Users/dmy/learn-note/markdown_guide.md"]
+Dir["/Users/dmy/learn/learn-note/ruby/{**/}"] # 下沉到ruby下-具体文件-目录层
+# => ["/Users/dongmingyan/learn/learn-note/ruby/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/算法/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/测试文件/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/元编程/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/脚本/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/语法/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v1/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v2/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/重构/",
+#  "/Users/dongmingyan/learn/learn-note/ruby/标准库/"] 
 
 
 # foreach  遍历  文件名
