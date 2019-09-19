@@ -7,4 +7,8 @@ app.gys_jj_bids_path
 # 得到controller 和 action
 Rails.application.routes.recognize_path app.gys_jj_bids_path
 # => {:controller=>"gys/jj_bids", :action=>"index"}
+
+# post方式
+Rails.application.routes.recognize_path app.ancient_audit_path, method: :post
+# => {:action=>"audit", :controller=>"ancient/fountain"}
 ```
