@@ -445,7 +445,58 @@ hash = Hash.from_xml(xml)
 
 
 
+#============================================== class ==============================================#
+# class_attribute 类属性
+# PS: 实例不可覆盖
+class A
+  class_attribute :a_class_attribute
 
+  self.a_class_attribute = {
+    default_value: "I'm default value"
+  }
+end
+
+A.a_class_attribute
+# => {:default_value=>"I'm default value"}
+a1 = A.new
+a2 = A.new
+
+a1.a_class_attribute
+# => {:default_value=>"I'm default value"}
+a2.a_class_attribute = 23
+a2.a_class_attribute
+# => 23
+a1.a_class_attribute    # 不受实例修改影响
+# => {:default_value=>"I'm default value"}
+
+A.a_class_attribute = 123
+a1.a_class_attribute    # 跟随类改动
+# => 123
+a2.a_class_attribute    # 一旦修改 不受类控制
+# => 23
+
+
+# cattr_accessor 类属性
+# PS: 类可覆盖
+class B
+  cattr_accessor :foo
+  self.foo = 'bar'     # 给一个默认值
+end
+
+B.foo
+# => 'bar'
+B.foo = 123
+B.foo
+# => 123
+
+b1 = B.new
+b1.foo    # 实例可以调用
+# => 123
+b1.foo = 234
+b1.foo
+# => 234
+B.foo    # 类实例受影响
+# => 234
 
 
 
