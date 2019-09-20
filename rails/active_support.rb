@@ -48,31 +48,40 @@ C.descendants           # => [B, A, D]
 %w(sda sdaf sdaf).exclude?('qw') 
 # => true
 
+
 # 字符串中 不包含
 "sdaf".exclude?('sd')        # => false
 
+
 # 字符串转常量
 'Module'.constantize         # Module 常量
+
 
 # 驼峰命令
 'active_record'.camelize
 # => "ActiveRecord"
 
+
 # 驼峰转下划线
 'PublicBidNotice'.underscore
 # => "public_bid_notice"
 
+
 # first 前面x个字符串
 "hello world".first(3)       # => "hel"
+
 
 # last 后多x个字符串
 'hello world'.last(3)        # => "rld"
 
+
 # from index--末尾
 'hello world'.from(3)        # => "lo world"
 
+
 # 首字母大写
 "alice in wonderland".titleize  # => "Alice In Wonderland"
+
 
 # truncate 截取词
 str = '那是一个青春少女拥有爱时的喜悦，对对方的肯定，和父母的交心，
@@ -80,6 +89,55 @@ str = '那是一个青春少女拥有爱时的喜悦，对对方的肯定，和�
 你有过那样开心、可爱、羞涩、坚定而又矛盾的复杂心情。'.gsub(/\s+/, '')
 
 str.truncate(15)               # => "那是一个青春少女拥有爱时..."
+
+
+# html_safe 安全字符串
+# PS: 页面上用 raw @product.name 
+str = "hu"
+str.html_safe? # 默认不安全
+# => false
+new_str = str.html_safe
+
+new_str.html_safe?
+# => true
+
+
+# remove 删除字符组
+str = "hello world hello dmy"
+str.remove(/hello/)
+# => " world  dmy"
+
+
+# strip_heredoc here文档顶格
+# PS:（相对位置不变）
+str =<<-USAGE.strip_heredoc
+  我在这儿啊
+    我和第一行相对关系不变的
+      注意看相对关系哦
+  啦啦啦
+USAGE
+
+puts str
+# 我在这儿啊
+#   我和第一行相对关系不变的
+#     注意看相对关系哦
+# 啦啦啦
+
+
+# indent 缩进
+"foo".indent(2)
+# => "  foo"
+
+str =<<-EOS.indent(2)
+def hu
+  do someting
+end
+EOS
+
+puts str
+#  def hu
+#    do someting
+#  end
 
 
 
