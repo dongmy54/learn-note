@@ -477,8 +477,10 @@ a2.a_class_attribute    # 一旦修改 不受类控制
 
 
 # cattr_accessor 类属性
-# PS: 类可覆盖
+# PS: 实例类可覆盖
+# PS: 相当于类变量
 class B
+  # 生成 @@foo
   cattr_accessor :foo
   self.foo = 'bar'     # 给一个默认值
 end
