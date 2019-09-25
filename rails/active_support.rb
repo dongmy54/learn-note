@@ -502,6 +502,34 @@ B.foo    # 类实例受影响
 
 
 
+#============================================== module ==============================================#
+# alias_attribute 属性别名
+class User < ActiveRecord::Base
+  alias_attribute :new_name, :loginname
+end
+
+
+# mattr_accessor 模块属性
+module A
+  mattr_accessor :hu
+end
+
+A.hu # => nil
+A.hu = 'bar'
+A.hu # => "bar"
+
+
+# attr_internal 库内部属性（防重名）
+class Libary
+  attr_internal :hu
+end
+
+class Bar < Libary
+  attr_accessor :hu
+end
+
+Bar.new.hu
+
 
 
 
