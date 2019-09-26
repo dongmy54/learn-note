@@ -259,6 +259,7 @@ A.hu = 'sd'
 Rack::Utils.parse_nested_query("hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8")
 # {"hu"=>["2", "4", "8"]}
 
+# to_query 构建各种查询字符串
 # 数组
 [2,4,8].to_query('hu')
 # => "hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8"
@@ -530,6 +531,20 @@ end
 
 Bar.new.hu
 
+
+
+#============================================== object ==============================================#
+# with_options 简化代码
+# 前面部分为 hash option
+class User
+  #has_many :addresses, :dependent => :destroy
+  #has_many :invoices, :dependent => :destroy
+
+  with_options  :dependent => :destroy do
+    has_many :addresses
+    has_many :invoices
+  end
+end
 
 
 
