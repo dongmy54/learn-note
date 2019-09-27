@@ -126,6 +126,8 @@ grep hu -Ir log                     I（忽略二进制文件）r（递归文件
 
 ls learn-not/ruby/语法 | grep rb    过滤出xx目录下 包含rb的文件名
 
+
+
 ============================== PS ===========================
 
 cd learn;ls;cd -                               # 用分号分隔，一次执行多个命令
@@ -137,4 +139,33 @@ ls b*                                          # 通配符 列出 b 开头文件
 ls blog/*/models                               # 列出 文件路径 符合 blog/任意/models 文件
 
 
+
+=============================== crontab ======================
+crontab -e    为当前用户添加定时任务
+crontab -l    列出当前定时任务
+crontab -r    删除所有定时任务
+
+任务写法
+分 时 天 月  周(0-6) Command_to_execute
+
+0 0 * * * pwd > /Users/dongmingyan/test.md          每天00:00分
+*/5 * * * * pwd > <command-to-execute>              每五分（PS: / 代表每多少）
+0,5,10 * * * * pwd > <command-to-execute>           每个小时中0、5、10分（PS：, 代表多个）
+0 0 * * 1-5 <command-to-execute>                    每个工作日00:00分
+15 16 1 * * <command-to-execute>                    每月1日16:15分
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
