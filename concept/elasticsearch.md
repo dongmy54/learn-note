@@ -39,5 +39,6 @@ Good.first.reindex                 对单个实例索引
 Good.reindex(resume: true)         rails c打断的情况下，重新执行索引
                                    PS: 对relation对象执行索引，会重新建新的索引（需要注意）
 
+rake searchkick:reindex CLASS=Product  rake 更新索引
 ```
 
