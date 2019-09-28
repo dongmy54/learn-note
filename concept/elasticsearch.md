@@ -20,6 +20,8 @@ brew cask install java
 brew search elasticsearch
 brew install elasticsearch@2.3
 brew services start elasticsearch@2.3
+brew services stop elasticsearch@5.6
+brew services restart elasticsearch@5.6
 
 brew uninstall elasticsearch@2.3
 ```
