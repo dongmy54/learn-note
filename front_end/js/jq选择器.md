@@ -44,6 +44,10 @@ $("input[type=checkbox]:checked")|type 属性 checkbox 且选中                
 ------------------|------------------------|----|
 $('[id*="default-config"')    | id 中包含default-config|
 
+#### 5.组合选择
+样式               | 说明                   |其它|
+------------------|------------------------|----|
+$(".query:button")| button中类是query|
 
 
 
