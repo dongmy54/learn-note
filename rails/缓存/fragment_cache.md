@@ -10,7 +10,7 @@ ps: 开发环境测试缓存，`rake dev:cache`(会创建tmp/caching-dev.txt)
    ...
 <% end %>
 ```
->3. 原理：缓存的片段会根据设定生成一个键,比如会生成 `views/projects/3-20141130131120000000000/366bcee2ae9bd3aa0738785aea6ec97d` 键,中间为 project id接着为updated_at时间戳,最后是页面摘要；只要project updated_at 或页面内容 改变都会使缓存失效；失效后将重新生成新的缓存条目，旧的键rails 会帮我们自动删除掉，所以也不用担心。
+>4. 原理：缓存的片段会根据设定生成一个键,比如会生成 `views/projects/3-20141130131120000000000/366bcee2ae9bd3aa0738785aea6ec97d` 键,中间为 project id接着为updated_at时间戳,最后是页面摘要；只要project updated_at 或页面内容 改变都会使缓存失效；失效后将重新生成新的缓存条目，旧的键rails 会帮我们自动删除掉，所以也不用担心。
 
 ##### 使用
 cache后 什么也不接
@@ -44,3 +44,16 @@ cache后 接数组
 <% end %>
 ```
 >缓存的更新策略，和cache后接的对象相关，当为数组时，也就表示和数组中多个元素相关。
+
+集合缓存
+```ruby
+render partial: 'products/product', collection: @products, cached: true
+```
+
+
+
+
+
+
+
+
