@@ -1,5 +1,6 @@
 # 链接：https://www.rubydoc.info/gems/workflow/2.0.0
 # 概述：在不同状态间切换, 去回调做不同操作
+# 通过事件切换状态 object.xx_event!
 
 require 'workflow'
 
