@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<HTML>
+ <HEAD>
+  <TITLE> ZTREE DEMO </TITLE>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link href="https://cdn.bootcss.com/zTree.v3/3.5.40/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdn.bootcss.com/zTree.v3/3.5.40/js/jquery.ztree.all.js"></script>
+  
+  <SCRIPT LANGUAGE="JavaScript">
+    // ztree中用到了jquery弃用方法 此恢复
+    jQuery.browser = {};
+    (function () {
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+    })();
+
+    //进行setting设置；
+    var setting = {
+      view: {
+      selectedMulti: true, //设置是否能够同时选中多个节点
+      showIcon: true, //设置是否显示节点图标
+      showLine: true, //设置是否显示节点与节点之间的连线
+      showTitle: true, //设置是否显示节点的title提示信息
+      },
+      data: {
+       simpleData: {
+       enable: true, //
+       idKey: "id", //设置启用简单数据格式时id对应的属性名称
+       pidKey: "pId" //设置启用简单数据格式时parentId对应的属性名称,ztree根据id及pid层级关系构建树结构
+      }}
+    };
+
+    //进行zNodes的设置，对它进行赋值，也可以从后台获取，为方便在这里采用直接赋值；
+    var zNodes = [
+      {
+        name: "父节点1", open: true, children: [
+          { name: "子节点1" }, { name: "子节点2" }] 
+      },
+      {
+        name: "父节点2", open: true, children: [
+          { name: "子节点1" }, { name: "子节点2" }]
+      }
+    ];
+
+    // 简单格式 需要启用配置
+    // var zNodes = [
+    //  {id:1, pId:0, name: "父节点1"},
+    //  {id:11, pId:1, name: "子节点1"},
+    //  {id:12, pId:1, name: "子节点2"}
+    // ]; 
+
+    //页面加载后，将zNodes数据放到setting设置的树结构中，显示在html中id=treeDemo的容器中。
+     $(document).ready(function () {
+         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+     });
+  </SCRIPT>
+ </HEAD>
+ 
+  <BODY>
+  <div>
+     <ul id="treeDemo" class="ztree"></ul>
+  </div>
+  </BODY>
+</HTML>
