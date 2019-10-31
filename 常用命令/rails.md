@@ -19,7 +19,7 @@ rails g helper ancient::brand_catalog_store                              创建�
 rails db                                                                 进rails 数据库
 rails test                                                               运行rails 测试
 
-
+rails s -b 10.7.5.2         绑定本地ip
 rake db:reset               去掉数据库 + 新建数据库 + 执行迁移 + 运行(rake db:seed)
 rake db:seed                运行种子数据
 rake db:rollback            迁移回退一步          
