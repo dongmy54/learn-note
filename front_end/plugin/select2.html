@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>select2测试</title>
+  <link href="https://cdn.bootcss.com/select2/3.1.0/select2.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdn.bootcss.com/select2/3.1.0/select2.js"></script>
+</head>
+<body>
+  <select class="js-example-basic-single" name="state" style="min-width: 300px;">
+    <option value="AL">Alabama</option>
+    <option value="WY">Wyoming</option>
+  </select>
+</body>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+  });
+</script>
+</html>
