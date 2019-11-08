@@ -17,6 +17,9 @@ system('ls')
 # => true
 
 
+file_path = "/Users/dongmingyan/短信.rb"  # 反斜杠
+`rm #{file_path}`
+
 
 
 
