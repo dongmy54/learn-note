@@ -95,6 +95,34 @@ Dir["/Users/dmy/learn/learn-note/ruby/{**/}"] # 下沉到ruby下-具体文件-�
 #  "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v2/",
 #  "/Users/dongmingyan/learn/learn-note/ruby/重构/",
 #  "/Users/dongmingyan/learn/learn-note/ruby/标准库/"] 
+Dir["/Users/dmy/learn/ruby/语法/**/*"]           # 所有目录下文件 层层递归（包含目录）
+["/Users/dongmingyan/learn/learn-note/ruby/语法/string.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/block.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/data_deal.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/array.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/惯用技巧.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/exit.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/temp.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/useag.rb",
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/circulate.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/hash.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/condition.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/file.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/regexp.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/特殊量.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/numerical.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/range.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/class-module.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v1", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v1/events.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v1/dsl.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v2", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v2/events.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/DSL专属语言/v2/dsl.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/object.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/system.rb", 
+ "/Users/dongmingyan/learn/learn-note/ruby/语法/exception.rb"]
 
 
 # foreach  遍历  文件名
