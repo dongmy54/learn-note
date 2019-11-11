@@ -63,4 +63,39 @@ puts a.tainted?  # => false
 
 
 
+#===================================================================================#
+# __method__ 当前方法名
+# PS: 私有方法
+def hu
+  puts __method__
+end
+
+hu
+# hu
+
+
+
+#===================================================================================#
+# caller 调用堆栈数组
+# 第一个参数：从多少层堆栈开始
+# PS: 私有方法
+def method_a
+  puts caller(0).inspect
+end
+
+def method_b
+  method_a
+end
+
+def method_c
+  method_b
+end
+
+method_c
+# [
+#  "t2.rb:11:in `method_a'", 
+#  "t2.rb:15:in `method_b'", 
+#  "t2.rb:19:in `method_c'", 
+#  "t2.rb:22:in `<main>'"
+#]
 
