@@ -86,10 +86,12 @@ $( "body" ).data( { baz: [ 1, 2, 3 ] } );
 $( "body" ).data(); // { foo: 52, bar: { isManual: true }, baz: [ 1, 2, 3 ] }
 ```
 
-##### 重定向页面
+##### 加载页面
 ```js
-window.location.href = "/companies/new?category_ids=" + ids.join(',');
+window.location.href = "/companies/new?category_ids=" + ids.join(','); //# 重定向
+location.reload(); // 刷线当前页面
 ```
+
 
 ##### 读取cookie
 ```js
