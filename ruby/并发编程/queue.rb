@@ -2,7 +2,7 @@ queue = Queue.new
 
 puts queue.size   # 0
 puts queue.empty? # true
-puts queue.pop    # 空队列会报错
+puts queue.pop    # 空队列会报错(PS: 线程中不会)
 # No live threads left. Deadlock? (fatal) 
 
 queue << 'first'
