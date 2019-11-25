@@ -16,4 +16,7 @@ Write fragment views/mall_info/e5e0c53ff74d316d816974d3991adc45 (1.2ms)
 Read fragment views/mall_info/e5e0c53ff74d316d816974d3991adc45 (0.2ms)
 ```
 
+##### 清理缓存
+> `Rails.cache.clean` 只对某些缓存起作用
+
 
