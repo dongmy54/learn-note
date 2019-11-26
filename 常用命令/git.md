@@ -44,9 +44,10 @@ git checkout -- test        消除歧义（恢复test文件内容到commit版本
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
 git branch -m new_branch_name                     修改本地分支名
 
+
 git cherry-pick 76b53de95710166d6f58951d26298e058fa734e6 挑选commit合并到当前分支
-                                                         ps:1. 合并完直接 git push
-                                                            2. 可多次使用，以便合并多个commit
+                                                         PS: 1. 将其它分支的commit合并过来、带commit 信息
+                                                             2. git cherry-pick a b 中间空格一次合多个
 ==========================================远端=========================================
 
 git remote -v                                远端机信息

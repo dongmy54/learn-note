@@ -16,6 +16,9 @@
 
 ##### 批量选中/删除指定行
 > 1. ctrl + G 找到开始行
-2. edit -> mark -> set mark
-3. ctrl + G 找到结束行
-4. edit -> mark -> select/delete to mark
+> 2. edit -> mark -> set mark
+> 3. ctrl + G 找到结束行
+> 4. edit -> mark -> select/delete to mark
+
+##### 运行代码
+> `command + B`
