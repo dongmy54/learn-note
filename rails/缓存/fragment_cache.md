@@ -39,7 +39,7 @@
 ##### 有效期
 > 1. 指定有效期必须先指定键
 > 2. `views/my_cache_key/6c260298e90a834925b7`
-
+> 3. 即使指定了有效期，如果内容有改变仍然会刷新缓存
 ```ruby
 <% cache 'my_cache_key', expires_in: 10.second do %>
     some code
