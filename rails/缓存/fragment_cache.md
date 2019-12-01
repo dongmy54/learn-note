@@ -49,6 +49,7 @@
 ##### 集合
 > 1. rails 5 才支持
 > 2. 性能比each 每个条目,做缓存更好
+> `collection of authors/_author.html.erb [99 / 100 cache hits]`
 
 ```ruby
 <%= render partial: 'authors/author', collection: @authors, cached: true %>

@@ -2,7 +2,7 @@
 ```
 rails new test                                                           创建rails test项目
 rails _4.1.8_ new test                                                   指定rails版本创建
-rails g scaffold article title:string content:string                     脚手架（测试新功能不错）
+rails g scaffold articles title:string content:text author:references                  脚手架（测试新功能不错）
 
 rails c                                                                  进入控制台
 rails c -sb                                                              沙盒模式
