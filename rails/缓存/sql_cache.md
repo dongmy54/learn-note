@@ -7,7 +7,6 @@ def sql_cache
   @authors = Author.all
   # Author Load (0.5ms)  SELECT "authors".* FROM "authors"
 
-
   # 第二次从内存中取
   hu = Author.all
   # CACHE (0.0ms)  SELECT "authors".* FROM "authors"
