@@ -1,7 +1,7 @@
 #### 俄罗斯套娃缓存
->1. 简单点说就是片段缓存的嵌套，它的粒度更细
->2. 优点；如果我们直接缓存一个数据集,当其中一条数据更新时，所有缓存都不能使用；而将缓存细分下去,可以避免这样的问题
->3. 通常用于,一对多的场景,在belongs_to的一方设定 touch: true
+>1. 片段缓存的延伸,粒度更细
+>2. 解决：外层对象过期，内层所有对象都需要重新生成问题
+> PS：内存缓存方必须`touch: true`保证内层同步更新
 
 #### 用法
 ```ruby
@@ -19,14 +19,18 @@ end
 ```
 
 ```html
-<% cache @user %>
-  <% @user.collections.each do |collection| %>
-
-    <%# 对内层collection 缓存  %>
-    <% cache collection do %>
-      <%= collection.name %>
-    <% end %>
-
-  <% end %>
+<% cache author do %>
+  <tr>
+    <td><%= author.id %></td>
+    <td><%= author.name %></td>
+    <td><%= author.age %></td>
+    <td>
+      <% author.articles.each do |article| %>
+        <% cache article do %>
+          <span><%= article.title %></span>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
 <% end %>
 ```
