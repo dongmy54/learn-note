@@ -8,3 +8,9 @@
 > `Rails.cache.clean` 只对某些缓存起作用
 
 
+##### cache_key
+```ruby
+Author.first.cache_key
+# => "authors/303-20191201030025389597000"
+```
+
