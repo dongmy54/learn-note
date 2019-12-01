@@ -1,9 +1,9 @@
 #### 缓存数据
->Ps: 
-> 1. 在开发模式下，不会缓存哦
-> 2. 此缓存方式实用于，从数据库中取数据比较费时的情况
+> 实用于查询比较耗时的情况
 
+##### 自定义键名
 ```ruby
+# 指定键名
 Rails.cache.fetch("permissions", expires_in: 1.day) do
   Permission.list
 end
@@ -14,5 +14,14 @@ Rails.cache.fetch("permissions")
 # id + updated_at 可以及时获取到最新数据
 Rails.cache.fetch("/product/#{id}-#{updated_at}/comp_price", :expires_in => 12.hours) do
   # do some thing
+end
+```
+
+##### 利用cache_key自动键
+```ruby
+def level_cache_example
+  Rails.cache.fetch self do
+    # do some thing
+  end
 end
 ```
