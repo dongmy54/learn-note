@@ -38,6 +38,7 @@ $("input[name=radio1]")          | name 属性等于 radio1的 input标签      
 $("#first input[name=radio1]")   |id为first里 name属性等于 radio1的 input标签|
 $("input[type=checkbox]")        |type 属性等于 checkbox的 input标签         |
 $("input[type=checkbox]:checked")|type 属性 checkbox 且选中                 |
+$("button[name=export][type=submit] ")| 同时满足name=export、type=submit的button标签|
 
 #### 4.批量选择器
 样式               | 说明                   |其它|
