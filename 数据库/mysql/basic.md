@@ -1,5 +1,3 @@
-#### 基本
-
 ##### SELECT
 ```sql
 SELECT orderNumber, status FROM orders;
@@ -49,3 +47,43 @@ FROM
 WHERE
     lastName LIKE '%son'
 ```
+
+##### DISTINCT
+> PS：与 `limit`搭配时,限制的是唯一值条数
+
+```sql
+# 组合去重
+SELECT DISTINCT
+    state, city
+FROM
+    customers
+WHERE
+    state IS NOT NULL
+ORDER BY state,city;
+```
+
+```sql
+# 去重后聚合
+SELECT
+    COUNT(DISTINCT state)
+FROM
+    customers
+WHERE
+    country = 'USA';
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
