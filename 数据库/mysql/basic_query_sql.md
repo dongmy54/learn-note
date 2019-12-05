@@ -22,6 +22,32 @@ WHERE
 ```
 
 
+##### JOIN
+> 1. mysql中无 full join
+> 2. 支持 `CROSS JOIN` 交叉join
+
+```sql
+SELECT
+    m.member_id,
+    m.name member
+FROM
+    members m
+LEFT JOIN committees c USING(name)
+WHERE c.committee_id IS NULL;
+```
+
+```sql
+SELECT
+    m.member_id,
+    m.name member,
+    c.committee_id,
+    c.name committee
+FROM
+    members m
+CROSS JOIN committees c;
+```
+
+
 ##### IN
 ```sql
 # 搭配子查询
