@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>二维码测试</title>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+</head>
+<body>
+  <div id="qrcodeCanvas"></div>
+</body>
+
+<script type="text/javascript">
+  $('#qrcodeCanvas').qrcode({
+    width   : 300,
+    height  : 300,
+    text    : "http://www.ideawu.net/blog/"
+  });
+</script>
+</html>
+
