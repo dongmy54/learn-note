@@ -245,6 +245,16 @@ WITH ROLLUP;
 ```
 
 
+##### UNION
+> 1. 对结果集垂直拼接
+> 2. `UNION`默认去重;`UNION ALL`不去重
+```sql
+SELECT id
+FROM t1
+UNION
+SELECT id
+FROM t2;
+```
 
 
 

@@ -19,5 +19,8 @@ LIKE customers;
 ```sql
 # 删除表
 DROP TABLE sales;
+
+# 存在才删除
+DROP TABLE IF EXISTS t1;
 ```
 
