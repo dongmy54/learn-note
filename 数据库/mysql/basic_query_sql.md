@@ -25,6 +25,7 @@ WHERE
 ##### JOIN
 > 1. mysql中无 full join
 > 2. 支持 `CROSS JOIN` 交叉join
+> 3. 自join的本质是，把自己也看作另外一张表
 
 ```sql
 SELECT
@@ -45,6 +46,35 @@ SELECT
 FROM
     members m
 CROSS JOIN committees c;
+```
+
+
+##### GROUP BY
+> mysql支持对别名聚合
+
+```sql
+SELECT
+    YEAR(orderDate) AS year,
+    COUNT(orderNumber)
+FROM
+    orders
+GROUP BY
+    year; /* 对别名聚合 */
+```
+
+
+##### HAVING
+> 对分组后结果再次过滤
+```sql
+SELECT
+    ordernumber,
+    SUM(priceeach*quantityOrdered) AS total
+FROM
+    orderdetails
+GROUP BY
+   ordernumber
+HAVING
+   total > 1000;
 ```
 
 
@@ -174,6 +204,25 @@ FROM
 WHERE
     country = 'USA';
 ```
+
+
+##### ROLLUP
+> 1. 对`group up`后结果小计
+> 2. 8.0以上版本可用 `GROUPING`标记求和列
+
+```sql
+SELECT
+    orderYear,
+    productLine,
+    SUM(orderValue) totalOrderValue
+FROM
+    sales
+GROUP BY
+    orderYear,
+    productline
+WITH ROLLUP;
+```
+
 
 
 
