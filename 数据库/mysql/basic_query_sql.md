@@ -78,6 +78,12 @@ HAVING
 ```
 
 
+##### LIKE
+> 1. `%` 0个或多个任意字符
+> 2. `_` 任意一个字符
+> 3. `\`转义
+
+
 ##### IN
 ```sql
 # 搭配子查询
@@ -100,10 +106,25 @@ WHERE orderNumber IN
 );
 ```
 
-##### LIKE
-> 1. `%` 0个或多个任意字符
-> 2. `_` 任意一个字符
-> 3. `\`转义
+
+##### EXISTS
+> 1. 大多数时候相比于`IN`性能更好
+> PS: 只有一种情况`IN`性能更好,IN出结果很少
+```sql
+SELECT
+    employeenumber,
+    firstname,
+    lastname
+FROM
+    employees
+WHERE
+    EXISTS (SELECT
+            1
+        FROM
+            offices
+        WHERE
+            offices.city = 'San Francisco' AND offices.officeCode = employees.officeCode);
+```
 
 
 ##### LIMIT

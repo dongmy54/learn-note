@@ -2,12 +2,18 @@
 
 #### CREATE
 ```sql
-# 创建表 从其它表中取数
+# 从其它表中-取数据
 CREATE TABLE test_cs
 SELECT productLine
 FROM 
   products;
 ```
+```sql
+# 按其它表-结构创建
+CREATE TABLE customers_archive
+LIKE customers;
+```
+
 
 #### DROP
 ```sql
