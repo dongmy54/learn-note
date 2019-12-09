@@ -55,6 +55,22 @@ FROM
   users LIMIT 1;
 ```
 
+
+#### CURRENT_DATE
+```sql
+# 当前日期
+SELECT CURRENT_DATE();
+```
+
+
+#### REPLACE
+> 替换字符串
+```sql
+SELECT REPLACE(firstName, 'Foon', 'KKKK') 
+FROM employees;
+```
+
+
 #### FLOOR
 > 取整（非四舍五入）
 ```sql
