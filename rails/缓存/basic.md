@@ -5,7 +5,7 @@
 > 2. rails 4默认使用 file_store
 
 ##### 清理缓存
-> `Rails.cache.clean` 只对某些缓存起作用
+> `Rails.cache.clear` 只对某些缓存起作用
 
 
 ##### cache_key
