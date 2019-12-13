@@ -46,7 +46,7 @@ end
   <div class="card">
     <p>name: <%= @author.name %></p>
     
-    <%# Helper Dependence Updated: 2019.12.2 %>
+    <%# Helper Dependency Updated: 2019.12.2 %>
     <%= some_method %>
   </div>
 <% end %>
