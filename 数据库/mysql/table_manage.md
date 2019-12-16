@@ -140,7 +140,7 @@ DROP TABLE IF EXISTS t1;
 ```
 
 
-##### RENAME
+##### RENAME 重新命名表
 ```sql
 RENAME TABLE people TO employees;
 ```
@@ -150,6 +150,27 @@ RENAME TABLE people TO employees;
 ```sql
 DESCRIBE checklists; -- 表列字段信息
 ```
+
+
+##### TRUNCATE 清空表数据
+> 1. 性能比delete删除好
+> 2. 隐式提交，不能回滚
+> 3. 删除数据，不会级联删除关联数据
+> 4. 会重置自增长
+
+```sql
+TRUNCATE TABLE books;
+```
+
+
+##### GENERATE 产生新列
+```sql
+ALTER TABLE products
+ADD COLUMN stockValue DOUBLE
+GENERATED ALWAYS AS (buyprice*quantityinstock) STORED;  -- 基于表中现有列产生新列
+```
+
+
 
 
 
