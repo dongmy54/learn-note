@@ -5,6 +5,7 @@ mysql_secure_installation   # 对已安装mysql安全性进行配置
 
 mysql -u root -p                      # 进入命令行
 mysql -h host_name -u root -p         # 连远程数据库
+mysql -u root -D classicmodels -p     # 连接数据库 并使用classicmodels
 
 source xxdatabase.sql  # 导入数据
 show databases;        # 展示当前数据库
