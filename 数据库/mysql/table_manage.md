@@ -1,4 +1,4 @@
-#### 表级增删改
+#### 表管理
 
 ##### CREATE
 ```sql
@@ -110,6 +110,26 @@ WHERE
 ```
 
 
+##### ALTER修改
+```sql
+ALTER TABLE vehicles RENAME TO cars; -- 改表名
+
+
+ALTER TABLE vehicles 
+ADD color VARCHAR(50), 
+ADD note VARCHAR(255);            -- 添加列
+
+ALTER TABLE vehicles 
+MODIFY note VARCHAR(100) NOT NULL; -- 修改列类型、约束
+
+ALTER TABLE vehicles
+CHANGE COLUMN note vehicleCondition VARCHAR(100) NOT NULL; -- 重新命名列
+
+ALTER TABLE vehicles
+DROP COLUMN vehicleCondition;     -- 删除列
+```
+
+
 ##### DROP
 ```sql
 # 删除表
@@ -117,6 +137,18 @@ DROP TABLE sales;
 
 # 存在才删除
 DROP TABLE IF EXISTS t1;
+```
+
+
+##### RENAME
+```sql
+RENAME TABLE people TO employees;
+```
+
+
+##### DESCRIBE
+```sql
+DESCRIBE checklists; -- 表列字段信息
 ```
 
 
