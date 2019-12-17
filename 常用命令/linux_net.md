@@ -32,3 +32,15 @@ curl -d 'loginid=dmy&password=123456' https://example.com         # 发送 post 
 
 curl -c cookie.txt  https://example.com                           # 将cookie 信息保存到本地 cookie.txt
 ```
+
+
+### 其它
+```
+ufw status        # 防火墙状态
+ufw allow ssh     # 允许 ssh连接
+ufw allow tcp     # 允许tcp
+ufw allow mysql   # 允许mysql
+ufw allow udp     
+sudo ufw enable   # 激活
+sudo ufw disable  # 禁用
+```
