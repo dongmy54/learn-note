@@ -257,6 +257,21 @@ FROM t2;
 ```
 
 
+##### json相关查询
+```sql
+SELECT id, browser->'$.name' browser
+FROM events; -- 查询browser列 name键值（返回值包含双引号）
+
+SELECT id, browser->>'$.name' browser
+FROM events; -- 查询browser列 name键值（返回值不含双引号）
+
+SELECT visitor, SUM(properties->>'$.amount') revenue
+FROM events
+WHERE properties->>'$.amount' > 0
+GROUP BY visitor; -- 聚会 拜访者金额大于0的
+```
+
+
 
 
 
