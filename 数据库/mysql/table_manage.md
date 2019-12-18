@@ -126,7 +126,10 @@ ALTER TABLE vehicles
 CHANGE COLUMN note vehicleCondition VARCHAR(100) NOT NULL; -- 重新命名列
 
 ALTER TABLE vehicles
-DROP COLUMN vehicleCondition;     -- 删除列
+DROP COLUMN vehicleCondition;                      -- 删除列
+
+ALTER TABLE users
+ADD UNIQUE INDEX username_unique (username ASC) ;  -- 加索引
 ```
 
 
@@ -143,12 +146,6 @@ DROP TABLE IF EXISTS t1;
 ##### RENAME 重新命名表
 ```sql
 RENAME TABLE people TO employees;
-```
-
-
-##### DESCRIBE
-```sql
-DESCRIBE checklists; -- 表列字段信息
 ```
 
 
@@ -171,6 +168,15 @@ GENERATED ALWAYS AS (buyprice*quantityinstock) STORED;  -- 基于表中现有列
 ```
 
 
+##### DESCRIBE
+```sql
+DESCRIBE checklists; -- 表列字段信息
+```
 
+
+##### SHOW CREATE TABLE 看表创建信息
+```sql
+SHOW CREATE TABLE employees;
+``` 
 
 
