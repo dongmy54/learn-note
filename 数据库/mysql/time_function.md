@@ -80,6 +80,7 @@ SELECT DATEDIFF('2015-11-04','2014-11-04') days;
 
 
 ###### TIME_FORMAT 格式化时间
+> DATE_FORMATE同理
 ```sql
 SELECT
     name,
@@ -91,6 +92,8 @@ FROM
 -- %h 小时 0-12
 -- %i 分
 -- %p AM / PM
+
+select DATE_FORMAT(NOW(),'_%Y_%m_%d_%H_%i_%s');
 ```
 
 
