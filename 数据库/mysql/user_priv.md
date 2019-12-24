@@ -38,8 +38,24 @@ revoke all on *.* from dmy@'%'; -- 撤销所有权限
 ```
 
 
+##### 重命名
+> 对于生产过程需要重新指定定义人
+```sql
+rename user dmy@'%' to dmy_new@'localhost'; -- 注意这里可以连同host一起修改
+```
+
 ##### 修改用户密码
 ```sql
 set password for dmy@'%' = '123456';
+```
+
+##### 锁定
+```sql
+alter user dmy@'%' account lock;
+```
+
+##### 解锁
+```sql
+alter user dmy@'%' account unlock;
 ```
 
