@@ -1,6 +1,12 @@
 #### mysql
 
 ```ruby
+# linux上命令如下（mac上用brew)
+service mysql start         # 启动
+service mysql stop          # 停止
+service mysql restart       # 重启
+
+
 mysql_secure_installation   # 对已安装mysql安全性进行配置
 
 mysql -u root -p                      # 进入命令行
