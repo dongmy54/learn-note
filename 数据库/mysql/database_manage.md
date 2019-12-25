@@ -12,13 +12,6 @@ DROP DATABASE IF EXISTS temp_database;
 ```
 
 
-##### show
-```sql
-show databases;               -- 展示数据库列表
-show create database test1;   -- 展示test1数据库详细信息 
-```
-
-
 ##### use
 ```sql
 use classicmodels; -- 使用classicmodels数据库

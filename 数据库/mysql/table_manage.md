@@ -168,21 +168,3 @@ GENERATED ALWAYS AS (buyprice*quantityinstock) STORED;  -- 基于表中现有列
 ```
 
 
-##### DESC
-```sql
-DESC checklists; -- 表列字段信息
-```
-
-
-##### show tables 查看表列表
-```sql
-show tables;
-```
-
-
-##### SHOW CREATE TABLE 看表创建信息
-```sql
-SHOW CREATE TABLE employees;
-``` 
-
-
