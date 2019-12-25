@@ -13,13 +13,20 @@ mysql -u root -p                      # 进入命令行
 mysql -h host_name -u root -p         # 连远程数据库
 mysql -u root -D classicmodels -p     # 连接数据库 并使用classicmodels
 
-source xxdatabase.sql  # 导入数据
-show databases;        # 展示当前数据库
-show tables;           # 展示表列表
-use xxdatabase;        # 使用xx数据库
-
 quit                   # 退出
 
-
 mysql --version        # 查看mysql版本
+
+# 备份指定数据库
+mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/test.sql' --databases classicmodels
+# 备份所有数据库
+mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/all_test.sql' --all-databases
+# 备份指定表
+mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/table_test.sql' classicmodels employees
+# 备份结构（无数据）
+mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/only_structure_test.sql' --no-data --databases classicmodels
+
+
+# 重建
+source /Users/dongmingyan/test.sql
 ```
