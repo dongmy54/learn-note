@@ -13,7 +13,12 @@ rvm remove 2.3.3                # 卸载ruby 2.3.3版本，包括其下的gem
 rvm --default 2.5.1             # 默认使用ruby 2.5.1版本
 
 rvm get stable  # 获取当前稳定rvm版本（有时不能成功安装某ruby版本,需升级rvm)
-```
 
+切换rails 版本
+rvm 2.3.3 切换到ruby版本环境
+rvm gemset create rails427 建立一个rails 4.2.7版本gemset
+rvm 2.3.3@rails427 切换到gemset
+gem install rails -v 4.2.7 安装对应版本rails
+```
 
 
