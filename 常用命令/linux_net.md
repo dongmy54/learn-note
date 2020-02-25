@@ -1,5 +1,6 @@
 ### 网络相关
 ```
+curl myip.ipip.net  查看出口网络ip<公网ip>
 ifconfig           查看本机 mac地址 或 分配ip地址
   
 ping 域名/ip        查看一个数据包发到指定ip  往返时间  和 丢包情况
