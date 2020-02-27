@@ -141,9 +141,10 @@ ls blog/*/models                               # 列出 文件路径 符合 blog
 
 
 =============================== crontab ======================
-crontab -e    为当前用户添加定时任务
-crontab -l    列出当前定时任务
-crontab -r    删除所有定时任务
+crontab crontab.txt  加载写好的定时任务   # PS：加载后需要 crontab -e 才会生效
+crontab -e           为当前用户添加定时任务(打开编辑界面)
+crontab -l           列出当前定时任务
+crontab -r           删除所有定时任务
 
 任务写法
 分 时 天 月  周(0-6) Command_to_execute
