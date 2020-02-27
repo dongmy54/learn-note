@@ -1,6 +1,7 @@
 #### clockwork
 > 用作定时任务
-> `clockwork t1.rb`对应文件名,即可启动
+> 1. 不使用 crontab，使用ruby的方式实现，单独开一个线程
+> 2. `clockwork t1.rb`对应文件名,即可启动
 
 ```ruby
 require 'clockwork'
