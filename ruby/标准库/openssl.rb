@@ -1,5 +1,27 @@
 # 开源 安全通信软件包
 # 提供许多 对称加密（aes/des等等）/非对称加密，摘要加解密算法
+
+# Message Authentication Code 消息认证码
+require 'openssl'
+
+key     = "key"                          # 密钥
+message = "message-to-be-authenticated"  # 密文信息
+mac = OpenSSL::HMAC.hexdigest("SHA256", key, message)
+puts mac
+#=> "cddb0db23f469c8bf072b21fd837149bd6ace9ab771cceef14c9e517cc93282e"
+
+# 从文件读取
+message = File.read('/Users/dongmingyan/data.txt') # 从文件中读取
+digest  = OpenSSL::Digest::SHA256.new
+hmac    = OpenSSL::HMAC.new(key, digest)
+hmac << message
+mac = hmac.digest
+puts hmac  # 注意这里是hamac
+#=> "cddb0db23f469c8bf072b21fd837149bd6ace9ab771cceef14c9e517cc93282e"
+
+
+
+# ase-128-cbc加密
 require 'openssl'
 
 data = "Very, very confidential data"
