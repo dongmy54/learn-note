@@ -32,6 +32,16 @@ curl -u user_name:password https://example.com                    # 可以登录
 curl -d 'loginid=dmy&password=123456' https://example.com         # 发送 post 提交表单参数
 
 curl -c cookie.txt  https://example.com                           # 将cookie 信息保存到本地 cookie.txt
+
+curl -X<请求方式> '请求url' -d '<请求body>'
+比如：
+curl -XGET 'http://localhost:9200/_count?pretty' -d '
+{
+    "query": {
+        "match_all": {}
+    }
+}
+'
 ```
 
 
