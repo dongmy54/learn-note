@@ -21,5 +21,6 @@
 * rails-erd      将model关联关系以图形方式输出（pdf)
 * select2-rails  下拉列表多选
 * active_model_serializers  接口中用来序列化json数据
-* paranoia       软删除
+* paranoia              软删除
+* schema_validations    将数据库层验证自动转到model层
 
