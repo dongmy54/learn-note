@@ -52,7 +52,14 @@ $(".query:button")| button中类是query|
 
 
 
-
+##### 使用
+```ruby
+$("[id^=value_object-parent-id]:eq(2) option:selected").text();
+# 1. [id^= xx] 以value_object-parent-id 开头的id
+# 2. :eq(2) 选取索引为2
+# 3. option 下面的option
+# 4. selected 选中的
+```
 
 
 
