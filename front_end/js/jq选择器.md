@@ -44,6 +44,7 @@ $("button[name=export][type=submit] ")| 同时满足name=export、type=submit的
 样式               | 说明                   |其它|
 ------------------|------------------------|----|
 $('[id*="default-config"')    | id 中包含default-config|
+$("[id$='_mof_code'")         | id 以_mof_code结尾的|
 
 #### 5.组合选择
 样式               | 说明                   |其它|
