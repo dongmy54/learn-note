@@ -36,6 +36,16 @@ $(".form_submit").click(function(e){
 }
 ```
 
+##### jquery操作新增元素
+```js
+//委托
+$("body").delegate('.select_confirm','click',function(){
+  var code = $(this).attr("data-code");
+  $("[id$=_budget_code]").val(code);
+  dailog_box.close();
+})
+```
+
 ##### 解析
 ```js
 // 解析
