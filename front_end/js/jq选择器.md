@@ -25,6 +25,8 @@ $("#first > span")| 父元素id是first的span元素                     |PS: > 
 $("#first + span")| id为first的元素 它后面的 第一个span元素        |PS：等同于 $("#first").next();一定要记住是它后面|
 $("#hu").next()   | id为hu的下一个同胞元素|                       ||
 $("#hu").prev()   | id为hu的上一个同胞元素|                       ||
+$("#hu").prev(".bar")| id为hu的上一个同胞元素并且类是bar||
+$("#hu").prev().prev()|id为hu的上一个同胞元素的上一个同胞元素||
 $("#hu").prevAll()| id为hu的前面所有同胞元素|                       ||
 $("#hu").parent() | id为hu的父元素       |                       ||
 $("#hu").children()| id为hu的所有子元素   |                       || 
@@ -44,7 +46,7 @@ $("button[name=export][type=submit] ")| 同时满足name=export、type=submit的
 样式               | 说明                   |其它|
 ------------------|------------------------|----|
 $('[id*="default-config"')    | id 中包含default-config|
-$("[id$='_mof_code'")         | id 以_mof_code结尾的|
+
 
 #### 5.组合选择
 样式               | 说明                   |其它|
@@ -63,6 +65,8 @@ $("[id^=value_object-parent-id]:eq(2) option:selected").text();
 # 2. :eq(2) 选取索引为2
 # 3. option 下面的option
 # 4. selected 选中的
+
+$("[id$='_mof_code'")         id 以_mof_code结尾的
 ```
 
 
