@@ -23,4 +23,6 @@
 * active_model_serializers  接口中用来序列化json数据
 * paranoia              软删除
 * schema_validations    将数据库层验证自动转到model层
+* breadcrumbs_on_rails  面包屑
+
 
