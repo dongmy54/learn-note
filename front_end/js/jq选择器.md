@@ -58,6 +58,7 @@ $(".query:button")| button中类是query|
 ------------------|------------------------|----|
 $(this).closest('.sr_form_box')| 当前元素递归祖先元素中类为 sr_form_box的元素|
 
+
 ##### 使用
 ```ruby
 $("[id^=value_object-parent-id]:eq(2) option:selected").text();
@@ -67,6 +68,7 @@ $("[id^=value_object-parent-id]:eq(2) option:selected").text();
 # 4. selected 选中的
 
 $("[id$='_mof_code'")         id 以_mof_code结尾的
+$("input[id$=_name][id*=items_attributes]")  1. input标签 id以_name结尾 id包含items_attributes的组合
 ```
 
 
