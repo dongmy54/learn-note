@@ -4,8 +4,6 @@
 
 ![Snip20180603_1.png](https://i.loli.net/2018/06/03/5b132aea2c847.png)
 
----
-
 ![Snip20180603_2.png](https://i.loli.net/2018/06/03/5b132aea82bf4.png)
 #### 1.基本选择器
 样式               |说明                    | 其它|
@@ -57,7 +55,6 @@ $(".query:button")| button中类是query|
 样式               | 说明                   |其它|
 ------------------|------------------------|----|
 $(this).closest('.sr_form_box')| 当前元素递归祖先元素中类为 sr_form_box的元素|
-
 
 ##### 使用
 ```ruby

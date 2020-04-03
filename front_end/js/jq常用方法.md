@@ -38,12 +38,15 @@ $(".form_submit").click(function(e){
 
 ##### jquery操作新增元素
 ```js
-//委托
+// 方法一：委托
 $("body").delegate('.select_confirm','click',function(){
   var code = $(this).attr("data-code");
   $("[id$=_budget_code]").val(code);
   dailog_box.close();
 })
+
+// 方法二：用on
+$("#post-list").on('change', ".toggle_flag",function(){})
 ```
 
 ##### 解析
@@ -86,6 +89,15 @@ var data = [{'id': 1,'name': 'zs'},{'id': 2, 'name': 'hubar'}]
 data.forEach(function(element){
   console.log(element.id + element.name);
 })
+```
+
+##### 数组去重
+```js
+arr = [1,3,5,1]
+new_arr = arr.filter(function(elem, index, self){
+  return index === self.indexOf(elem) // indexOf返回数组中匹配元素的第一个索引
+})
+new_arr
 ```
 
 ##### 数据缓存
