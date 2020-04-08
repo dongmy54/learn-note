@@ -15,6 +15,9 @@ Rails.cache.fetch("permissions")
 Rails.cache.fetch("/product/#{id}-#{updated_at}/comp_price", :expires_in => 12.hours) do
   # do some thing
 end
+
+# 删除某个键的缓存
+Rails.cache.delete("navigations_bgyp_")
 ```
 
 ##### 利用cache_key自动键
