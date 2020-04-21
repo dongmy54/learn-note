@@ -41,7 +41,8 @@ create    test/lib/generators/g_test1_generator_test.rb
 ```ruby
 # lib/generators/g_test1/g_test1_generator.rb
 class GTest1Generator < Rails::Generators::Base 
-                       # PS：如果生成器使用时不用指定文件名（文件名写死）这里要继承于 Rails::Generators::NamedBase
+                       # PS：如果生成器使用时不用指定文件名（文件名写死）要继承于 Rails::Generators::Base 
+                       # 默认的 Rails::Generators::NamedBase 需要指定文件名
 
   # 引入templates下模版 用于copy
   source_root File.expand_path('../templates', __FILE__)
