@@ -48,6 +48,7 @@ end
   <div>用户名字<%= f.text_field :name %></div>
   <div>用户年龄<%= f.text_field :old %></div>
 
+  <!-- 这里 target 的含义是 添加到xx下 -->
   <p><%= f.link_to_add "添加条目", :items, data: {target: '#items'} %></p>
 
   <table id="items">
