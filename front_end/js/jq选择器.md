@@ -66,6 +66,8 @@ $("[id^=value_object-parent-id]:eq(2) option:selected").text();
 
 $("[id$='_mof_code'")         id 以_mof_code结尾的
 $("input[id$=_name][id*=items_attributes]")  1. input标签 id以_name结尾 id包含items_attributes的组合
+
+$("select[aim_id='ra_project_area_id']")  # select 属性 aim_id 为 ra_project_area_id
 ```
 
 
