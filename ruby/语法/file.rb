@@ -231,6 +231,15 @@ end
 
 
 
+#====================================== 目录 =======================================#
+# 如果目录不存在 则创建（可多层目录）
+require 'fileutils'
+
+dir_path = "/Users/dongmingyan/sandbox/tmp"
+FileUtils.mkdir_p(dir_path)  unless File.directory?(dir_path)
+
+
+
 #====================================== 写入 =======================================#
 # << 和 write 写入文件
 File.open('ruby/测试文件/my_test_file.txt','a+') do |f|
