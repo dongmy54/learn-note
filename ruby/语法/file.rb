@@ -251,6 +251,21 @@ end
 
 
 
+#====================================== 读取文件行  =======================================#
+# 返回枚举
+# 不会一次加载文件的所有内容
+File.foreach("/Users/dongmingyan/test_app/app/controllers/application_controller.rb").with_index do |line, line_no|
+   puts "#{line_no}: #{line}"
+end
+
+# 返回数组
+# PS：一次性将文件所有内容 加载到内存中
+File.readlines("/Users/dongmingyan/test_app/app/controllers/application_controller.rb").each do |line|
+   puts "#{line}"
+end
+
+
+
 #==================================== 实例 ===========================================#
 # 列出目录下所有 文件(包括：子目录的文件)
 def list_all_file_of_directory(directory_path)
