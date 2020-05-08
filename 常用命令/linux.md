@@ -123,6 +123,7 @@ grep "test" db_test.rb temp.rb      在文件中匹配字符串(这里只支持�
 grep -i "test" db_test.rb temp.rb   忽略大小写
 grep -l "test" db_test.rb temp.rb   列出匹配到的文件
 grep hu -Ir log                     I（忽略二进制文件）r（递归文件） 检索hu
+grep -A 10 -B 10 self.product_klass.find_by /Users/dongmingyan/t.rb  过滤匹配内容的前后10行
 
 ls learn-not/ruby/语法 | grep rb    过滤出xx目录下 包含rb的文件名
 
