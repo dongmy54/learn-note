@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>开始使用layui</title>
+  <!-- 下载 后 直接引用 就可使用 -->
+  <link rel="stylesheet" href="/Users/dongmingyan/Downloads/layui-v2.5.6/layui/css/layui.css">
+  <script src="/Users/dongmingyan/Downloads/layui-v2.5.6/layui/layui.js"></script>
+</head>
+<body>
+  <!-- 你的HTML代码 -->
+</body>
+<script>
+  layui.use('layer', function(){
+    var layer = layui.layer;
+    
+    layer.open({
+      title: 'hello'
+      ,content: '可以填写任意的layer代码'
+    });
+  });
+</script>
+</html>
