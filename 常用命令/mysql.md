@@ -26,6 +26,8 @@ mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/tabl
 # 备份结构（无数据）
 mysqldump --user=root --password=12345678 --result-file='/Users/dongmingyan/only_structure_test.sql' --no-data --databases classicmodels
 
+# 导出数据
+mysql -uroot -h111.231.22x.13y -pxxx@yyy -e "select * from products limit 4;" zhonghang > products.xls
 
 # 重建
 source /Users/dongmingyan/test.sql
