@@ -117,6 +117,50 @@ puts "a[:age] 是 #{a[:age]} "
 
 
 ###########################################################################
+# 线程状态
+# PS：stop 也是sleep
+a = Thread.new{sleep 10}
+b = Thread.new{Thread.stop}
+c = Thread.new{1_000.times {puts i}}
+
+puts c.status # run
+puts a.status # sleep
+puts b.status # sleep
+
+
+
+###########################################################################
+# 线程是否活着
+a = Thread.new{sleep 10}
+b = Thread.new{puts '我执行了'}
+
+a.alive?
+# true
+b.alive?
+# false
+
+
+
+###########################################################################
+# 线程列表
+# 1. 返回当前所有活着的线程
+# 2. 返回的是数组
+a = Thread.new do 
+  Thread.current[:name] = 'A线程'
+  sleep 10
+end
+b = Thread.new {Thread.current[:name] = 'B线程'}
+
+Thread.list # 此时B线程已经死了
+# => [#<Thread:0x00007fd77686f2b8 run>, #<Thread:0x00007fd7768444a0@(irb):9 sleep>]
+
+# 重新找到A线程
+Thread.list.find{|thr| thr[:name] == 'A线程'}
+# => #<Thread:0x00007fd7768444a0@(irb):2 sleep>
+
+
+
+###########################################################################
 # value 线程块返回值
 # PS: 线程未执行完会等待
 a = Thread.new do
