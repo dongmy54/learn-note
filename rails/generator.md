@@ -52,6 +52,8 @@ class GTest1Generator < Rails::Generators::Base
     copy_file 'yst_interface.rb', 'config/initializers/yst_interface.rb'
   end
 
+  # 如果有多个文件需要复制，可以写多个方法，方法名无所谓，执行rails g时这里的方法都会被执行
+
   # rails g g_test1
 end
 ```
