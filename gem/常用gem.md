@@ -24,5 +24,7 @@
 * paranoia              软删除
 * schema_validations    将数据库层验证自动转到model层
 * breadcrumbs_on_rails  面包屑
+* wash_out              rails支持soap服务
+* savon                 发送soap请求
 
 
