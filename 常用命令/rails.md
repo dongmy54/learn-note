@@ -24,6 +24,8 @@ rake db:reset               去掉数据库 + 新建数据库 + 执行迁移 + �
 rake db:seed                运行种子数据
 rake db:rollback            迁移回退一步          
 
+rake cache:clear                     清理通用（redis memcache)缓存
+bundle exec rake tmp:cache:clear     清理文件缓存
 
 bundle exec sidekiq                                   启动sidekiq服务 (根据 config/sidekiq.yml)
 bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队列：default 和 other_queue_name)
