@@ -1,34 +1,69 @@
-# instance_eval 打开对象
-# 用法：和class_eval 基本同
+# 总体 {instance|class|module}_{eval|exec}
 
+############################################################
+# instance_exec 生成单件方法（类方法)
+# class_exec    生成实例方法（接收者必须是类）
 class A
   def initialize
     @x = 1
   end
 end
 
+A.instance_exec{def hu;end} # 单件方法
+A.class_exec{def bar;end}   # 实例方法
+
+puts A.singleton_methods.include?(:hu)
+# true
+puts A.method_defined?(:bar)
+# true
 
 obj = A.new
-# 添加方法
-obj.instance_eval do
-  def m
-    puts '这是由instanc_eval 创建的实例方法'
+# # 获取/改变实例变量
+obj.instance_exec{puts @x}
+
+
+
+############################################################
+# exec 可以传参数 必须接块
+class A;end
+a = A.new
+
+A.class_exec("hello") do |param|
+  puts param
+
+  def hu
+    puts 'hu'
   end
 end
 
-obj.m
-# 这是由instanc_eval 创建的实例方法
+A.new.hu
 
 
-# 获取/改变实例变量
-obj.instance_eval { puts @x}
+
+############################################################
+# eval 只能传字符串/块  不能传参数
+A.class_eval("puts 'hello'")
+A.class_eval {puts "hello"}
 
 
-# instance_exec
-# 和instance_eval 主要区别在于：它可传递参数
+
+############################################################
+# module和class 可以互用
 class A;end
-
-A.new.instance_exec('hello') do |y|
-  puts y
+A.class_exec do
+  def hu
+    puts 'hu'
+  end
 end
-# hello
+
+# 和上面等价
+A.module_exec do
+  def hu
+    puts 'hu'
+  end
+end
+
+A.new.hu
+
+
+
