@@ -26,5 +26,7 @@
 * breadcrumbs_on_rails  面包屑
 * wash_out              rails支持soap服务
 * savon                 发送soap请求
+* mechanize             页面自动化填入表单、抓取数据等
+
 
 
