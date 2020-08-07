@@ -59,6 +59,7 @@ $.parseJSON('{"json_class": "Department"}');
 #### 触发改变
 ```js
 $("#xj_department_id").change();
+$("[name='bid_project[is_sap_mro]']:checked").change(); // 一定要选中后 change才有效
 ```
 
 #### 触发事件
