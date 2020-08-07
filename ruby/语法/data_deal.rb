@@ -5,6 +5,7 @@
 # 2、pack 返回字符串 unpack 返回数组
 # 3、*（'H*')表示数组元素转换长度  * 3(表示数组元素个数)
 # 4、H 是一种模式 H 十六进制，m base64
+# 5. unpack用于解析二进制文件（比如图片等）
 after_pack = ['61','62','63'].pack('H*' * 3)   # "abc"
 after_unpack = after_pack.unpack('H*')        # ["616263"]
 
