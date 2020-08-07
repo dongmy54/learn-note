@@ -1,6 +1,8 @@
 # 开源 安全通信软件包
 # 提供许多 对称加密（aes/des等等）/非对称加密，摘要加解密算法
 
+
+########################################## 消息认证码 ############################################
 # Message Authentication Code 消息认证码
 require 'openssl'
 
@@ -21,21 +23,43 @@ puts hmac  # 注意这里是hamac
 
 
 
+
+########################################## 对称加密 ############################################
+require 'openssl'
+
+# 支持的对称加密列表（名称-长度-模式）
+puts OpenSSL::Cipher.ciphers
+# AES-128-CBC
+# AES-128-CBC-HMAC-SHA1
+# AES-128-CFB
+# .....
+
+
+# 含义:
+# iv（initialization vector) 初始矢量
+# key 密钥
+# final 作用是：避免解密报错(建议都加上)
+# PS：ECB模式没有iv
+
+
 # ase-128-cbc加密
 require 'openssl'
 
 data = "Very, very confidential data"
 
 # 加密
-cipher = OpenSSL::Cipher::AES.new(128, :CBC)
-cipher.encrypt
+cipher = OpenSSL::Cipher.new('aes-128-cbc')
+# cipher = OpenSSL::Cipher::AES.new(128, :CBC)
+# cipher = OpenSSL::Cipher::AES128.new(:CBC) 等价
+
+cipher.encrypt # 在一开始就说明 加密/解密
 key = cipher.random_key
 iv  = cipher.random_iv
 
 encrypted = cipher.update(data) + cipher.final
 # 解密
 decipher = OpenSSL::Cipher::AES.new(128, :CBC)
-decipher.decrypt
+decipher.decrypt # 在一开始就说明 加密/解密
 decipher.key = key
 decipher.iv  = iv
 
@@ -47,6 +71,8 @@ puts data == plain
 
 
 
+
+########################################## 非对称加密 ############################################
 # 非对称加解密过程
 require 'openssl'
 
