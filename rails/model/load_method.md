@@ -1,151 +1,51 @@
-#### 总述
-- `preload` 无论何时都是单db（无join)查询
-- `eager_load` 首先left join,其次左边会去重
-- `includes` 建立在前两者之上（rails 动态决定
+#### joins、preload、eager_load、includes区别
+> - joins   用于接关联的where语句
+> - preload 避免n+1,使用多个单独的sql
+> - eager_load 避免n+1,使用 joins 方式sql
+> - includes 避免n+1,将preload / eager_load的调用交由rails,如出现关联where语句、order语句，则用eager_load
+> - 以上方法都可以组合使用
 
-#### includes
-1. 可以解决 n + 1 查询
-2. 但,当用其它表字段做条件查询时，select失效
-3. joins多个关联,然后遍历使用关联,会造成n +1;
-> PS: a. 解决办法`includes` + `references`;另外测试出 references只需写任何一个关联进去就行
-      b. 这个n +1 只对读数据有效；如果更新是没有用的哈
+#### 如何使用
+> 在避免n+1时，优先使用includes，如发现性能不好，考虑使用preload/eager_load指定sql方式
 
+#### 各情况下sql展示
+
+##### includes
 ```ruby
-GameType.includes(:game_sublevels).where(game_sublevels: {active: true})                                     # where中关联查询 不用加 references
-GameType.includes(:game_sublevels).references(:game_sublevels).where('game_sublevels.active = ?', true)      # where中字符串查询加 references
+# 直接使用 includes
+# 没有 where order 单独生成了sql 没有join
+User.includes(:department).map{|i| i.department.try(:id)}
+
+# User Load (38.3ms)  SELECT `users`.* FROM `users`
+#  Department Load (8.6ms)  SELECT `departments`.* FROM `departments`  WHERE (is_delete = false) AND `departments`.`id` IN (35, 1, 16, 21, 24, 43, 50, 52, 56, 57, 59, 63, 62, 65, 66, 68, 70, 73, 67, 76, 77, 51, 78, 83, 84, 72, 86, 91, 92, 93, 94, 96, 103, 110, 111, 116, 118, 119)
 
 
-GameType.select(:name).includes(:game_sublevels)          # select 有效
-#GameType Load (0.6ms)  SELECT "game_types"."name" FROM "game_types"
-GameType.select(:name).includes(:game_sublevels).where(game_sublevels: {active: true})         # select 无效（返回所有字段）
-#SELECT "game_types"."name", "game_types"."id" AS t0_r0, "game_types"."name" AS t0_r1, "game_types"."created_at" AS t0_r2, "game_types"."updated_at" AS t0_r3, "game_types"."is_room" AS t0_r4, "game_types"."scene" AS t0_r5, "game_types"."bundle" AS t0_r6, "game_types"."min_bet_level" AS t0_r7, "game_types"."metadata" AS t0_r8, "game_types"."bet_type" AS t0_r9, "game_sublevels"."id" AS t1_r0, "game_sublevels"."created_at" AS t1_r1, "game_sublevels"."updated_at" AS t1_r2, "game_sublevels"."game_type_id" AS t1_r3, "game_sublevels"."active" AS t1_r4, "game_sublevels"."bets" AS t1_r5, "game_sublevels"."level" AS t1_r6, "game_sublevels"."title" AS t1_r7 FROM "game_types" LEFT OUTER JOIN "game_sublevels" ON "game_sublevels"."game_type_id" = "game_types"."id" WHERE "game_sublevels"."active" = $1  [["active", true]]
+
+# 此处使用where 生成了 join 的sql
+# PS: 此处用where 需用joins
+User.includes(:department).joins(:department).where('departments.id > 5').map{|i| i.department.try(:id)}
+#  SELECT `users`.`id` AS t0_r0, `users`.`email` AS t0_r1, `users`.`encrypted_password` AS t0_r2, `users`.`reset_password_token` AS t0_r3, `users`.`reset_password_sent_at` AS t0_r4, `users`.`remember_created_at` AS t0_r5, `users`.`sign_in_count` AS t0_r6, `users`.`current_sign_in_at` AS t0_r7, `users`.`last_sign_in_at` AS t0_r8, `users`.`current_sign_in_ip` AS t0_r9, `users`.`last_sign_in_ip` AS t0_r10, `users`.`loginname` AS t0_r11, `users`.`prefer_address_id` AS t0_r12, `users`.`created_at` AS t0_r13, `users`.`updated_at` AS t0_r14, `users`.`prefer_invoice_id` AS t0_r15, `users`.`cart` AS t0_r16, `users`.`prefer_ptype` AS t0_r17, `users`.`parent_id` AS t0_r18, `users`.`realname` AS t0_r19, `users`.`auth_token` AS t0_r20, `users`.`zcl_usertype` AS t0_r21, `users`.`zcl_topname` AS t0_r22, `users`.`zcl_depname` AS t0_r23, `users`.`zcl_depcode` AS t0_r24, `users`.`zcl_userid` AS t0_r25, `users`.`zcl_username` AS t0_r26, `users`.`zcl_realname` AS t0_r27, `users`.`department_id` AS t0_r28, `users`.`email_token` AS t0_r29, `users`.`token_expiration_at` AS t0_r30, `users`.`status` AS t0_r31, `users`.`emall_id` AS t0_r32, `users`.`mobile` AS t0_r33, `users`.`disagree_msg` AS t0_r34, `users`.`log_out_url` AS t0_r35, `users`.`user_mobile` AS t0_r36, `users`.`errors_count` AS t0_r37, `users`.`order_status` AS t0_r38, `users`.`is_industrial_purchaser` AS t0_r39, `users`.`purchase_type` AS t0_r40, `departments`.`id` AS t1_r0, `departments`.`name` AS t1_r1, `departments`.`short_name` AS t1_r2, `departments`.`org_code` AS t1_r3, `departments`.`org_code_pic` AS t1_r4, `departments`.`legal_name` AS t1_r5, `departments`.`legal_code` AS t1_r6, `departments`.`legal_code_pic` AS t1_r7, `departments`.`area_id` AS t1_r8, `departments`.`address` AS t1_r9, `departments`.`post_code` AS t1_r10, `departments`.`url` AS t1_r11, `departments`.`ancestry` AS t1_r12, `departments`.`ancestry_depth` AS t1_r13, `departments`.`summary` AS t1_r14, `departments`.`short_url` AS t1_r15, `departments`.`bank` AS t1_r16, `departments`.`bank_code` AS t1_r17, `departments`.`industry` AS t1_r18, `departments`.`cgr_nature` AS t1_r19, `departments`.`gys_nature` AS t1_r20, `departments`.`capital` AS t1_r21, `departments`.`license` AS t1_r22, `departments`.`license_pic` AS t1_r23, `departments`.`tax` AS t1_r24, `departments`.`tax_pic` AS t1_r25, `departments`.`employee` AS t1_r26, `departments`.`turnover` AS t1_r27, `departments`.`lng` AS t1_r28, `departments`.`lat` AS t1_r29, `departments`.`created_at` AS t1_r30, `departments`.`updated_at` AS t1_r31, `departments`.`order_num` AS t1_r32, `departments`.`company_type` AS t1_r33, `departments`.`hotel_star` AS t1_r34, `departments`.`product_orientation` AS t1_r35, `departments`.`product_location` AS t1_r36, `departments`.`reg_pic` AS t1_r37, `departments`.`level` AS t1_r38, `departments`.`is_top` AS t1_r39, `departments`.`key_word` AS t1_r40, `departments`.`is_delete` AS t1_r41, `departments`.`is_allow_add` AS t1_r42, `departments`.`is_center` AS t1_r43, `departments`.`belong_center` AS t1_r44, `departments`.`logo_pic` AS t1_r45, `departments`.`tel` AS t1_r46, `departments`.`fax` AS t1_r47, `departments`.`personal_style_id` AS t1_r48, `departments`.`logo_second_pic` AS t1_r49, `departments`.`use_own` AS t1_r50, `departments`.`use_id` AS t1_r51, `departments`.`code` AS t1_r52, `departments`.`auth_code` AS t1_r53, `departments`.`use_budget` AS t1_r54, `departments`.`use_upload` AS t1_r55, `departments`.`show_platform_product` AS t1_r56, `departments`.`logo_goto_url` AS t1_r57, `departments`.`show_trends` AS t1_r58, `departments`.`can_purchase_gyp` AS t1_r59, `departments`.`use_root` AS t1_r60, `departments`.`open_esp` AS t1_r61, `departments`.`show_department_product` AS t1_r62, `departments`.`card_codes` AS t1_r63, `departments`.`third_department_id` AS t1_r64, `departments`.`use_protocol_mall` AS t1_r65 FROM `users` INNER JOIN `departments` ON `departments`.`id` = `users`.`department_id` AND (is_delete = false) WHERE (departments.id > 5)
+
+
+# 此处使用 order 也会生成 join 的sql
+User.includes(:department).joins(:department).order('departments.id').map{|i| i.department.try(:id)}
 ```
 
+##### preload
 ```ruby
-# n + 1
-BrandCatalogStore.joins(:emall, brand_catalog: :catalog).where('catalogs.dingdian_type = ?', "A0609").where(state: 2).each do |store|
-	puts store.brand_catalog.brand_name
-	puts store.emall.id
-end
-
-#BrandCatalogStore Load (9.7ms)  SELECT `brand_catalog_stores`.* FROM `brand_catalog_stores` INNER JOIN `emalls` ON `emalls`.`id` = `brand_catalog_stores`.`emall_id` INNER JOIN `brand_catalogs` ON `brand_catalogs`.`id` = `brand_catalog_stores`.`brand_catalog_id` INNER JOIN `catalogs` ON `catalogs`.`id` = `brand_catalogs`.`catalog_id` AND (year = 2019) WHERE (catalogs.dingdian_type = 'A0609') AND `brand_catalog_stores`.`state` = 2
-#   BrandCatalog Load (6.9ms)  SELECT  `brand_catalogs`.* FROM `brand_catalogs`  WHERE `brand_catalogs`.`id` = 861 LIMIT 1
-# 金正
-#   Emall Load (7.1ms)  SELECT  `emalls`.* FROM `emalls`  WHERE `emalls`.`id` = 2414 LIMIT 1
-# 2414
-#   BrandCatalog Load (7.1ms)  SELECT  `brand_catalogs`.* FROM `brand_catalogs`  WHERE `brand_catalogs`.`id` = 875 LIMIT 1
-# wer
-#   Emall Load (6.6ms)  SELECT  `emalls`.* FROM `emalls`  WHERE `emalls`.`id` = 4805 LIMIT 1
-# 4805
-#   BrandCatalog Load (6.3ms)  SELECT  `brand_catalogs`.* FROM `brand_catalogs`  WHERE `brand_catalogs`.`id` = 877 LIMIT 1
-# vc
-#   Emall Load (6.4ms)  SELECT  `emalls`.* FROM `emalls`  WHERE `emalls`.`id` = 15985 LIMIT 1
-# 15985
-#   BrandCatalog Load (6.9ms)  SELECT  `brand_catalogs`.* FROM `brand_catalogs`  WHERE `brand_catalogs`.`id` = 882 LIMIT 1
-# hubar
-#   Emall Load (10.2ms)  SELECT  `emalls`.* FROM `emalls`  WHERE `emalls`.`id` = 4 LIMIT 1
-# 4
-
-
-# includes + reference
-BrandCatalogStore.includes(:emall, brand_catalog: :catalog).references(:catalogs).where('catalogs.dingdian_type = ?', "A0609").where(state: 2).each do |store|
-	puts store.brand_catalog.brand_name
-	puts store.emall.id
-end
-
-# SQL (17.3ms)  SELECT `brand_catalog_stores`.`id` AS t0_r0, `brand_catalog_stores`.`brand_catalog_id` AS t0_r1, `brand_catalog_stores`.`user_id` AS t0_r2, `brand_catalog_stores`.`emall_id` AS t0_r3, `brand_catalog_stores`.`qq` AS t0_r4, `brand_catalog_stores`.`state` AS t0_r5, `brand_catalog_stores`.`created_at` AS t0_r6, `brand_catalog_stores`.`updated_at` AS t0_r7, `brand_catalog_stores`.`contact` AS t0_r8, `brand_catalog_stores`.`phone` AS t0_r9, `brand_catalog_stores`.`email` AS t0_r10, `brand_catalog_stores`.`is_need_file` AS t0_r11, `brand_catalog_stores`.`company_web` AS t0_r12, `brand_catalog_stores`.`good_url` AS t0_r13, `brand_catalog_stores`.`delay_year` AS t0_r14, `brand_catalog_stores`.`valid_end_time` AS t0_r15, `brand_catalog_stores`.`submit_audit_at` AS t0_r16, `brand_catalog_stores`.`trademark_registration_certificate` AS t0_r17, `brand_catalog_stores`.`certificate_expired_at` AS t0_r18, `emalls`.`id` AS t1_r0, `emalls`.`name` AS t1_r1, `emalls`.`url` AS t1_r2, `emalls`.`emall_code` AS t1_r3, `emalls`.`third_id` AS t1_r4, `emalls`.`created_at` AS t1_r5, `emalls`.`updated_at` AS t1_r6, `emalls`.`emall_label_id` AS t1_r7, `emalls`.`service_tel` AS t1_r8, `emalls`.`icon_url` AS t1_r9, `emalls`.`pay_tip` AS t1_r10, `emalls`.`price_name` AS t1_r11, `emalls`.`full_name` AS t1_r12, `emalls`.`dep_code` AS t1_r13, `emalls`.`main_dep_id` AS t1_r14, `emalls`.`contact` AS t1_r15, `emalls`.`tel` AS t1_r16, `emalls`.`address` AS t1_r17, `emalls`.`bank` AS t1_r18, `emalls`.`bank_code` AS t1_r19, `emalls`.`msm_tel` AS t1_r20, `emalls`.`org_code` AS t1_r21, `emalls`.`nature` AS t1_r22, `emalls`.`phone` AS t1_r23, `emalls`.`fax` AS t1_r24, `emalls`.`contactor` AS t1_r25, `emalls`.`contactorPhone` AS t1_r26, `emalls`.`contactorMobile` AS t1_r27, `emalls`.`area_id` AS t1_r28, `emalls`.`pregion_name` AS t1_r29, `emalls`.`status` AS t1_r30, `emalls`.`comment` AS t1_r31, `emalls`.`small_emall_flag` AS t1_r32, `emalls`.`small_emall_file` AS t1_r33, `emalls`.`approved_time` AS t1_r34, `emalls`.`zykt_flag` AS t1_r35, `emalls`.`zykt_file` AS t1_r36, `emalls`.`change_name` AS t1_r37, `emalls`.`is_stop` AS t1_r38, `emalls`.`stop_end_at` AS t1_r39, `emalls`.`duration` AS t1_r40, `emalls`.`stop_begin_at` AS t1_r41, `emalls`.`auction_pause_state` AS t1_r42, `emalls`.`fixed_pause_state` AS t1_r43, `emalls`.`pause_reason` AS t1_r44, `emalls`.`principal` AS t1_r45, `emalls`.`principal_phone` AS t1_r46, `emalls`.`principal_mobile` AS t1_r47, `emalls`.`email` AS t1_r48, `emalls`.`credit_log` AS t1_r49, `emalls`.`is_automatic` AS t1_r50, `emalls`.`secure_valid_end_at` AS t1_r51, `emalls`.`adviser_submit_count` AS t1_r52, `emalls`.`qualification_submit_count` AS t1_r53, `emalls`.`basic_submit_counts` AS t1_r54, `emalls`.`emall_emall_type_submit_counts` AS t1_r55, `emalls`.`service_areas_submit_counts` AS t1_r56, `emalls`.`emall_status_submit_counts` AS t1_r57, `emalls`.`apply_return_counts` AS t1_r58, `emalls`.`submit_audit_at` AS t1_r59, `brand_catalogs`.`id` AS t2_r0, `brand_catalogs`.`catalog_id` AS t2_r1, `brand_catalogs`.`catalog_code` AS t2_r2, `brand_catalogs`.`catalog_name` AS t2_r3, `brand_catalogs`.`brand_id` AS t2_r4, `brand_catalogs`.`brand_name` AS t2_r5, `brand_catalogs`.`state` AS t2_r6, `brand_catalogs`.`created_at` AS t2_r7, `brand_catalogs`.`updated_at` AS t2_r8, `brand_catalogs`.`status` AS t2_r9, `brand_catalogs`.`comment` AS t2_r10, `brand_catalogs`.`is_store` AS t2_r11, `brand_catalogs`.`realname` AS t2_r12, `brand_catalogs`.`is_stop` AS t2_r13, `catalogs`.`id` AS t3_r0, `catalogs`.`name` AS t3_r1, `catalogs`.`code` AS t3_r2, `catalogs`.`ancestry` AS t3_r3, `catalogs`.`ancestry_depth` AS t3_r4, `catalogs`.`position` AS t3_r5, `catalogs`.`desc` AS t3_r6, `catalogs`.`price_tags` AS t3_r7, `catalogs`.`usable` AS t3_r8, `catalogs`.`created_at` AS t3_r9, `catalogs`.`updated_at` AS t3_r10, `catalogs`.`log` AS t3_r11, `catalogs`.`way_ids` AS t3_r12, `catalogs`.`way_names` AS t3_r13, `catalogs`.`gid` AS t3_r14, `catalogs`.`pic` AS t3_r15, `catalogs`.`priority` AS t3_r16, `catalogs`.`stand_catalog_id` AS t3_r17, `catalogs`.`commodities_count` AS t3_r18, `catalogs`.`is_saving` AS t3_r19, `catalogs`.`year` AS t3_r20, `catalogs`.`ebg_flag` AS t3_r21, `catalogs`.`dingdian_flag` AS t3_r22, `catalogs`.`dingdian_type` AS t3_r23, `catalogs`.`dianshang_flag` AS t3_r24, `catalogs`.`piliang_flag` AS t3_r25, `catalogs`.`ebg_jn_flag` AS t3_r26, `catalogs`.`ebg_tc_flag` AS t3_r27, `catalogs`.`is_special_catalog` AS t3_r28, `catalogs`.`single_limit` AS t3_r29, `catalogs`.`annual_limit` AS t3_r30, `catalogs`.`plgd_flag` AS t3_r31, `catalogs`.`quota_standard` AS t3_r32, `catalogs`.`asset_code` AS t3_r33, `catalogs`.`bidding_type` AS t3_r34 FROM `brand_catalog_stores` LEFT OUTER JOIN `emalls` ON `emalls`.`id` = `brand_catalog_stores`.`emall_id` LEFT OUTER JOIN `brand_catalogs` ON `brand_catalogs`.`id` = `brand_catalog_stores`.`brand_catalog_id` LEFT OUTER JOIN `catalogs` ON `catalogs`.`id` = `brand_catalogs`.`catalog_id` AND (year = 2019) WHERE (catalogs.dingdian_type = 'A0609') AND `brand_catalog_stores`.`state` = 2
-#金正
-#2414
-#wer
-#4805
-#vc
-#15985
-#hubar
-#4
-
-BrandCatalogStore.includes(:emall, brand_catalog: :catalog).references(:catalogs).where('catalogs.dingdian_type = ?', "A0609").where(state: 2).each do |store|
-	store.brand_catalog.update(brand_name: 'hu') # 更新
-	puts store.brand_catalog.id
-end
-# 更新数据没法避免n+1
-# AttachmentCategory Load (6.9ms)  SELECT `attachment_categories`.* FROM `attachment_categories`  WHERE `attachment_categories`.`is_enable` = 1 AND `attachment_categories`.`kind` = 1
-#  SQL (9.5ms)  SELECT `brand_catalog_stores`.`id` AS t0_r0, `brand_catalog_stores`.`brand_catalog_id` AS t0_r1, `brand_catalog_stores`.`user_id` AS t0_r2, `brand_catalog_stores`.`emall_id` AS t0_r3, `brand_catalog_stores`.`qq` AS t0_r4, `brand_catalog_stores`.`state` AS t0_r5, `brand_catalog_stores`.`created_at` AS t0_r6, `brand_catalog_stores`.`updated_at` AS t0_r7, `brand_catalog_stores`.`contact` AS t0_r8, `brand_catalog_stores`.`phone` AS t0_r9, `brand_catalog_stores`.`email` AS t0_r10, `brand_catalog_stores`.`is_need_file` AS t0_r11, `brand_catalog_stores`.`company_web` AS t0_r12, `brand_catalog_stores`.`good_url` AS t0_r13, `brand_catalog_stores`.`delay_year` AS t0_r14, `brand_catalog_stores`.`valid_end_time` AS t0_r15, `brand_catalog_stores`.`submit_audit_at` AS t0_r16, `brand_catalog_stores`.`trademark_registration_certificate` AS t0_r17, `brand_catalog_stores`.`certificate_expired_at` AS t0_r18, `emalls`.`id` AS t1_r0, `emalls`.`name` AS t1_r1, `emalls`.`url` AS t1_r2, `emalls`.`emall_code` AS t1_r3, `emalls`.`third_id` AS t1_r4, `emalls`.`created_at` AS t1_r5, `emalls`.`updated_at` AS t1_r6, `emalls`.`emall_label_id` AS t1_r7, `emalls`.`service_tel` AS t1_r8, `emalls`.`icon_url` AS t1_r9, `emalls`.`pay_tip` AS t1_r10, `emalls`.`price_name` AS t1_r11, `emalls`.`full_name` AS t1_r12, `emalls`.`dep_code` AS t1_r13, `emalls`.`main_dep_id` AS t1_r14, `emalls`.`contact` AS t1_r15, `emalls`.`tel` AS t1_r16, `emalls`.`address` AS t1_r17, `emalls`.`bank` AS t1_r18, `emalls`.`bank_code` AS t1_r19, `emalls`.`msm_tel` AS t1_r20, `emalls`.`org_code` AS t1_r21, `emalls`.`nature` AS t1_r22, `emalls`.`phone` AS t1_r23, `emalls`.`fax` AS t1_r24, `emalls`.`contactor` AS t1_r25, `emalls`.`contactorPhone` AS t1_r26, `emalls`.`contactorMobile` AS t1_r27, `emalls`.`area_id` AS t1_r28, `emalls`.`pregion_name` AS t1_r29, `emalls`.`status` AS t1_r30, `emalls`.`comment` AS t1_r31, `emalls`.`small_emall_flag` AS t1_r32, `emalls`.`small_emall_file` AS t1_r33, `emalls`.`approved_time` AS t1_r34, `emalls`.`zykt_flag` AS t1_r35, `emalls`.`zykt_file` AS t1_r36, `emalls`.`change_name` AS t1_r37, `emalls`.`is_stop` AS t1_r38, `emalls`.`stop_end_at` AS t1_r39, `emalls`.`duration` AS t1_r40, `emalls`.`stop_begin_at` AS t1_r41, `emalls`.`auction_pause_state` AS t1_r42, `emalls`.`fixed_pause_state` AS t1_r43, `emalls`.`pause_reason` AS t1_r44, `emalls`.`principal` AS t1_r45, `emalls`.`principal_phone` AS t1_r46, `emalls`.`principal_mobile` AS t1_r47, `emalls`.`email` AS t1_r48, `emalls`.`credit_log` AS t1_r49, `emalls`.`is_automatic` AS t1_r50, `emalls`.`secure_valid_end_at` AS t1_r51, `emalls`.`adviser_submit_count` AS t1_r52, `emalls`.`qualification_submit_count` AS t1_r53, `emalls`.`basic_submit_counts` AS t1_r54, `emalls`.`emall_emall_type_submit_counts` AS t1_r55, `emalls`.`service_areas_submit_counts` AS t1_r56, `emalls`.`emall_status_submit_counts` AS t1_r57, `emalls`.`apply_return_counts` AS t1_r58, `emalls`.`submit_audit_at` AS t1_r59, `brand_catalogs`.`id` AS t2_r0, `brand_catalogs`.`catalog_id` AS t2_r1, `brand_catalogs`.`catalog_code` AS t2_r2, `brand_catalogs`.`catalog_name` AS t2_r3, `brand_catalogs`.`brand_id` AS t2_r4, `brand_catalogs`.`brand_name` AS t2_r5, `brand_catalogs`.`state` AS t2_r6, `brand_catalogs`.`created_at` AS t2_r7, `brand_catalogs`.`updated_at` AS t2_r8, `brand_catalogs`.`status` AS t2_r9, `brand_catalogs`.`comment` AS t2_r10, `brand_catalogs`.`is_store` AS t2_r11, `brand_catalogs`.`realname` AS t2_r12, `brand_catalogs`.`is_stop` AS t2_r13, `catalogs`.`id` AS t3_r0, `catalogs`.`name` AS t3_r1, `catalogs`.`code` AS t3_r2, `catalogs`.`ancestry` AS t3_r3, `catalogs`.`ancestry_depth` AS t3_r4, `catalogs`.`position` AS t3_r5, `catalogs`.`desc` AS t3_r6, `catalogs`.`price_tags` AS t3_r7, `catalogs`.`usable` AS t3_r8, `catalogs`.`created_at` AS t3_r9, `catalogs`.`updated_at` AS t3_r10, `catalogs`.`log` AS t3_r11, `catalogs`.`way_ids` AS t3_r12, `catalogs`.`way_names` AS t3_r13, `catalogs`.`gid` AS t3_r14, `catalogs`.`pic` AS t3_r15, `catalogs`.`priority` AS t3_r16, `catalogs`.`stand_catalog_id` AS t3_r17, `catalogs`.`commodities_count` AS t3_r18, `catalogs`.`is_saving` AS t3_r19, `catalogs`.`year` AS t3_r20, `catalogs`.`ebg_flag` AS t3_r21, `catalogs`.`dingdian_flag` AS t3_r22, `catalogs`.`dingdian_type` AS t3_r23, `catalogs`.`dianshang_flag` AS t3_r24, `catalogs`.`piliang_flag` AS t3_r25, `catalogs`.`ebg_jn_flag` AS t3_r26, `catalogs`.`ebg_tc_flag` AS t3_r27, `catalogs`.`is_special_catalog` AS t3_r28, `catalogs`.`single_limit` AS t3_r29, `catalogs`.`annual_limit` AS t3_r30, `catalogs`.`plgd_flag` AS t3_r31, `catalogs`.`quota_standard` AS t3_r32, `catalogs`.`asset_code` AS t3_r33, `catalogs`.`bidding_type` AS t3_r34 FROM `brand_catalog_stores` LEFT OUTER JOIN `emalls` ON `emalls`.`id` = `brand_catalog_stores`.`emall_id` LEFT OUTER JOIN `brand_catalogs` ON `brand_catalogs`.`id` = `brand_catalog_stores`.`brand_catalog_id` LEFT OUTER JOIN `catalogs` ON `catalogs`.`id` = `brand_catalogs`.`catalog_id` AND (year = 2019) WHERE (catalogs.dingdian_type = 'A0609') AND `brand_catalog_stores`.`state` = 2
-#   (7.4ms)  BEGIN
-#  BrandCatalog Exists (7.2ms)  SELECT  1 AS one FROM `brand_catalogs`  WHERE (`brand_catalogs`.`catalog_id` = BINARY 63 AND `brand_catalogs`.`id` != #861 AND `brand_catalogs`.`brand_id` = 713) LIMIT 1
-#   (7.8ms)  COMMIT
-#861
-#   (7.0ms)  BEGIN
-#  BrandCatalog Exists (6.8ms)  SELECT  1 AS one FROM `brand_catalogs`  WHERE (`brand_catalogs`.`catalog_id` = BINARY 63 AND `brand_catalogs`.`id` != #875 AND `brand_catalogs`.`brand_id` = 724) LIMIT 1
-#   (6.3ms)  COMMIT
-#875
-#   (7.0ms)  BEGIN
-#  BrandCatalog Exists (7.1ms)  SELECT  1 AS one FROM `brand_catalogs`  WHERE (`brand_catalogs`.`catalog_id` = BINARY 63 AND `brand_catalogs`.`id` != #877 AND `brand_catalogs`.`brand_id` = 726) LIMIT 1
-#   (6.7ms)  COMMIT
-#877
-#   (6.1ms)  BEGIN
-#  BrandCatalog Exists (6.9ms)  SELECT  1 AS one FROM `brand_catalogs`  WHERE (`brand_catalogs`.`catalog_id` = BINARY 63 AND `brand_catalogs`.`id` != #882 AND `brand_catalogs`.`brand_id` = 731) LIMIT 1
-#   (7.0ms)  COMMIT
-#882
-
+# preload 指明用单独sql
+User.preload(:department).joins(:department).where('departments.id > 5').map{|i| i.department.try(:id)}
+#User Load (21.4ms)  SELECT `users`.* FROM `users` INNER JOIN `departments` ON `departments`.`id` = `users`.`department_id` AND (is_delete = false) WHERE (departments.id > 5)
+#  Department Load (7.9ms)  SELECT `departments`.* FROM `departments`  WHERE (is_delete = false) AND `departments`.`id` IN (35, 16, 21, 24, 43, 50, 52, 56, 57, 59, 63, 62, 65, 66, 68, 70, 73, 67, 76, 77, 51, 78, 83, 84, 72, 86, 91, 92, 93, 94, 96, 103, 110, 111, 116, 118, 119)
 ```
 
-#### eager_load
-1. 能解决 n + 1 查询
-2. select 无效
-3. where 条件筛选的是（右边所有满足的条件）
-4. 与`includes` 加 references等价
-```ruby
- GameType.select(:name).eager_load(:game_sublevels)     # 返回所有字段
- # SELECT "game_types"."name", "game_types"."id" AS t0_r0, "game_types"."name" AS t0_r1, "game_types"."created_at" AS t0_r2, "game_types"."updated_at" AS t0_r3, "game_types"."is_room" AS t0_r4, "game_types"."scene" AS t0_r5, "game_types"."bundle" AS t0_r6, "game_types"."min_bet_level" AS t0_r7, "game_types"."metadata" AS t0_r8, "game_types"."bet_type" AS t0_r9, "game_sublevels"."id" AS t1_r0, "game_sublevels"."created_at" AS t1_r1, "game_sublevels"."updated_at" AS t1_r2, "game_sublevels"."game_type_id" AS t1_r3, "game_sublevels"."active" AS t1_r4, "game_sublevels"."bets" AS t1_r5, "game_sublevels"."level" AS t1_r6, "game_sublevels"."title" AS t1_r7 FROM "game_types" LEFT OUTER JOIN "game_sublevels" ON "game_sublevels"."game_type_id" = "game_types"."id"
-```
+##### eager_load
+> PS： 使用eager_load的时候，会覆盖select方法
 
 ```ruby
-u = User.eager_load(:addresses).where('addresses.country = ?', 'Poland')
-#SQL (0.2ms)  SELECT  DISTINCT "users"."id" FROM "users" LEFT OUTER JOIN "addresses" ON "addresses"."user_id" = "users"."id" WHERE (addresses.country = 'Poland') LIMIT ?  [["LIMIT", 11]]
-#  SQL (0.2ms)  SELECT "users"."id" AS t0_r0, "users"."name" AS t0_r1, "users"."email" AS t0_r2, "users"."created_at" AS t0_r3, "users"."updated_at" AS t0_r4, "addresses"."id" AS t1_r0, "addresses"."country" AS t1_r1, "addresses"."city" AS t1_r2, "addresses"."postal_code" AS t1_r3, "addresses"."created_at" AS t1_r4, "addresses"."updated_at" AS t1_r5, "addresses"."street" AS t1_r6, "addresses"."user_id" AS t1_r7 FROM "users" LEFT OUTER JOIN "addresses" ON "addresses"."user_id" = "users"."id" WHERE (addresses.country = 'Poland') AND "users"."id" = ?  [["id", 7]]
-
-# => #<ActiveRecord::Relation [#<User id: 7, name: "Robert Pankowecki", email: "robert@example.org", created_at: "2019-01-22 02:02:54", updated_at: "2019-01-22 02:02:54">]>
-
-u[0]
-#SQL (0.3ms)  SELECT "users"."id" AS t0_r0, "users"."name" AS t0_r1, "users"."email" AS t0_r2, "users"."created_at" AS t0_r3, "users"."updated_at" AS t0_r4, "addresses"."id" AS t1_r0, "addresses"."country" AS t1_r1, "addresses"."city" AS t1_r2, "addresses"."postal_code" AS t1_r3, "addresses"."created_at" AS t1_r4, "addresses"."updated_at" AS t1_r5, "addresses"."street" AS t1_r6, "addresses"."user_id" AS t1_r7 FROM "users" LEFT OUTER JOIN "addresses" ON "addresses"."user_id" = "users"."id" WHERE (addresses.country = 'Poland')
- 
-#=> #<User id: 7, name: "Robert Pankowecki", email: "robert@example.org", created_at: "2019-01-22 02:02:54", updated_at: "2019-01-22 02:02:54">
-
-u[0].addresses
-#=> #<ActiveRecord::Associations::CollectionProxy [#<Address id: 4, country: "Poland", city: "Wrocław", postal_code: "55-555", created_at: "2019-01-22 02:03:04", updated_at: "2019-01-22 02:03:04", street: "Rynek", user_id: 7>, #<Address id: 7, country: "Poland", city: "Wrocła", postal_code: "56-555", created_at: "2019-01-23 01:35:59", updated_at: "2019-01-23 01:35:59", street: "Rynek", user_id: 7>]>
-
-# 这里只返回 地址为 Poland 的地址
-
-# includes 等价写法
-# User.includes(:addresses).where('addresses.country = ?', 'Poland').references(:addresses)
+# eager_load 指明用 join sql
+User.eager_load(:department).joins(:department).where('departments.id > 5').map{|i| i.department.try(:id)}
+#SQL (26.8ms)  SELECT `users`.`id` AS t0_r0, `users`.`email` AS t0_r1, `users`.`encrypted_password` AS t0_r2, `users`.`reset_password_token` AS t0_r3, `users`.`reset_password_sent_at` AS t0_r4, `users`.`remember_created_at` AS t0_r5, `users`.`sign_in_count` AS t0_r6, `users`.`current_sign_in_at` AS t0_r7, `users`.`last_sign_in_at` AS t0_r8, `users`.`current_sign_in_ip` AS t0_r9, `users`.`last_sign_in_ip` AS t0_r10, `users`.`loginname` AS t0_r11, `users`.`prefer_address_id` AS t0_r12, `users`.`created_at` AS t0_r13, `users`.`updated_at` AS t0_r14, `users`.`prefer_invoice_id` AS t0_r15, `users`.`cart` AS t0_r16, `users`.`prefer_ptype` AS t0_r17, `users`.`parent_id` AS t0_r18, `users`.`realname` AS t0_r19, `users`.`auth_token` AS t0_r20, `users`.`zcl_usertype` AS t0_r21, `users`.`zcl_topname` AS t0_r22, `users`.`zcl_depname` AS t0_r23, `users`.`zcl_depcode` AS t0_r24, `users`.`zcl_userid` AS t0_r25, `users`.`zcl_username` AS t0_r26, `users`.`zcl_realname` AS t0_r27, `users`.`department_id` AS t0_r28, `users`.`email_token` AS t0_r29, `users`.`token_expiration_at` AS t0_r30, `users`.`status` AS t0_r31, `users`.`emall_id` AS t0_r32, `users`.`mobile` AS t0_r33, `users`.`disagree_msg` AS t0_r34, `users`.`log_out_url` AS t0_r35, `users`.`user_mobile` AS t0_r36, `users`.`errors_count` AS t0_r37, `users`.`order_status` AS t0_r38, `users`.`is_industrial_purchaser` AS t0_r39, `users`.`purchase_type` AS t0_r40, `departments`.`id` AS t1_r0, `departments`.`name` AS t1_r1, `departments`.`short_name` AS t1_r2, `departments`.`org_code` AS t1_r3, `departments`.`org_code_pic` AS t1_r4, `departments`.`legal_name` AS t1_r5, `departments`.`legal_code` AS t1_r6, `departments`.`legal_code_pic` AS t1_r7, `departments`.`area_id` AS t1_r8, `departments`.`address` AS t1_r9, `departments`.`post_code` AS t1_r10, `departments`.`url` AS t1_r11, `departments`.`ancestry` AS t1_r12, `departments`.`ancestry_depth` AS t1_r13, `departments`.`summary` AS t1_r14, `departments`.`short_url` AS t1_r15, `departments`.`bank` AS t1_r16, `departments`.`bank_code` AS t1_r17, `departments`.`industry` AS t1_r18, `departments`.`cgr_nature` AS t1_r19, `departments`.`gys_nature` AS t1_r20, `departments`.`capital` AS t1_r21, `departments`.`license` AS t1_r22, `departments`.`license_pic` AS t1_r23, `departments`.`tax` AS t1_r24, `departments`.`tax_pic` AS t1_r25, `departments`.`employee` AS t1_r26, `departments`.`turnover` AS t1_r27, `departments`.`lng` AS t1_r28, `departments`.`lat` AS t1_r29, `departments`.`created_at` AS t1_r30, `departments`.`updated_at` AS t1_r31, `departments`.`order_num` AS t1_r32, `departments`.`company_type` AS t1_r33, `departments`.`hotel_star` AS t1_r34, `departments`.`product_orientation` AS t1_r35, `departments`.`product_location` AS t1_r36, `departments`.`reg_pic` AS t1_r37, `departments`.`level` AS t1_r38, `departments`.`is_top` AS t1_r39, `departments`.`key_word` AS t1_r40, `departments`.`is_delete` AS t1_r41, `departments`.`is_allow_add` AS t1_r42, `departments`.`is_center` AS t1_r43, `departments`.`belong_center` AS t1_r44, `departments`.`logo_pic` AS t1_r45, `departments`.`tel` AS t1_r46, `departments`.`fax` AS t1_r47, `departments`.`personal_style_id` AS t1_r48, `departments`.`logo_second_pic` AS t1_r49, `departments`.`use_own` AS t1_r50, `departments`.`use_id` AS t1_r51, `departments`.`code` AS t1_r52, `departments`.`auth_code` AS t1_r53, `departments`.`use_budget` AS t1_r54, `departments`.`use_upload` AS t1_r55, `departments`.`show_platform_product` AS t1_r56, `departments`.`logo_goto_url` AS t1_r57, `departments`.`show_trends` AS t1_r58, `departments`.`can_purchase_gyp` AS t1_r59, `departments`.`use_root` AS t1_r60, `departments`.`open_esp` AS t1_r61, `departments`.`show_department_product` AS t1_r62, `departments`.`card_codes` AS t1_r63, `departments`.`third_department_id` AS t1_r64, `departments`.`use_protocol_mall` AS t1_r65 FROM `users` INNER JOIN `departments` ON `departments`.`id` = `users`.`department_id` AND (is_delete = false) WHERE (departments.id > 5)
 ```
-
-#### joins
-1. 两种写法：a.直接接关联 `User.joins(:emall)` b. 接sql`User.joins('joins emalls on emalls.id = users.emall_id')`
-2. `User.joins(xx)`默认返回User相关的字段
-3. select 有效
-4. 不能避免n + 1 查询，可用它取出其它表中有用字段
-```ruby
-# sum 只能放最后
-IapPurchase.joins(user: :used_codes).where('redeem_codes.id = ?', RedeemCode.find(10).sum(:price)
-
-# 等价
-IapPurchase.joins(user: {redeemptions: :redeem_code}).where('redeem_codes.id = ?', RedeemCode.find(10)).sum(:price)
-
-# 先找出符合条件user 再includes其所有iap_purchases
-User.joins(:iap_purchases).where('iap_purchases.price > ?', 12).includes(:iap_purchases)
-```
-
-
-
-
-
-
-
-
-
-
-
-
 
 
