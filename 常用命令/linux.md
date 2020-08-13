@@ -44,6 +44,8 @@ mv ~/temp.rb ~/tp.rb             更改文件名（相同目录时）
                                  如果，在更改目录下已有，这个新名字的文件，会只保留现在的这个文件
 mv file1 file2 file3 directory   一次移动多个文件
 
+cp cp -a /Users/dongmingyan/yg/emall_interface/* vendor/emall_interface # 复制一个文件中的所有内容（文件/目录）到另外一个目录
+
 rm -rf uploads/attachment/file/*  删除目录下所有文件
 
 date            当前日期
