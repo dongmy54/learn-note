@@ -28,6 +28,7 @@
 * savon                 发送soap请求
 * mechanize             页面自动化填入表单、抓取数据等
 * scout_apm             监测应用的行能每个页面的sql、慢查询等
+* watir                 一个自动化测试的gem
 
 
 
