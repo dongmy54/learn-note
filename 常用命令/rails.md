@@ -29,7 +29,7 @@ bundle exec rake tmp:cache:clear     清理文件缓存
 
 bundle exec sidekiq                                   启动sidekiq服务 (根据 config/sidekiq.yml)
 bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队列：default 和 other_queue_name)
-
+bundle _1.17.3_ install  指定版本bundle
 
 sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
 
