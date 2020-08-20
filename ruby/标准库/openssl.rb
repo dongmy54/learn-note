@@ -70,6 +70,39 @@ puts data == plain
 #=> true
 
 
+#------------------------------------------------------------------------------------------#
+require 'openssl'
+require 'cgi'
+
+key    = "NRg6nHXGfI8u"       # 密钥
+params = "platform_code=aecc&group_code=aecc&login_name=glycs&dep_name=中航金网（北京）电子商务有限公司-综管部"
+
+context = CGI::escape(params) # 转码
+
+# DES加密, mode: ECB || CBC
+def encrypt(context, key: key, mode: 'ECB')
+  # key 和 iv 相同
+  cipher = OpenSSL::Cipher::DES.new(mode).encrypt.tap { |obj| obj.key = obj.iv = key }
+  # PS：这里可以不用转大写，解密时去掉unpack('C*').pack("c*")
+  # unpack('H*') 目的将十六进制解码成可读字符串
+  (cipher.update(context) + cipher.final).unpack('H*')[0].upcase
+end
+
+# DES解密, mode: ECB || CBC
+def decrypt(context, key: key, mode: 'ECB')
+  cipher = OpenSSL::Cipher::DES.new(mode).decrypt.tap { |obj| obj.key = obj.iv = key } 
+  cipher.update([context].pack('H*').unpack("C*").pack("c*")) + cipher.final
+end
+
+# 测试
+data = encrypt(context, key: key)  # 加密测试
+puts data.inspect
+result = decrypt(data, key: key)    # 解密测试
+result == context                     
+params_after = CGI::unescape(result)    # 解码
+puts params_after == params                
+
+
 
 
 ########################################## 非对称加密 ############################################
