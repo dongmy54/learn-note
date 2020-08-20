@@ -39,7 +39,8 @@ git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
 git checkout -   切换到上一个分支
 
 git checkout test --        消除歧义（切换到test分支）
-git checkout -- test        消除歧义（恢复test文件内容到commit版本）
+git checkout -- test        消除歧义（恢复test文件内容到commit版本 -- 等于当前分支）
+git checkout 0317198a2b48045b9f7c2423b5397594d3e53848 test 和上等价（此时用 commit id)
 
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
 git branch -m new_branch_name                     修改本地分支名
