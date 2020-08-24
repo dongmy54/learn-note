@@ -24,7 +24,18 @@ Red.class_variable_get(:@@foo)
 
 
 ##################################################################################
-# tap 调试 检测中间值
+# 它属于Object中方法
+# 1. 总是返回自身
+# 2. 结块传入自己
+class Object
+  def tap
+    yield self
+    self
+  end
+end
+
+
+# 调试 方法链 检测中间值
 (1..10).tap{|x| puts "原本的样子：#{x.inspect}"}
        .to_a
        .tap{|x| puts "转数组后：#{x.inspect}"}
@@ -38,6 +49,13 @@ Red.class_variable_get(:@@foo)
 # map后： []
 
 
+# 提升可读性(始终返回自己)
+user = User.first.tap do |u|
+  u.loginnname = 'sdfa'
+  u.email = '134@qq.com'
+end
+
+
 # tap 便捷填充数组/hash/字符串
 [].tap do |i|
   i << 'hu'
@@ -45,17 +63,7 @@ Red.class_variable_get(:@@foo)
 end
 # => ["hu", "bar"]
 
-"".tap do |i|
-  i << 'hu'
-  i << 'bar'
-end
-# => "hubar"
 
-{}.tap do |i|
-  i[:hu]  = 1
-  i[:bar] = 2
-end
-# => {:hu=>1, :bar=>2}
 
 
 
