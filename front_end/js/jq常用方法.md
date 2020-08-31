@@ -115,6 +115,10 @@ window.location.href = "/companies/new?category_ids=" + ids.join(','); //# 重�
 location.reload(); // 刷线当前页面
 ```
 
+##### 加载html替换原html
+```js
+$(".logo_box").load('/');
+```
 
 ##### 读取cookie
 ```js
