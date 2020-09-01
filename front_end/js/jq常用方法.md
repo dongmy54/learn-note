@@ -33,6 +33,7 @@ $('input[name=all_check_box').is(':checked');
 ```js
 $(".form_submit").click(function(e){
   e.preventDefault();
+  // e.stopPropagation(); 只有在内层元素上使用才有效果
 }
 ```
 
@@ -65,6 +66,12 @@ $("[name='bid_project[is_sap_mro]']:checked").change(); // 一定要选中后 ch
 #### 触发事件
 ```js
 $(".is_warn").trigger('change');
+```
+
+##### appendTo
+> 内容插入(与append功能相同，区别在于先有内容还是选择器）
+```js
+$( "<p>Test</p>" ).appendTo( ".inner" );
 ```
 
 ##### 去除字符串首尾空格
