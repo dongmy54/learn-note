@@ -27,3 +27,11 @@ square(3);
 var square = new Function('number', 'return number * number')
 square(3);
 ```
+
+##### 宣告立即执行
+> 用于一些需要同步执行的场合
+```js
+(function(){
+  console.log(1);
+})();
+```

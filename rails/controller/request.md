@@ -17,4 +17,7 @@ request.headers['dmy-k']
 
 request.env['HTTP_DMY_K']
 # => "dmy"
+
+request.base_url
+# => "http://localhost:3000"
 ```
