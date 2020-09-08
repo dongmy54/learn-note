@@ -35,3 +35,30 @@ square(3);
   console.log(1);
 })();
 ```
+
+###### 箭头函数
+> 1. 写法更简洁
+> 2. 自动绑定外层this对象
+> 3. 常用于回调
+
+```js
+var elements = [
+  'Hydrogen',
+  'Helium',
+  'Lithium',
+  'Beryllium'
+];
+
+// 常规写法
+elements.map(function(element) { 
+  return element.length; 
+}); 
+
+// 用箭头函数写法
+elements.map((element) => {
+  return element.length;
+});
+
+// 还可以进一步精简
+elements.map(element => elements.length);
+```
