@@ -4,6 +4,7 @@
 > 1. 默认this代表，window
 > 2. 函数呼叫 xxx_obj.xx_function() 此时 this 为 xxx_obj
 > 3. 强制绑定 xx_function.bind(xx_obj)() 此时 this 为 xx_obj
+> 4. new xx_function 此时会构造一个新的 this对象
 
 ##### 情况一
 ```js
@@ -46,4 +47,14 @@ func.bind(obj)();
 // 123
 ```
 
+##### 情况四
+```js
+var calNum = function(num){
+  this.num = num; // new 函数名 构造this对象
+}
+
+var a = new calNum(100);
+
+a.num // 100
+```
 
