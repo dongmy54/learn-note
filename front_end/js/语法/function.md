@@ -62,3 +62,13 @@ elements.map((element) => {
 // 还可以进一步精简
 elements.map(element => elements.length);
 ```
+
+##### 关于返回值
+> 1. 没有return 返回 undefined
+> 2. 有return 返回 return 内容
+> 3. new FuctionName 返回 obj
+
+
+
+
+
