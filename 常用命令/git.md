@@ -101,6 +101,8 @@ git push origin xx-branch --force  (在本地分支commit回退，落后于远�
 
 git remote add upstream  仓库地址    添加远端upstream（用于fork别人项目，同步源仓库情况）
 git rm xxx文件                      从暂存区中删除某文件（对实际文件不做影响,有时需要用-f）
+
+rm -rf .git-credential-cache       解决仓库存在、账号正确却提示仓库不存在的问题
 ```
 
 ##### 如何添加一个空目录到git
