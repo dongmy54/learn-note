@@ -35,6 +35,7 @@ $("#hu").children()| id为hu的所有子元素   |                       ||
 样式               | 说明                   |其它|
 ------------------|------------------------|----|
 $("input[name=radio1]")          | name 属性等于 radio1的 input标签         |PS：属性名称是不用带引号的
+$("input[name='win_product_ids[]']")| name属性等于 win_product_ids[] |属性中包含[]需要加引号包含起来
 $("#first input[name=radio1]")   |id为first里 name属性等于 radio1的 input标签|
 $("input[type=checkbox]")        |type 属性等于 checkbox的 input标签         |
 $("input[type=checkbox]:checked")|type 属性 checkbox 且选中                 |
