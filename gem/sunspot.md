@@ -20,6 +20,9 @@ rake sunspot:solr:start
 
 # rake 重建索引
 rake sunspot:reindex
+
+# 快速重跑索引
+Product.where(sku: '1195207').includes(catalog: :departments).solr_index(batch_size: 1000)
 ```
 
 ##### model操作
