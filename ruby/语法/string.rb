@@ -244,3 +244,14 @@ str   = 'hdmykahddmyib'
 regex = /(dmy).[ab]/
 puts str.gsub(regex,'H')
 # hHhdH
+
+
+#===========
+# encode 编码utf8
+str = "vandflyver \xC5rhus"
+str.encode('UTF-8', invalid: :replace).split("n")
+# => => ["va", "dflyver �rhus"
+
+
+
+
