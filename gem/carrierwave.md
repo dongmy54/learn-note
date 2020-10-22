@@ -82,6 +82,15 @@ class User < ActiveRecord::Base
 end
 ```
 
+#### 其它
+> 1. 处理验证失败，重新render 文件丢失问题
+```ruby
+# 加 字段_cache 
+# 注意需要permit 此参数
+<%= f.file_field :file,class: "validate[custom[check_file_size[100000]]]" %>
+<%= f.hidden_field :file_cache %> <!-- 验证失效文件 仍能存在 -->
+```
+
 
 
 
