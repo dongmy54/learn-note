@@ -1,0 +1,9 @@
+/* 自动换行 */
+.no_break {word-break: break-all;}
+
+/* 不自动换行 y方向滚动 */
+.no_break_y {overflow-y: scroll;word-break: break-all;}
+/* 不自动换行 x方向滚动 */
+.no_break_x {overflow-x: scroll;word-break: break-all;}
+
+
