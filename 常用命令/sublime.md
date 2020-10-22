@@ -8,6 +8,7 @@
 - command + ] 右缩紧
 - command + T 快速文件查找
 - command + L 扩展行（如果已经选中部分行内容）
+- command + b 执行当前文件
 - ctrl + G （输入行号->回车，跳指定行）
 
 - 命令可到 tools/gists 下查看
