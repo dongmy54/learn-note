@@ -21,3 +21,12 @@ request.env['HTTP_DMY_K']
 request.base_url
 # => "http://localhost:3000"
 ```
+
+##### redirect_to 重定向
+```ruby
+# rails 4.x
+
+redirect_to request.referer || root_path
+# rails 5.x
+redirect_back(fallback_location: root_path) # 预留回滚位
+```
