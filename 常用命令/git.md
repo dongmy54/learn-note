@@ -16,8 +16,9 @@ git reset 文件1 文件二 仅将文件从暂存区中撤离出来
 git commit  -m "xx"   将文件提交到版本库
 git commit -am  "xx"  等同于 git add + git commit -m 一步到位(PS：新文件不受影响)
 
-git status       当前分支状态
-git branch -a    当前本地 和 远端具有的所有分支 
+git status             当前分支状态
+git branch -a          当前本地 和 远端具有的所有分支
+git branch -m new_name 修改当前分支名称
 
 git diff                                                 当前修改 与 暂存区间不同 也就是git add之前
 git diff HEAD                                            当前修改 与 最新commit（HEAD)不同 也就是git add之后
