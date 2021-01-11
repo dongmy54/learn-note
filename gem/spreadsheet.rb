@@ -32,3 +32,16 @@ format = Spreadsheet::Format.new :color => :blue,
 sheet1.row(0).default_format = format
 
 book.write '/Users/dmy/Downloads/test.xls'
+
+
+# 一个文件 写多个sheet 
+(1..12).each do |month|
+  month  = (month < 10) ? "0#{month}" : month
+  sheet  = book.create_worksheet(:name => "#{month}月") # 每次创建 就是一个sheet
+  orders = Order.where(index_month: "#{2020}#{month}".to_i, workflow_state: "finished")
+  write_excel(orders, sheet)
+end
+
+book.write "#{Rails.root}/订单数据.xls"
+
+
