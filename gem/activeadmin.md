@@ -7,10 +7,12 @@
 ActiveAdmin.register City do
   # 定义需要用到哪些action
   actions :all, :except => [:new]
+  # actions :index, :show 这里仅展示 index 和 show
 
   # 作用域 需要在model中有对应scope
-  scope :all
-  scope :front
+  # PS: 这里group作用是页面上分组（同一个组连在一起）
+  scope :all, group: :all
+  scope :front, group: :state
 
   # dashboard 菜单名称
   menu label: '城市', priority: 14
@@ -81,3 +83,39 @@ ActiveAdmin.register City do
   end
 end
 ```
+
+定制show页面
+```ruby
+# 借用show定制
+show do |space|
+  panel "Space" do
+    # 依据space 对象展开
+    attributes_table_for space, :id, :branding, :state, :credit, :name, :full_name, :subdomain, :email, :website, :telephone
+  end
+
+  panel "desk" do
+    # space.space_roles 遍历
+    table_for space.space_roles do
+      column :id
+      column :created_at
+      # 再次嵌套
+      column :location do |space_role|
+        space_role.location.name_pinyin
+      end
+    end
+  end
+end
+
+# 直接写模版
+show do
+  # app/views/admin/cities/_city_partial.html.erb
+  render 'city_partial', {city: city}
+end
+```
+
+##### 其它说明
+> 1. 在index 展示和 filter时，如果遇到外键比如：user_id，我们直接写成user会转换对象很方便
+
+
+
+
