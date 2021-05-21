@@ -1,6 +1,7 @@
 #### activeadmin
 > 1. 用途：一个用于快速搭建后台管理页面的gem
 > 2. 参考： `https://activeadmin.info/`
+> 3. `rails g active_admin:resource city` 快捷创建
 
 使用
 ```ruby
