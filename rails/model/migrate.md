@@ -58,3 +58,9 @@ def up
   execute "ALTER TABLE `zcl_bid`.`package_bid_notes` CONVERT TO CHARACTER SET utf8;"
 end
 ```
+
+##### postgresql特殊
+```ruby
+# 添加数组字段
+add_column :spaces, :menus, :string, array: true, comment: "菜单"
+```
