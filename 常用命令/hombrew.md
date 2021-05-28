@@ -10,6 +10,7 @@ brew search mysql            查询可用包
 brew install wine            安装xx包
 brew update                  更新
 brew uninstall --force mysql 卸载
+brew remove postgresql@9.4   移除（和uninstall 等效）
 brew info memcached          已安装包信息（包含一些启动命令等）
 
 brew services list                  后台启动列表
