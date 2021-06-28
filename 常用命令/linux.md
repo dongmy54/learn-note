@@ -107,8 +107,14 @@ sdahf
 EOF
 ls >> foo.txt             # 追加信息 到foo.txt 末尾       
 
+
+# PS: scp命令针对的是本地端（非服务器）
+scp scp_test.rb kuban_dev:.             # 将本地scp_test.rb 传到配置好的kuban_dev服务器家目录
+scp kuban_dev:scp_test.rb scp_test_2.rb # ssh kuban_dev 是配置好的（将scp_test.rb 下载到本地scp_test_2.rb 文件）
+
 scp hu.txt root@120.69.192.128:.        # 将本地   hu.txt 文件 上传到服务器 当前目录(.)
 scp root@120.68.192.128:hu.txt hu.txt   # 将服务器 hu.txt 文件 下载到本地 文件（hu.txt）
+
 
 # 过滤时间范围日志
 # PS：1. 注意这里如果截止时间不能匹配，开始之后的所有将返回
