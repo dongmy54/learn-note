@@ -9,7 +9,7 @@ json.extract! @user, :id, :name, :phone_num
 
 if @locations.present?
   # 一对多 数组-直接取值
-  json.locations @locations, :id, :name
+  json.locations @locations, :id, :name # 这样的写法空relation也是可以的哦
 end
 
 if @organizations.present?
