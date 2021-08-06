@@ -70,3 +70,39 @@ RSpec.describe BetItem, type: :model do
 
 end
 ```
+
+##### 关于上传文件的测试
+```ruby
+it "batch import sales products" do
+  old_count = SalesProduct.count
+  file = fixture_file_upload("#{Rails.root}/spec/files/batch_import_sales_products.xlsx")
+  post "/managements/v2/sales_products/batch_import", {
+    params: {
+      shop_vendor_id: shop_vendor.id,
+      product_category_id: cat1.id,
+      file: file
+    },
+    headers: headers
+  }
+
+  res = JSON.parse(response.body)
+  
+  expect(response.status).to eq(200)
+  new_count = SalesProduct.count
+  expect(new_count - old_count).to eq(1)
+end
+```
+
+##### 关于运行测试文件
+> 1. `respec 目录/文件`
+> 2. `respec --tag focus` 运行单个测试,需在it 后加 `focus: true`
+
+
+
+
+
+
+
+
+
+
