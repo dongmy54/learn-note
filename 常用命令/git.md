@@ -39,6 +39,7 @@ git checkout -b xx-branch develop          在develop分支上创建分支
 git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
 
 git checkout -   切换到上一个分支
+git checkout .   当前所有修改全部放弃
 
 git checkout test --        消除歧义（切换到test分支）
 git checkout -- test        消除歧义（恢复test文件内容到commit版本 -- 等于当前分支）
