@@ -23,3 +23,7 @@
 
 ##### 运行代码
 > `command + B`
+
+##### 插件
+> 可以安装一个 git blame的插件检查git提交修改信息
+> 操作： shift + cmd + p 然后输入git blame即可
