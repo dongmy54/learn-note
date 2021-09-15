@@ -548,6 +548,10 @@ end
 
 
 
+#============================================== enum ==============================================#
+# index_by 将枚举对象转换成hash
+ProductCategory.last(2).index_by(&:name)
+# {"茅台"=>#<ProductCategory id: 127, space_id: 364, name: "茅台", deleted_at: nil, created_at: "2021-09-08 10:51:17", updated_at: "2021-09-08 10:51:17", shop_id: 38, position: 2147483266, shop_vendor_id: nil, description: nil>, "可乐"=>#<ProductCategory id: 128, space_id: 364, name: "可乐", deleted_at: nil, created_at: "2021-09-14 10:19:37", updated_at: "2021-09-14 10:19:37", shop_id: nil, position: 2147483457, shop_vendor_id: 23, description: nil>}
 
 
 
