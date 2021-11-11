@@ -48,10 +48,13 @@ end
 
 # 用法二：和partial使用 - 推荐
 json.array! @posts, partial: 'posts/post', as: :post
+# 或单个 show页面
+json.partial! partial: "meeting_service", locals: {meeting_service: @meeting_service}
 
 # 数组拆分出单独字段
 json.array! @adapay_refunds do |adapay_refund|
   json.extract! adapay_refund, :id, :adapay_payment_id, :adapay_refund_id, :sales_invoice_id, :refund_order_no, :refund_amt, :reason, :trans_state, :succeed_time, :fee_amt, :status, :created_at
   json.serial_number, adapay_refund.sales_invoice&.serial_number
 end
+
 ```
