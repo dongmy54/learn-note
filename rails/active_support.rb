@@ -60,6 +60,8 @@ C.descendants           # => [B, A, D]
 # 驼峰命令
 'active_record'.camelize
 # => "ActiveRecord"
+'active_record'.camelize(:lower) # 首字母大写
+# => 'activeRecord'
 
 
 # 驼峰转下划线
@@ -201,6 +203,10 @@ Time.now.beginning_of_month
 # 月结束
 Time.now.end_of_month
 # => 2019-09-30 23:59:59 +0800
+
+# 一个月有多少天
+Time.days_in_month(3, 2022) # 月，年
+# => 31
 
 
 #------------------------ 时间增减
