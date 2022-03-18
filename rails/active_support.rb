@@ -380,6 +380,21 @@ h[:a]
 h['a']
 
 
+# reverse_merge 设置默认值（如果key不存在）
+h = {a: 1, b: 2}
+h.reverse_merge({c: 3})
+# {a: 1, b:2, c:3}
+h
+# {a: 1, b:2}
+
+# reverse_merge! 设置默认值（如果key不存在）会改变原值
+h = {a: 1, b: 2}
+h.reverse_merge!({c: 3})
+# => {a: 1, b:2, c: 3}
+h
+# => {a: 1, b:2, c: 3}
+
+
 # slice 从hash中截取部分hash
 # 原hash不变
 h = {:a => 1, :b => 6, :c => 12}
