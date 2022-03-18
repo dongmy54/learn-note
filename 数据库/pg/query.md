@@ -15,6 +15,9 @@ select * from xx_tables where metadata -> 'top_layer' ->> 'sub_layer' = 'xx_stri
 # shop_ids中包含 1，2
 select id from sales_invoices where shop_ids @> '{1,2}';
 
-# shop_ids 中包含 1 或 2
+# && 交集只要有其中一个
 select id from sales_invoices where shop_ids && '{1,2}';
+
+# <@ 右边完全包含左边
+# || 合并数组查询
 ```
