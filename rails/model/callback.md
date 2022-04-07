@@ -22,3 +22,6 @@ end
 ##### after_create
 > 避免每次都做回调操作,仅在创建时执行,用 `after_save`
 
+##### 相关属性变化方法
+> 1. rails 5.1以后 previous_changes（无差别访问可以用字符/符号） 只在after_commit 后生效
+> 2. after_(create/update/save/commit) 可以用 saved_change_to_<attribute>? / saved_changes? 判断属性是否改变；<attribute>_before_last_save 此前旧值
