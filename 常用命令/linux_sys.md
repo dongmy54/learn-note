@@ -109,4 +109,23 @@ i 只展示正在运行的进程(再次按可以复原)
 ```
 
 
+###### 内存
+```
+free -h 内存总概
+```
+
+###### 硬盘
+```
+f-file 文件系统角度
+df -h 
+df -h apps 指定路径
+
+u-usage 使用角度
+du -h  默认列出当前路径下所有文件/子目录
+du -h apps 指定路径
+du -h --max-depath=1    当前目录往下一层
+echo > production.log   清空文件
+```
+
+
 
