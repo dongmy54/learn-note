@@ -132,6 +132,69 @@ hkeys user_1
 ```
 
 
+##### set 集合命令
+```
+sadd myset a                    # 一次添加一个元素
+# 1
+sadd myset b c d                # 一次添加多个元素
+# 3
+smembers myset                  # 集合中所有成员
+# 1) "d"
+# 2) "c"
+# 3) "b"
+# 4) "a"
+srem myset d                    # 从集合中删掉元素
+# 1
+smembers myset 
+# 1) "c"
+# 2) "b"
+# 3) "a"
+# scard myset                     # 元素个数
+# (integer) 3
+
+sismember myset f               # 判断集合中是否有xx元素
+# 0 
+sismember myset a
+# 1
+
+sadd myset1 a b c f
+# 4
+sdiff myset1 myset              # 集合求差（myset1 - myset)
+# 1) "f"
+sdiffstore myset2 myset1 myset  # 不同的存储下来
+# 1
+smembers myset2
+# 1) "f"
+
+sadd myset3 a b c
+sadd myset4 a b
+sinter myset3 myset4            # 集合求交集
+# 1) "b"
+# 2) "a"
+sinterstore myset5 myset1 myset # 集合求交存储
+# 3
+smembers myset5 
+# 1) "c"
+# 2) "b"
+# 3) "a"
+
+sunion myset3 myset4                   # 集合合并
+sunionstore myset6 myset3 myset4       # 集合合并存储
+smembers myset6
+# 1) "c"
+# 2) "b"
+# 3) "a"
+
+spop myset3                     # 随机弹出元素
+# "b"
+scard myset3                    
+# 2
+spop myset3 2                   # 指定弹出元素数量
+# 1) "c"
+# 2) "a"
+scard myset3
+# 0
+```
 
 
 
