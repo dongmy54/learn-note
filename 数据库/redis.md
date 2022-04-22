@@ -196,7 +196,65 @@ scard myset3
 # 0
 ```
 
+##### list-列表
+> 由于左右队列有许多相似的命令，着重看一边就行
+```
+rpush mylist a b c d e f g        # 从右边 推入多个元素入队
+# (integer) 7
+lrange mylist 0 -1                 # 列出队列中所有元素
+# 1) "a"
+# 2) "b"
+# 3) "c"
+# 4) "d"
+# 5) "e"
+# 6) "f"
+# 7) "g"
+llen mylist                       # 队列元素个数
+# (integer) 7
+lpop mylist                       # 从左弹出一个元素
+# "a"
 
+
+lpush mylist a
+ltrim mylist 0 5                  # 裁剪（保留索引是0-5的元素）可用于日志的删除
+# OK
+lrange mylist 0 -1
+# 1) "a"
+# 2) "b"
+# 3) "c"
+# 4) "d"
+# 5) "e"
+# 6) "f"
+
+
+lrem mylist 5 a                   # (由于5>0，负数相反）从头到尾最多删除五个a元素
+# 1
+lset mylist 1 "hello"             # 按索引编号设置值
+# OK
+lindex mylist 1                   # 指定索引获取值
+# "hello"
+
+
+# 将一个队列中的元素弹出，同时装入另外一个队列（待处理队列）；保证安全，不丢失元素
+rpoplpush mylist mylist1     
+# "f"
+rpoplpush mylist mylist1
+# "e"
+lrange mylist1 0 -1
+# 1) "e"
+# 2) "f"
+rpoplpush mylist mylist           # 队列名相同，则自旋转；可用于循环去检查监控场合
+# "d"
+rpoplpush mylist mylist
+# "hello"
+
+lpushx mylist bc                  # 推入队列时检查队列是否存在 ，存在才推入
+# 4
+lpushx mylist2 bcd                # mylist2 不存在
+# 0
+
+blpop mylist 10                   # 阻塞弹出（如果没有元素弹出会阻塞）超时10s,有时候避免循环
+```
 
 
 
