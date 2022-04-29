@@ -18,3 +18,8 @@ print body
 socket.close
 
 
+# 当前机器ip
+ip = Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
+ip.ip_address
+# => "10.0.1.6"
+
