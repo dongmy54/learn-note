@@ -3,7 +3,6 @@
 > 1. 高性能全文检索，比如商品数据的检索
 > 2. 数据统计分析，它相比于关系型数据库，具有相当优秀的统计分析手段
 
-
 ##### 相关url
 > 1. 官网 https://www.elastic.co/guide/en/elasticsearch/reference/7.17/index.html
 > 2. 中文件教程 https://www.tizi365.com/archives/709.html
@@ -39,6 +38,15 @@
 
 文档（document)
 > 相当于关系性数据库中行，在es中数据是按照json存储的
+
+##### 中文分词器
+> 默认情况下es的分词是针对英文的，我们需要中分分词
+> 1. 第一种：smartcn 比较简单`bin/elasticsearch-plugin install analysis-smartcn`
+> 2. 第二张：ik支持自定义词库，更流行，具体参考 `https://github.com/medcl/elasticsearch-analysis-ik`
+> PS: 安装好后需要指定分词器才会生效
+
+
+
 
 
 
