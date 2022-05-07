@@ -44,7 +44,9 @@
 > 1. 第一种：smartcn 比较简单`bin/elasticsearch-plugin install analysis-smartcn`
 > 2. 第二张：ik支持自定义词库，更流行，具体参考 `https://github.com/medcl/elasticsearch-analysis-ik`
 > PS: 安装好后需要指定分词器才会生效
-
+> PS: 两种安装方式
+> - 手动下载分词器后，解压后放置到plugins 目录下
+> - 利用 `elasticsearch-plugin` 命令
 
 
 
