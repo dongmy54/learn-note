@@ -20,4 +20,8 @@ select id from sales_invoices where shop_ids && '{1,2}';
 
 # <@ 右边完全包含左边
 # || 合并数组查询
+
+# 中任何一个等于85 这种比较好理解
+select id from sales_invoices where 85 = any(shop_ids);
+# 还有all等
 ```
