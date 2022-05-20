@@ -17,7 +17,7 @@
 > - nginx -s reload 重现载入配置
 
 
-##### 示例
+##### mac上示例
 ```
 #user  nobody;
 worker_processes  1;
