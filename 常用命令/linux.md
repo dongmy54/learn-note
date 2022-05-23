@@ -157,6 +157,7 @@ alias foo='cd learn;ls;cd -'   # 命一个别名代表 一串操作(ps: 关闭�
 unalias foo                    # 去掉别名foo
 
 grep "test" db_test.rb temp.rb      # 在文件中匹配字符串(这里只支持文件)
+grep '"user_ids":\[2187366\]' production.log # 双引号放到单引号里；[]用反斜杠转义
 grep -i "test" db_test.rb temp.rb   # 忽略大小写
 grep -l "test" db_test.rb temp.rb   # 列出匹配到的文件
 grep hu -Ir log                     # I（忽略二进制文件）r（递归文件） 检索hu
