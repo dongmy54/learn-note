@@ -180,6 +180,10 @@ Time.now.today?            # true
 # to_date(日期)
 '2019-1-28 11:39:23'.to_date       # => Mon, 28 Jan 2019 
 
+# 按时区解析
+Time.zone.parse("2022-07-08 15:38:23")
+# => Fri, 08 Jul 2022 15:38:23 CST +08:00
+
 
 #------------------------ 时间开始/结束
 # 小时开始
@@ -283,12 +287,33 @@ Rack::Utils.parse_nested_query("hu%5B%5D=2&hu%5B%5D=4&hu%5B%5D=8")
 arr = [1, [2,3]]
 clone = arr.clone
 clone[1][2] = 4
-arr[1][2] = 4 # => 4  # clone 浅层
+arr[1][2] # => 4  # clone 浅层
 
 arr = [1, [2,3]]
 deep_dup = arr.deep_dup
 deep_dup[1][2] = 4
 arr[1][2] # => nil
+
+# deep_dup(避免修改副本元素，引起原值改变)
+# 比如
+a = %w(hu)
+b = a.clone
+
+b << 'bar'                   # 这个时候 a 仍不受影响
+b.first.gsub!('hu', 'kkk')   # a值改变了
+
+a  # => ["kkk"]
+b  # => ["kkk", "bar"]
+
+c = %w(hu)
+d = c.deep_dup
+
+d << 'bar'
+d.first.gsub!('hu', 'kkk')    # 改变元素 c 不受影响
+
+c # => ["hu"]
+d # => ["kkk", "bar"]
+
 
 
 # split 按某元素分组
@@ -353,25 +378,31 @@ h.stringify_keys!
 h # => {"1"=>3, "a"=>:b}
 
 
-# deep_dup(避免修改副本元素，引起原值改变)
-# 比如
-a = %w(hu)
-b = a.clone
+# deep_stringify_keys 嵌套的hash也会被转义
+h = {a: "abc", b: {c: 'd'}}
+h.deep_stringify_keys 
+#  {"a"=>"abc", "b"=>{"c"=>"d"}}
+h #  {:a=>"abc", :b=>{:c=>"d"}} 
 
-b << 'bar'                   # 这个时候 a 仍不受影响
-b.first.gsub!('hu', 'kkk')   # a值改变了
 
-a  # => ["kkk"]
-b  # => ["kkk", "bar"]
+# deep_stringify_keys！ 强制改变hash 原值
+h = {a: "abc", b: {c: 'd'}}
+h.deep_stringify_keys!
+h # => {"a"=>"abc", "b"=>{"c"=>"d"}}
 
-c = %w(hu)
-d = c.deep_dup
 
-d << 'bar'
-d.first.gsub!('hu', 'kkk')    # 改变元素 c 不受影响
+# deep_symbolize_keys 深层符号化key
+h = {"a" => "sd", "b" => {"c" => "c"}}
+h.deep_symbolize_keys
+#  => {:a=>"sd", :b=>{:c=>"c"}}
+h # => {"a"=>"sd", "b"=>{"c"=>"c"}}
 
-c # => ["hu"]
-d # => ["kkk", "bar"]
+
+# deep_symbolize_keys! 深层符号key强制
+h = {"a" => "sd", "b" => {"c" => "c"}}
+h.deep_symbolize_keys!
+#  => {:a=>"sd", :b=>{:c=>"c"}}
+h #  => {:a=>"sd", :b=>{:c=>"c"}}
 
 
 # with_indifferent_access 无差别访问
@@ -404,8 +435,7 @@ h
 # => {:a=>1, :b=>6, :c=>12}
 
 
-# extract! 从hash中截取部分hash
-# 原hash改变
+# extract! 从hash中截取部分hash PS: 原hash改变，相当于extract!
 h = {:a => 1, :b => 6, :c => 12}
 rest = h.extract!(:a, :b)
 # => {:a=>1, :b=>6}
