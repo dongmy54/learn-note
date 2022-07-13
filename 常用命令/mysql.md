@@ -32,3 +32,28 @@ mysql -uroot -h111.231.22x.13y -pxxx@yyy -e "select * from products limit 4;" zh
 # 重建
 source /Users/dongmingyan/test.sql
 ```
+
+##### 重置mysql root密码
+```shell
+# 关掉当前启动的mysql
+brew services stop mysql@5.7
+
+# 以非权限校验模式启动
+mysqld_safe --skip-grant-tables
+
+# 进入控制台
+mysql
+
+# 执行如下语句
+FLUSH PRIVILEGES;
+SET PASSWORD FOR root@'localhost' = PASSWORD('123456');
+
+# 退出
+quite
+
+# 关掉安全模式，以正常模式启动
+killall mysql
+brew services start mysql@5.7
+```
+
+
