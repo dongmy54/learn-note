@@ -1,7 +1,8 @@
 # 原理
 # 1. 初始化固定数量线程 所有线程无限循环
 # 2. 任务加入 jobs队列中
-# 2. 线程从jobs中取出任务 并执行
+# 3. 线程从jobs中取出任务 并执行
+# 4. ruby的Queue是线程安全的
 
 class ThreadPool
   def initialize(size:)
