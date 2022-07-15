@@ -39,14 +39,17 @@ puts "counter: #{counter}" # PS: 由于线程非安全，这里的值可能每�
 ###### 互斥锁
 ```ruby
 # 加锁-确保线程安全
+# 同一时刻只允许一个线程，进入临界区
 mutex = Mutex.new
 counter = 0
 10.times.map do
   Thread.new do
     mutex.synchronize do
+      ################# 临界区 ################
       tmp = counter + 1
       print "*"
       counter = tmp
+      ################# 临界区 ################
     end
   end
 end.each(&:join)
