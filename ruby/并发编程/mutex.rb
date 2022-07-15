@@ -14,7 +14,7 @@ threads = []
   threads << Thread.new{hu}
 end
 
-threads.join # 这里输出条数是变化的
+threads.each(&:join) # 这里输出条数是变化的
 # 我正在执行
 
 
