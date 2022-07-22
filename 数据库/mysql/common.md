@@ -23,7 +23,8 @@ show tables;
 show tables like 'user%';                   -- 匹配
 show full tables;                           -- 带表类型
 show full tables where table_type = 'view'; -- 视图
-SHOW CREATE TABLE employees;
+SHOW CREATE TABLE employees; -- 创建表详细内容
+SHOW INDEX FROM employees;   -- 索引
 
 
 -- 列
