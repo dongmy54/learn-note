@@ -32,5 +32,23 @@ CREATE USER admin WITH PASSWORD 'dmy067';
 \c dmydb;
 
 # 当前数据库所有表名
-\dt
+\dt 
+
+# 列出当前数据 以lock_events开头的表名
+\dt lock_events*;
 ```
+
+##### 常用
+```sql
+-- 添加索引
+CREATE INDEX lock_events_2022_space_id_location_id_action_user_id ON public.lock_events_2022 USING btree (space_id, location_id, action, user_id);
+CREATE INDEX lock_events_2022_created_at ON public.lock_events_2022 USING btree (created_at);
+
+-- 查看表中索引
+select * from pg_indexes where tablename = 'lock_events';
+
+--- 性能分析
+explain SELECT  "lock_events".* FROM "lock_events" WHERE (lock_events.created_at >= '2022-01-01') AND "lock_events"."space_id" = 50495 AND "lock_events"."action" IN (0, 1) AND "lock_events"."location_id" = 72712 AND "lock_events"."user_id" = 2759906 AND (lock_events.created_at >= '2022-01-01 00:00:00') ORDER BY space_id,location_id,action,lock_events.created_at desc LIMIT 10 OFFSET 0;
+```
+
+
