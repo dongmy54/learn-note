@@ -8,6 +8,7 @@
 ##### 常用命令
 ```shell
 nginx -t 检查配置文件修改是否正确，有错会直接提示
+nginx -v 版本信息
 
 sudo systemctl start nginx
 sudo systemctl stop nginx
