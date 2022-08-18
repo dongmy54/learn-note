@@ -107,6 +107,7 @@ tail -n +5 temp.rb    # 打印出temp.rb文件 第5行 开始的内容
 sed '5d' temp.rb      # 和上等价
 tail -100f temp.rb    # 动态追踪temp.rb 最后100行
 
+nproc  # 查看系统是几个核心
 
 cat > foo.txt             # 输入信息，换行输入ctrol + D（创建并写入foo.txt文件） 什么也不写 清空文件
                           # 输入信息，换行输入ctrol + D 创建并写入foo.txt
