@@ -17,5 +17,8 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
 # 获取证书，且编辑配置文件（常用）=====第一次后，只需要执行此
 sudo certbot --nginx
+
+# 默认安装的证书有效期只有90天 用此命令自动续订
+certbot renew --dry-run
 ```
 
