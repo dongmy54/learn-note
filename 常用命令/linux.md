@@ -136,7 +136,7 @@ wc -l < log/development.log    # 统计行数
 
 
 ln file1 file2    #硬链接
-ln -s file1 file2 #软链接（file2指向file1 file2->file1 类型于快捷方式）
+ln -s file1 file2 #软链接（file2指向file1 file2->file1 类型于快捷方式；目标在前）
 # 链接的作用：
 # 文件共享，不同的文件或路径可以访问、编辑相同的内容
 # 不同点：
