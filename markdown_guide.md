@@ -43,6 +43,8 @@ console.log(foo(5));
 ### 三级标题
 #### 四级标题（以此类推）
 
+
+### 分隔线
 三条线短线为分隔线
 
 ---
@@ -68,12 +70,6 @@ console.log(foo(5));
    1. Item 3b
 
 
-### 链接
-[去百度](https://baidu.com)
-[去淘宝](https://taobao.com)
-
-
-
 ### 表格
 表头一 | 表头二  | 表头三
 ------| -------| -----
@@ -85,6 +81,15 @@ console.log(foo(5));
 ### 图片
 ![Minion](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527314146011&di=e05a0d9e77c7c0681f380b44d2857bbf&imgtype=0&src=http%3A%2F%2Fp2.wmpic.me%2Farticle%2F2016%2F01%2F30%2F1454135116_zoOZVhQN.jpg)
 ![Stormtroopocat](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527908901&di=6c73fbd1870a3832bbcb5444d188598e&imgtype=jpg&er=1&src=http%3A%2F%2Fimg837.ph.126.net%2FyZA2BIizqNwEPVlJPSq-1w%3D%3D%2F1777514477929753734.jpg)
+
+### 链接
+[去百度](https://baidu.com)
+[去淘宝](https://taobao.com)
+
+
+#### 转义
+\* 转义哦
+
 
 ### 笑脸图标
 > Classic markup: :wink: :crush: :cry: :tear: :laughing: :yum:
