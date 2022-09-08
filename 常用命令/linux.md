@@ -188,6 +188,9 @@ ls b*                                          # 通配符 列出 b 开头文件
 ls blog/*/models                               # 列出 文件路径 符合 blog/任意/models 文件
 
 
+# 时区调整-ubuntu
+sudo timedatectl set-timezone Asia/Shanghai
+
 
 #=============================== crontab ======================
 crontab crontab.txt  # 加载写好的定时任务   # PS：加载后需要 crontab -e 才会生效
@@ -204,6 +207,7 @@ crontab -r           # 删除所有定时任务
 0 0 * * 1-5 <command-to-execute>                    # 每个工作日00:00分
 15 16 1 * * <command-to-execute>                    # 每月1日16:15分
 ```
+
 
 
 
