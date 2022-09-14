@@ -36,6 +36,9 @@ CREATE USER admin WITH PASSWORD 'dmy067';
 
 # 列出当前数据 以lock_events开头的表名
 \dt lock_events*;
+
+# 以dongmingyan身份 查看kuban_dev 库 users表信息
+pg_dump kuban_dev -t users -U dongmingyan --schema-only
 ```
 
 ##### 常用
