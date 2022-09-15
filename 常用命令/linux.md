@@ -126,7 +126,7 @@ scp kuban_dev:scp_test.rb scp_test_2.rb # ssh kuban_dev 是配置好的（将scp
 
 scp hu.txt root@120.69.192.128:.        # 将本地   hu.txt 文件 上传到服务器 当前目录(.)
 scp root@120.68.192.128:hu.txt hu.txt   # 将服务器 hu.txt 文件 下载到本地 文件（hu.txt）
-
+scp -P 9032 kuban@39.105.140.xxx:syslog.1 ./Downloads # 端口要用大写P
 
 # 过滤时间范围日志
 # PS：1. 注意这里如果截止时间不能匹配，开始之后的所有将返回
