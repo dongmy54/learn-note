@@ -111,6 +111,7 @@ tail -100f temp.rb    # 动态追踪temp.rb 最后100行
 nproc        # 查看系统是几个核心
 ulimit -n    # 每个核心允许打开文件最大数
 
+echo > foo.txt            # 清空文件
 cat > foo.txt             # 输入信息，换行输入ctrol + D（创建并写入foo.txt文件） 什么也不写 清空文件
                           # 输入信息，换行输入ctrol + D 创建并写入foo.txt
 cat > foo.txt <<EOF       # 创建文件 写入内容，方便发给其它人
