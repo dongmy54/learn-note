@@ -3,7 +3,11 @@
 command + space     查询
 command + 加号       放大
 command + 减号       缩小
+
+
+command + shift + 5 录屏/开启-关闭
 ```
+
 
 ##### 配置mac上端口
 打开指定的3000端口
