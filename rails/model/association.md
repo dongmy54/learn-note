@@ -35,3 +35,13 @@ class JavaSysUserRole < JavaDatabaseConnection
 end
 ```
 
+##### 关联保存
+```ruby
+# 假设space has_many locations
+
+space = Space.new(name: 'space_name')
+location = space.locations.new(name: 'location_name')
+space.save
+
+# 会附带将space一起保存哦
+```
