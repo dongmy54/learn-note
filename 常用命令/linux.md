@@ -193,7 +193,7 @@ ls blog/*/models                               # 列出 文件路径 符合 blog
 # 时区调整-ubuntu
 sudo timedatectl set-timezone Asia/Shanghai
 
-
+lsof | grep delete # 列出打开的已删除进程
 #=============================== crontab ======================
 crontab crontab.txt  # 加载写好的定时任务   # PS：加载后需要 crontab -e 才会生效
 crontab -e           # 为当前用户添加定时任务(打开编辑界面)
