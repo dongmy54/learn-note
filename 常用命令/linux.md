@@ -19,6 +19,14 @@
 - 'd'     文件夹
 
 ### 命令展开
+> 单双引号
+> 单：所见即所得；双：会解析
+```bash
+echo '$HOME'
+# $HOME
+echo "$HOME"
+# Users/dongmingyan
+```
 1. echo this $USER is $100.20 and $((2+3));cd                 无引号: 全部展开
 2. echo "this is this $USER is $100.20 and $((2+3));cd"       双引号: 部分展开（除 参数展开/算术展开/命令替换）
 3. echo 'this is this $USER is $100.20 and $((2+3));cd'       单引号: 不展开
@@ -166,10 +174,9 @@ which     命令名                # 查看命令可执行档位置
 alias foo='cd learn;ls;cd -'   # 命一个别名代表 一串操作(ps: 关闭终端就失效了)
 unalias foo                    # 去掉别名foo
 
-grep "test" db_test.rb temp.rb      # 在文件中匹配字符串(这里只支持文件)
-grep '"user_ids":\[2187366\]' production.log # 双引号放到单引号里；[]用反斜杠转义，对于某些特殊符号，可以去掉后grep
-grep -i "test" db_test.rb temp.rb   # 忽略大小写
-grep -l "test" db_test.rb temp.rb   # 列出匹配到的文件
+grep 'test' db_test.rb temp.rb      # 在文件中匹配字符串(这里只支持文件)
+grep -i 'test' db_test.rb temp.rb   # 忽略大小写
+grep -l 'test' db_test.rb temp.rb   # 列出匹配到的文件
 grep hu -Ir log                     # I（忽略二进制文件）r（递归文件） 检索hu
 grep -A 10 -B 10 self.product_klass.find_by /Users/dongmingyan/t.rb  # 过滤匹配内容的前后10行
 grep -a xx file_name # Binary file 提示，前面加-a
