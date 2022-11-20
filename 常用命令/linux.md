@@ -157,7 +157,7 @@ ln -s file1 file2 #软链接（file2指向file1 file2->file1 类型于快捷方�
 nohup cmd & # 退出终端后仍然执行
 (cmd &)     # 这样也行
 
-
+wget -O p.jpg  https://gimg2.baidu.com/image_search/xx.jpg # 下载某个文件并命名
 # ===============================较少用到======================
 du                             # 列出当前目录下 所有文件
 du -h file                     # 人类可读方式 查看文件大小
