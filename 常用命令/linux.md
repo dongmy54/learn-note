@@ -104,6 +104,7 @@ lsof -i               # 列出所有网络连接
 lsof -i :3000         # 列出端口3000占用情况
 lsof -i :3000 -t      # 端口3000所占用的进程id
 sudo lsof -i -P -n    # 查看打开了哪些端口监听等
+lsof | grep delete # 列出打开的已删除进程
 
 id                    # 用户id信息
 chmod 640 foo.text    # 更改文件权限
@@ -205,7 +206,10 @@ ls blog/*/models                               # 列出 文件路径 符合 blog
 # 时区调整-ubuntu
 sudo timedatectl set-timezone Asia/Shanghai
 
-lsof | grep delete # 列出打开的已删除进程
+ifconfig      # 查看网络接口配置
+ifconfig eth0 # 查看网卡eth0 网络配置
+ip addr add 192.168.0.127/24 dev eth0 # 添加ip到 eth0网卡 dev代表设备
+ip addr show eth0                     # 查看eth0 配置ip信息
 #=============================== crontab ======================
 crontab crontab.txt  # 加载写好的定时任务   # PS：加载后需要 crontab -e 才会生效
 crontab -e           # 为当前用户添加定时任务(打开编辑界面)

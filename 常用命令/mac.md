@@ -21,3 +21,6 @@ sudo pfctl -f /etc/pf.conf
 sudo pfctl -E
 ```
 
+##### hosts文件位置
+/etc/hosts
+
