@@ -103,6 +103,7 @@ kill -9 1024          # 确认1024进程是否存在,若存在强制删除
 lsof -i               # 列出所有网络连接
 lsof -i :3000         # 列出端口3000占用情况
 lsof -i :3000 -t      # 端口3000所占用的进程id
+lsof -p 4523          # 查看5423进程打开文件情况
 sudo lsof -i -P -n    # 查看打开了哪些端口监听等
 lsof | grep delete # 列出打开的已删除进程
 
@@ -202,6 +203,8 @@ touch photo-{2010..2018}-{0{1..9},{10..12}}    # {} 展开 创建 类似 phtoto-
 ls b*                                          # 通配符 列出 b 开头文件 其下目录
 ls blog/*/models                               # 列出 文件路径 符合 blog/任意/models 文件
 
+# 出口ip
+curl cip.cc
 
 # 时区调整-ubuntu
 sudo timedatectl set-timezone Asia/Shanghai
