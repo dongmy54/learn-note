@@ -182,7 +182,10 @@ grep -l 'test' db_test.rb temp.rb   # 列出匹配到的文件
 grep hu -Ir log                     # I（忽略二进制文件）r（递归文件） 检索hu
 grep -A 10 -B 10 self.product_klass.find_by /Users/dongmingyan/t.rb  # 过滤匹配内容的前后10行
 grep -a xx file_name # Binary file 提示，前面加-a
+
+
 zgrep 'test' production.gz # 过滤gz文件
+zless production.gz        # 查看gz文件内容
 
 ls learn-not/ruby/语法 | grep rb    # 过滤出xx目录下 包含rb的文件名
 
