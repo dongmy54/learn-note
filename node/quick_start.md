@@ -27,6 +27,7 @@ pm2 start start.js # 启动应用 开启的是一个单例进程
 pm2 list           # 列出启动列表
 pm2 stop start     # 停用 后这些都行 id|name|namespace|all|json|stdin
 pm2 restart all    # 重启所有
+pm2 log            # 日志查看（动态的）
 pm2 monit          # 监控情况
 ```
 
