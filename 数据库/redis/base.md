@@ -20,6 +20,9 @@ redis-server          启服务
 redis-cli             进入console
 ```
 
+##### 日志
+`tail -f /var/log/redis/redis-server.log -n 100`
+
 ##### 共用console命令
 ```
 keys *              # 列出所有key
