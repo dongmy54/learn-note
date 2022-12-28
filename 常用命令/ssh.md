@@ -37,3 +37,16 @@ Host aliyu
   IdentityFile ~/.ssh/id_rsa
 ```
 
+##### 调整ssh超时时间
+```
+# /etc/ssh/ssh_config文件
+
+# 多久发送一个空包
+ClientAliveInterval  3600 # 秒 这里一个小时
+# 最多发送多少个
+ClientAliveCountMax  10  
+
+# 上面配置的的总时间为 1 * 10 = 10个小时
+重启sshd服务
+systemctl restart ssh
+```
