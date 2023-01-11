@@ -130,6 +130,17 @@ status = Sidekiq::Batch::Status.new(bid)
 status.complete?
 ```
 
+##### 相关命令
+一般部署而言，自动部署都会自动重启sidekiq
+sidekiq进程，除了作业进程外，一般还会有管理后台进程
+```bash
+bundle exec sidekiq                                   # 启动sidekiq服务 (根据 config/sidekiq.yml)
+bundle exec sidekiq -q default -q other_queue_name    # 启动sidekiq服务（队列：default 和 other_queue_name)
+# 指定sidekiq 配置文件 环境 日志文件
+bundle exec sidekiq -d --config config/sidekiq.yml --environment production --logfile log/sidekiq.log &
+# 关闭sidekiq
+bundle exec sidekiqctl stop tmp/sidekiq.pid 0
+```
 
 ##### 消息积压如何处理
 > 1. 增加并发线程数里（调整concurrency-重新启动sidekiq）
