@@ -1,5 +1,5 @@
 ##### rails 命令汇总
-```
+```bash
 rails new test                                                           创建rails test项目
 rails _4.1.8_ new test                                                   指定rails版本创建
 rails g scaffold articles title:string content:text author:references                  脚手架（测试新功能不错）
@@ -27,8 +27,12 @@ rake db:rollback            迁移回退一步
 rake cache:clear                     清理通用（redis memcache)缓存
 bundle exec rake tmp:cache:clear     清理文件缓存
 
-bundle exec sidekiq                                   启动sidekiq服务 (根据 config/sidekiq.yml)
-bundle exec sidekiq -q default -q other_queue_name    启动sidekiq服务（队列：default 和 other_queue_name)
+bundle exec sidekiq                                   # 启动sidekiq服务 (根据 config/sidekiq.yml)
+bundle exec sidekiq -q default -q other_queue_name    # 启动sidekiq服务（队列：default 和 other_queue_name)
+# 指定sidekiq 配置文件 环境 日志文件
+bundle exec sidekiq -d --config config/sidekiq.yml --environment production --logfile log/sidekiq.log &
+# 关闭sidekiq
+bundle exec sidekiqctl stop tmp/sidekiq.pid 0
 bundle _1.17.3_ install  指定版本bundle
 
 sudo kill -9 $(lsof -i :3000 -t)   关闭rails s 进程
