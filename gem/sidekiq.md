@@ -85,6 +85,14 @@ end
 ```
 打开 domain/sidekiq 可以进入后台
 
+说明：
+1. quite后，sidekiq将不再拉取job
+2. stop后
+   - 可以大胆的stop,当前正在处理的任务，将回回收回队列中并不会丢失
+   - 过几秒后，sidekiq将重新拉取job
+3. 正在处理的job,我们只有stop，才能用队列删掉
+
+
 ##### 异步扩展
 > - 在初始化文件中配置添加 `Sidekiq::Extensions.enable_delay! `
 > - 可以把类方法变成异步的
@@ -140,6 +148,10 @@ bundle exec sidekiq -q default -q other_queue_name    # 启动sidekiq服务（�
 bundle exec sidekiq -d --config config/sidekiq.yml --environment production --logfile log/sidekiq.log &
 # 关闭sidekiq
 bundle exec sidekiqctl stop tmp/sidekiq.pid 0
+
+# 如果用了capistrano-sidekiq这个gem
+cap -T sidekiq # 可以列出支持的操作
+# 比如：cap prod sidekiq:restart
 ```
 
 ##### 消息积压如何处理
@@ -153,6 +165,7 @@ queue = Sidekiq::Queue.new("high")
 queue.each do |job|
   job.klass # => 'MyWorker'
   job.args # => [1, 2, 3]
+  job.value # 有时候args是空的这个时候就要用value
   # 通过这里的删除job 用某些条件判断
   job.delete if job.jid == 'abcdef1234567890'
 end
