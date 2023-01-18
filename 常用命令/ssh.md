@@ -6,6 +6,8 @@
 ##### 登录配置
 ```
 ssh-keygen -t rsa                 # 本地电脑创建密钥对 若存在则不用重新创建
+                                  # 如果需要同时创建多对秘钥，可以在输入后提示输入文件路径时候做下改动
+                                  # 默认文件位置为：～/.ssh/id_rsa 
 ssh-copy-id root@120.79.1xx.yyy   # 将本地 公钥传到服务器(`~/.ssh/authorized_keys`) 成功后直接登录
 
 vim /etc/ssh/sshd_config          # 服务器 修改 PasswordAuthentication 为no 禁用密码登录
