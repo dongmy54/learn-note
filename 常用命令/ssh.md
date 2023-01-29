@@ -53,3 +53,10 @@ ClientAliveCountMax  10
 重启sshd服务
 systemctl restart ssh
 ```
+
+##### 链接的同时执行命令
+```bash
+ssh dmy_hw 'ls' # 加单引号的内容在服务器上执行
+```
+
+
