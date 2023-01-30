@@ -15,7 +15,7 @@ frpc.ini: 客户端配置文件
 frpc: 客户端软件
 ```
 
-##### 服务端配置
+##### 服务端(公网服务器)配置
 ```bash
 # 下载 注意这里的版本 liunx-amd64
 wget https://github.com/fatedier/frp/releases/download/v0.42.0/frp_0.42.0_linux_amd64.tar.gz
@@ -42,7 +42,7 @@ bind_port = 7000     # 是自己设定的frp服务端端口-供客户端连接�
 nohup ./frps -c ./frps.ini &
 ```
 
-##### 客户端配置
+##### 客户端（内网服务器）配置
 > - 1. 注意这里下载的版本需要与服务端下载版本号保持一致
 > - 2. 下的时候注意客户端环境（mac/linux/windowns)
 > - 3. 在客户端需要打开提供服务的端口，比如这里ssh-22端口
