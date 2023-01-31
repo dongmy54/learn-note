@@ -15,3 +15,8 @@
 ##### model中用render
 `ApplicationController.new.render_to_string(partial: "/shared/template/zzyq_show", locals: {xj: self.xj}, :layout => false)`
 
+
+##### 构建params参数
+```ruby
+ActionController::Parameters.new(hash)
+```
