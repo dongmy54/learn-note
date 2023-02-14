@@ -59,6 +59,22 @@ def up
 end
 ```
 
+##### 整数类型转时间戳类型
+```ruby
+# 没法直接转，会报错（pg)
+def change
+  execute "
+    ALTER TABLE employee_work_statuses
+    ALTER COLUMN created_at SET DATA TYPE timestamp with time zone
+    USING timestamp with time zone 'epoch' + created_at * interval '1 second';
+
+    ALTER TABLE employee_work_statuses
+    ALTER COLUMN updated_at SET DATA TYPE timestamp with time zone
+    USING timestamp with time zone 'epoch' + updated_at * interval '1 second';
+  "
+end
+```
+
 ##### postgresql特殊
 ```ruby
 # 添加数组字段
