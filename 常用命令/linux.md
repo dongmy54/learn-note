@@ -106,6 +106,7 @@ lsof -i :3000 -t      # 端口3000所占用的进程id
 lsof -p 4523          # 查看5423进程打开文件情况
 sudo lsof -i -P -n    # 查看打开了哪些端口监听等
 lsof | grep delete # 列出打开的已删除进程
+ls -l | sort -nrk 5   # 按照文件大小排序
 
 id                    # 用户id信息
 chmod 640 foo.text    # 更改文件权限
@@ -216,6 +217,9 @@ curl cip.cc
 
 # 时区调整-ubuntu
 sudo timedatectl set-timezone Asia/Shanghai
+
+# 以root身份登录（对于类似重定向的操作简单sudo是不起作用的）
+sudo -i
 
 ifconfig      # 查看网络接口配置
 ifconfig eth0 # 查看网卡eth0 网络配置
