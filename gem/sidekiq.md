@@ -151,7 +151,7 @@ bundle exec sidekiqctl stop tmp/sidekiq.pid 0
 
 # 如果用了capistrano-sidekiq这个gem
 cap -T sidekiq # 可以列出支持的操作
-# 比如：cap prod sidekiq:restart
+# 比如：cap prod sidekiq:restart 不会影响到config/sidekiq.yml外的其它队列重启
 ```
 
 ##### 消息积压如何处理

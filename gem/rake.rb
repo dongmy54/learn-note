@@ -7,6 +7,7 @@ task :my_task, [:a,:b] do |t,args|         # t 是task 的缩写 代表 task对�
   puts args[:a], args[:b]                  # 传入参数可以简单理解为 在hash中 
 end
 # rake my_task[1,2]  参数放入方括号中
+# rake "my_task[1,2]" 引号包起来 防止命令行没识别
 
 task :my_task1, :a, :b do |t,args|         # 这种写法和上面等价
   puts args[:a], args[:b]

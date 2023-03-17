@@ -18,6 +18,8 @@ brew uninstall redis  卸载
 
 redis-server          启服务
 redis-cli             进入console
+
+sudo systemctl restart redis # 可以用于重启
 ```
 
 ##### 日志
