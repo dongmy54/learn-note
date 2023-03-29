@@ -106,6 +106,10 @@ git remote add upstream  仓库地址    添加远端upstream（用于fork别人
 git rm xxx文件                      从暂存区中删除某文件（对实际文件不做影响,有时需要用-f）
 
 rm -rf .git-credential-cache       解决仓库存在、账号正确却提示仓库不存在的问题
+
+
+# 批量删除远程分支
+git branch -r | grep  'fixbug' | sed 's/origin\///g' | xargs -I {} git push origin :{}
 ```
 
 ##### 如何添加一个空目录到git
