@@ -39,6 +39,12 @@ CREATE USER admin WITH PASSWORD 'dmy067';
 
 # 以dongmingyan身份 查看kuban_dev 库 users表信息
 pg_dump kuban_dev -t users -U dongmingyan --schema-only
+
+# 会展示数据库的数据目录 - 真正存数据的是下面的base目录
+SHOW data_directory;
+
+# 命令行清理wal文件（找到一个临界的文件，默认会删除这个文件之前的所有wal文件）
+pg_archivecleanup /var/lib/postgresql/data 00000001000000A20000006A
 ```
 
 ##### 常用
@@ -52,6 +58,14 @@ select * from pg_indexes where tablename = 'lock_events';
 
 --- 性能分析
 explain SELECT  "lock_events".* FROM "lock_events" WHERE (lock_events.created_at >= '2022-01-01') AND "lock_events"."space_id" = 50495 AND "lock_events"."action" IN (0, 1) AND "lock_events"."location_id" = 72712 AND "lock_events"."user_id" = 2759906 AND (lock_events.created_at >= '2022-01-01 00:00:00') ORDER BY space_id,location_id,action,lock_events.created_at desc LIMIT 10 OFFSET 0;
+
+
+# 清空数据表
+truncate exception_logs;
+
+# 查看数据库大小-当前pg所有库
+SELECT datname, pg_size_pretty(pg_database_size(datname)) FROM pg_database;
 ```
+
 
 
