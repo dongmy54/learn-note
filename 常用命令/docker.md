@@ -23,4 +23,10 @@ docker inspect --format='{{.NetworkSettings.IPAddress}}' <container_name_or_id>
 docker logs kb-ent-api       # 查看容器运行情况（制定容器日志）
 docker logs --stderr web-app # 查看日志标准错误
 docker logs -f web-app       # 动态查看日志
+
+# 在容器内创建备份文件
+docker exec -it my_postgres_container pg_dump -U postgres -W -F t my_database > my_database_backup.tar
+
+# 将备份文件从容器复制到宿主机
+docker cp my_postgres_container:/path/to/backup/in/container/my_database_backup.tar /path/to/backup/on/host/
 ```
