@@ -15,6 +15,7 @@ gem help                         帮助
 gem install rake                 安装rake 稳定版本
 gem install rake -N              安装时 不安装文档
 gem install rake -v 12.3.1       指定安装版本
+gem install path/xx.gem          根据路径安装gem（先把gem下载下来）
 
 gem uninstall rake               卸载gem
 gem uninstall rake -v 12.3.1     卸载gem指定版本
