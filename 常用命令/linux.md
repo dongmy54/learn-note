@@ -27,6 +27,7 @@ du -sh * | sort -h | tail -n 10
 
 # 清空
 > xxx.log 
+sudo sh -c 'echo > production.log'  # 有时候需要sudo权限
 ```
 
 ### 命令展开
