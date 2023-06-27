@@ -47,6 +47,7 @@ git checkout 0317198a2b48045b9f7c2423b5397594d3e53848 test 和上等价（此时
 
 git branch --set-upstream develop origin/develop  本地develop 与 远端develop 做关联
 git branch -m new_branch_name                     修改本地分支名
+git branch -m old_branch_name new_branch_name     改分支名称
 
 
 git cherry-pick 76b53de95710166d6f58951d26298e058fa734e6 挑选commit合并到当前分支
@@ -77,6 +78,7 @@ git push -u origin master
 
 git pull                               推分支到远端
 
+git fetch --all                        获取远端所有分支
 git fetch origin master                获取远端master 到本地
 git merge origin/master                合并origin/master 到当前分支
 
