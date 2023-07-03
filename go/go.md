@@ -17,9 +17,11 @@
 4. 强类型静态语言（实现定义好类型）
 5. 没有面向对象的类和继承(通过其它方式实现)
 6. 易于部署和分享（build 后直接生成一个二进制文件）
-7. 
 
 #### 用它可以做什么?
+1. web开发
+2. 云/网络服务
+3. 命令行
 
 ### 学习go有哪些资源?
 #### 官网
@@ -33,7 +35,6 @@
 4. go语言学习笔记（绝对算的是一个老手写的很地道的文章）
 5. GoWeb开发实战（主要介绍框架Gin）
 6. 跟煎鱼学go(不是从基础入手，书中带着实验的性质去研究探讨)
-7. 
 
 #### 在线书籍
 1. https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/preface.md （go入门指南-github版，github浏览体验不是特别舒服，推荐书籍看）
@@ -49,5 +50,56 @@
 go version # 检查go当前版本
 # go version go1.20.5 darwin/amd64
 ```
+
+### 用go写第一个程序
+#### hello world来啦
+步骤如下：
+1. `mkdir hello` 创建一个目录
+2. `cd hello` 切换到目录下
+3. `go mod init example/hello` 初始化go.mod(这是一个记录依赖的文件非常重要)，example/hello 代表模块路径
+4. `touch hello.go` 创建一个go的代码文件
+```go
+// hello.go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+```
+5. `go run .` （此时自动运行当前目录下的go文件）
+>dongmingyan@pro ⮀ ~/hello ⮀ go run .
+Hello, World!
+
+说明：
+整体而言还是比较简单，这里需要记住的是`go mod init` 命令初始化go.mod文件
+
+#### 引入外部包
+1. 修改hello.go文件
+```go
+// hello.go
+package main
+
+import "fmt"
+import "rsc.io/quote" // 引入外部包-已经发布的包
+
+func main() {
+    fmt.Println(quote.Go()) // 直接使用外部包的Go函数
+}
+```
+2. 执行`go mod tidy` 它会查找包，并修改依赖(go.mod) 还会生成go.sum文件
+3. `go run .`执行
+> dongmingyan@pro ⮀ ~/hello ⮀ go mod tidy
+go: finding module for package rsc.io/quote
+go: found rsc.io/quote in rsc.io/quote v1.5.2
+ dongmingyan@pro ⮀ ~/hello ⮀ go run .
+Don't communicate by sharing memory, share memory by communicating.
+
+说明：
+命令`go mod tidy`下载包并使用
+
+
+
 
 
