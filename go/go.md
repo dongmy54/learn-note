@@ -100,6 +100,136 @@ Don't communicate by sharing memory, share memory by communicating.
 命令`go mod tidy`下载包并使用
 
 
+### 快速了解go基础语法
+前面我们了解如何用go写一个程序，但是没有对语法做任何的说明，这里我们快速过下go中的一些基础概念和语法。
 
+#### 包（package）
+什么是包,如果你有之前有过编程经验，可以认为它就是程序库；如果没有编程经验，可以认为它是一个提供某种功能的工具集，有了它可以方便的实现某些功能。
 
+#### main
+是主程序的入口，所有go代码执行都从main开始
+
+#### 导入(import)
+用于引入包
+
+#### 包名
+```go
+package main
+
+import "fmt"
+import "rsc.io/quote" // 路径的最后一个是包名 这里为quote
+
+func main() {
+    fmt.Println(quote.Go()) // 通过报名使用包 比如这里 quote
+}
+```
+
+#### 变量
+如果申明了一个变量，却没有使用go会包错
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var a , b int // 老老实实 先申明类型,后赋值（初始化不知道值才用）
+	a = 2
+	b = 3
+
+	var x, y string = "x", "y" // 批量 定义好类型 赋值
+
+	var c, python, java = true, false, "no" // 批量推断类型（推荐）
+
+	e, f := 2, 4 // 短变量申明，连var都省略了(推荐）
+	fmt.Println(a, b, x, y, e, f, c, e, python, java)
+}
+```
+
+#### 变量的基本类型
+go中的变量有一个零值（默认值）
+- 数值型 - 0
+- 布尔型 - false
+- 字符串 - ""
+```shell
+bool
+
+string
+
+int  int8  int16  int32  int64
+uint uint8 uint16 uint32 uint64 uintptr
+
+byte // uint8 的别名
+
+rune // int32 的别名
+    // 表示一个 Unicode 码点
+
+float32 float64
+
+complex64 complex128
+```
+
+#### 类型转换
+go中类型转换只能显示抓换
+```go
+package main
+
+import "fmt"
+
+var a = 3
+var f = float32(3)
+var u = uint32(f)
+
+func main() {
+	fmt.Println(a, f, u)
+}
+```
+
+#### 常量
+1. 常量不能用：写法
+2. 常量可以不用大写（注意）
+3. 常量申明了可以不用（和变量不同）
+```go
+package main
+
+import "fmt"
+
+const Pi = 3.14      // 单独
+const B, C = 12, 34  // 批量写法1
+const (              // 批量写法2
+	Big   = 233545
+	Small = -12
+
+)
+func main() {
+	fmt.Println(Pi, Big, Small, B, C)
+}
+```
+
+#### 函数
+1. return 关键字不能剩
+```go
+package main
+
+import "fmt"
+
+// 每个入参都写明类型 返回值也写明类型
+func add(x int, y int) int {
+	return x + y
+}
+
+// 多个入参数类型都相同 可只在最后一个写类型
+func add1(x, y int) int {
+	return x + y
+}
+
+// 返回值可以定义变量名（返回值也可以是多个）
+func add2(x, y int) (sum int) {
+	sum = x + y
+	return // 这里都不用写sum
+}
+
+func main() {
+	fmt.Println(add(2,3), add1(2,3), add2(3,4))
+}
+```
 
