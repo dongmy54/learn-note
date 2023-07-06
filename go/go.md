@@ -233,3 +233,54 @@ func main() {
 }
 ```
 
+### 创建模块
+#### 1. 创建一个greetings包
+为了方便练写go建议在电脑的专门的一个目录，比如go_playground中做练习。
+1. 创建一个greetings目录`mkdir greetings`
+2. 切换到greetings目录下`cd greetings`
+3. 初始化模块`go mod init example.com/greetings` 任何模块一开始都必须用这个命令，至于这里的路径默认后续为包名，前半截随意
+4. 添加文件`touch greetings.go`
+
+```go
+// greetings.go
+package greetings
+
+import "fmt"
+
+// 定义一个hello函数 供其它包使用
+func Hello(name string) string {
+    // Return a greeting that embeds the name in a message.
+    message := fmt.Sprintf("Hi, %v. Welcome!", name)
+    return message
+}
+```
+
+#### 2. 从hello模块中调用greetings包
+1. 回到初始目录`cd ..`（如果你创建了go_playground的话）是回到此目录
+2. 创建hello目录`mkdir hello`
+3. 进入hello目录`cd hello`
+4. 初始化hello模块`go mod init example/hello`
+5. 创建`touch hello.go`文件
+```go
+// hello.go
+package main
+
+import (
+    "fmt"
+    "example.com/greetings"// 引入我们本地greetings包
+)
+
+func main() {
+    // 调用包中函数
+    message := greetings.Hello("Gladys")
+    fmt.Println(message)
+}
+```
+6. 编辑go mod路径`go mod edit -replace example.com/greetings=../greetings` （指定本地路径）
+7. 同步安装包依赖`go mod tidy`
+8. 运行hello.go `go run .`
+```
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Hi, Gladys. Welcome!
+```
+
