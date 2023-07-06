@@ -236,6 +236,9 @@ func main() {
 ### 创建模块
 #### 1. 创建一个greetings包
 为了方便练写go建议在电脑的专门的一个目录，比如go_playground中做练习。
+
+> 从官方文档看，对于包和模块的描述比较笼统，查了下资料，我的大概理解是：任何一个程序都必须在包（package）内;
+> 模块更多的层面在于管理包之间的依赖
 1. 创建一个greetings目录`mkdir greetings`
 2. 切换到greetings目录下`cd greetings`
 3. 初始化模块`go mod init example.com/greetings` 任何模块一开始都必须用这个命令，至于这里的路径默认后续为包名，前半截随意
@@ -284,3 +287,61 @@ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
 Hi, Gladys. Welcome!
 ```
 
+#### 3. 添加错误处理
+> 添加go标准包，不用执行`go mod`
+1. greetings包添加空值检验
+```go
+// greetings.go
+package greetings
+
+import (
+	"errors" // 这是go标准库中包 添加后无需单独运行go mod
+	"fmt"
+)
+
+// 定义一个hello函数 供其它包使用
+func Hello(name string) (string, error) {
+    // 返回多个值
+    if name == "" {
+        return "", errors.New("empty name")
+    }
+
+    message := fmt.Sprintf("Hi, %v. Welcome!", name)
+    return message, nil
+}
+```
+
+2. hello模块添加日志
+```go
+// hello.go
+package main
+
+import (
+	"fmt"
+	"log"  // 本地库包
+	"example.com/greetings"// 引入我们本地greetings包
+)
+
+func main() {
+    // 设置日志前缀 不带时间、文件 行号
+    log.SetPrefix("greetings: ")
+    log.SetFlags(0)
+
+    // Request a greeting message.
+    message, err := greetings.Hello("")
+    if err != nil {
+        log.Fatal(err) // 日志记录
+    }
+
+    // If no error was returned, print the returned message
+    // to the console.
+    fmt.Println(message)
+}
+```
+
+运行hello.go(必须在目录下执行-含有go.mod依赖文件)
+```
+ ✘ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+greetings: empty name
+exit status 1
+```
