@@ -345,3 +345,189 @@ func main() {
 greetings: empty name
 exit status 1
 ```
+
+#### 4.返回随机问候语
+1. 修改greetings包
+```go
+// greetings.go
+package greetings
+
+import (
+	"errors" // 这是go标准库中包 添加后无需单独运行go mod
+	"fmt"
+    "math/rand" // 引入go标准包
+)
+
+// 定义一个hello函数 供其它包使用
+func Hello(name string) (string, error) {
+    // 返回多个值
+    if name == "" {
+        return "", errors.New("empty name")
+    }
+
+    // Create a message using a random format.
+    message := fmt.Sprintf(randomFormat(), name)
+    return message, nil
+}
+
+// 这里函数名是小写 因此只能在包自己内部用
+func randomFormat() string {
+    // 切片
+    formats := []string{
+        "Hi, %v. Welcome!",
+        "Great to see you, %v!",
+        "Hail, %v! Well met!",
+    }
+
+    // 返回随机问候
+    return formats[rand.Intn(len(formats))]
+}
+```
+
+2. 修改hello.go文件
+```go
+// hello.go
+package main
+
+import (
+	"fmt"
+	"log"  // 本地库包
+	"example.com/greetings"// 引入我们本地greetings包
+)
+
+func main() {
+    // 设置日志前缀 不带时间、文件 行号
+    log.SetPrefix("greetings: ")
+    log.SetFlags(0)
+
+    // 这里改成一个随机名称
+    message, err := greetings.Hello("dmy")
+    if err != nil {
+        log.Fatal(err) // 日志记录
+    }
+
+    // If no error was returned, print the returned message
+    // to the console.
+    fmt.Println(message)
+}
+```
+
+3. 运行
+```
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Hail, dmy! Well met!
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Hail, dmy! Well met!
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Great to see you, dmy!
+```
+
+小结：
+- 切片和数组的区别，在于切片声明时候可以省略大小，意味着它底层数组的大小可以动态改变
+- 在一个包内小写函数，代表只能在包自己内部使用
+
+#### 5. 多人问候
+之前我们已经写了一个Hello函数支持单人问候，如果要支持多人问候问候需要修改Hello函数参数，为了保证向后兼容性我们单独写一个函数Hellos函数供使用
+
+1. 修改greetings.go
+```go
+// greetings.go
+package greetings
+
+import (
+	"errors" // 这是go标准库中包 添加后无需单独运行go mod
+	"fmt"
+    "math/rand" // 引入go标准包
+)
+
+// 定义一个hello函数 供其它包使用
+func Hello(name string) (string, error) {
+    // 返回多个值
+    if name == "" {
+        return "", errors.New("empty name")
+    }
+
+    // Create a message using a random format.
+    message := fmt.Sprintf(randomFormat(), name)
+    return message, nil
+}
+
+
+// 入参为为切片
+// 返回映射-类似于ruby中hash
+func Hellos(names []string) (map[string]string, error) {
+    // 初始化一个map 用于返回
+    messages := make(map[string]string)
+
+    // 循环name
+    for _, name := range names {
+        message, err := Hello(name)
+
+        if err != nil {
+            return nil, err
+        }
+
+        messages[name] = message
+    }
+
+    return messages, nil
+}
+
+// 这里函数名是小写 因此只能在包自己内部用
+func randomFormat() string {
+    // 切片
+    formats := []string{
+        "Hi, %v. Welcome!",
+        "Great to see you, %v!",
+        "Hail, %v! Well met!",
+    }
+
+    // 返回随机问候
+    return formats[rand.Intn(len(formats))]
+}
+```
+
+2. 修改hello.go文件
+```go
+// hello.go
+package main
+
+import (
+	"fmt"
+	"log"  // 本地库包
+	"example.com/greetings"// 引入我们本地greetings包
+)
+
+func main() {
+    // 设置日志前缀 不带时间、文件 行号
+    log.SetPrefix("greetings: ")
+    log.SetFlags(0)
+
+    // 生成一个切片名称数组
+    names := []string{"张三", "lisi", "wangwu"}
+
+    // 这里返回问候map-映射
+    messages, err := greetings.Hellos(names)
+    if err != nil {
+        log.Fatal(err) // 日志记录
+    }
+
+    fmt.Println(messages)
+}
+```
+
+3. 运行
+```go
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+map[lisi:Great to see you, lisi! wangwu:Hi, wangwu. Welcome! 张三:Hi, 张三. Welcome!]
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+map[lisi:Hi, lisi. Welcome! wangwu:Great to see you, wangwu! 张三:Hail, 张三! Well met!]
+```
+
+小结：
+- map 映射类似于ruby中hash
+- 映射类型写法 map[key-type]value-type
+- 创建一个映射 make(map[key-type]value-type)
+- 初始化切片 []string{"张三", "lisi", "wangwu"}
+- for 循环`_, name := range names`写法
+
