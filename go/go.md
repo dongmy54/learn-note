@@ -682,4 +682,125 @@ GOGCCFLAGS="-fPIC -arch x86_64 -m64 -pthread -fno-caret-diagnostics -Qunused-arg
 - `go env -w` 用于改变go 环境变量的值
 
 
+### 工作空间（workspace)
+PS：工作空间需要 1.18 以上版本
+
+#### 包、模块、工作空间关系
+前面我们已经对包、模块进行了学习，但是理解上还是不够准确，这节结合工作区，重新梳理下包、模块、工作区之前的关系。
+
+- 包：相当于其它语言中的命名空间
+> 之前的认识有问题,不能认为是ruby中的gem;包是go语言组织代码的基本单位，任何一个`.go`文件都必须属于一个包(package)，多个`.go`文件可以属于同一个包，一般而言，同一个目录下文件，都属于同一个包
+>
+- 模块：相当于项目
+> 一个模块下可以有多个包,模块下管理多个包之间的依赖关系也就是`go.mod`文件
+>
+- 工作空间：用于管理多个模块
+> 1. 设置工作区后，可以在工作区目录运行模块代码
+> 2. 工作空间使一个模块调用另外一个模块中方法变得更容易
+
+#### 工作空间使用
+1. 新建一个目录workspace用于练习工作区`mkdir workspace`
+2. 在工作区中建立一个hello模块
+```shell
+cd workspace 
+mkdir hello
+go mod init example.com/hello # 初始化模块
+```
+3. 添加模块依赖项,`go get golang.org/x/example`
+```shell
+ dongmingyan@pro ⮀ ~/go_playground/workspace/hello ⮀ go get golang.org/x/example
+go: added golang.org/x/example v0.0.0-20230515183114-5bec75697667
+```
+4. 添加`hello.go`文件
+```go
+// workspace/hello/hello.go
+package main
+
+import (
+    "fmt"
+    "golang.org/x/example/stringutil" 
+)
+
+func main() {
+    fmt.Println(stringutil.Reverse("Hello"))
+}
+```
+5. 模块（hello目录）下运行
+```shell
+dongmingyan@pro ⮀ ~/go_playground/workspace/hello ⮀ go run .
+olleH
+```
+6. 回到workspace目录下，初始化工作空间`go work init ./hello`
+   这会生成一个go.work文件
+```shell
+// workspace/go.work
+
+go 1.20
+
+use ./hello
+```
+此时可以在工作空间目录（不用到模块目录下）执行模块，`go run example.com/hello`
+```shell
+dongmingyan@pro ⮀ ~/go_playground/workspace ⮀ go run example.com/hello
+olleH
+```
+7. 将golang.org/x/example 模块项目下载到workspace目录，`git clone git@github.com:golang/example.git`，并加入工作空间`go work use ./example`，此时工作空间同时拥有了两个模块
+```shell
+dongmingyan@pro ⮀ ~/go_playground/workspace ⮀ git clone git@github.com:golang/example.git
+正克隆到 'example'...
+remote: Enumerating objects: 221, done.
+remote: Counting objects: 100% (17/17), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 221 (delta 3), reused 11 (delta 1), pack-reused 204
+接收对象中: 100% (221/221), 173.38 KiB | 269.00 KiB/s, 完成.
+处理 delta 中: 100% (83/83), 完成.
+ dongmingyan@pro ⮀ ~/go_playground/workspace ⮀
+ dongmingyan@pro ⮀ ~/go_playground/workspace ⮀
+ dongmingyan@pro ⮀ ~/go_playground/workspace ⮀ go work use ./example
+```
+
+9. 修改克隆项目，在`workspace/example/stringutil`目录下新增`toupper.go`文件
+```go
+// workspace/example/stringutil/toupper.go
+package stringutil
+
+import "unicode"
+
+// 转成大写
+func ToUpper(s string) string {
+    r := []rune(s)
+    for i := range r {
+        r[i] = unicode.ToUpper(r[i])
+    }
+    return string(r)
+}
+```
+
+10. 在hello模块下，直接使用新增的ToUpper函数
+```go
+// workspace/hello/hello.go
+package main
+
+import (
+    "fmt"
+
+    "golang.org/x/example/stringutil"
+)
+
+func main() {
+    // 使用ToUpper
+    fmt.Println(stringutil.ToUpper("Hello"))
+}
+```
+
+11. 回到工作空间（workspace）目录下，运行`go run example.com/hello`发现新增的ToUpper函数生效了
+
+小结：
+工作空间的主要目的在于管理多个模块，使用模块之间的调用变得简单，同时也获得了在工作空间直接调用模块的能力。
+
+
+
+
+
+
 
