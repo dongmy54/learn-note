@@ -426,7 +426,7 @@ Great to see you, dmy!
 - 切片和数组的区别，在于切片声明时候可以省略大小，意味着它底层数组的大小可以动态改变
 - 在一个包内小写函数，代表只能在包自己内部使用
 
-#### 5. 多人问候
+####5. 多人问候
 之前我们已经写了一个Hello函数支持单人问候，如果要支持多人问候问候需要修改Hello函数参数，为了保证向后兼容性我们单独写一个函数Hellos函数供使用
 
 1. 修改greetings.go
@@ -530,4 +530,156 @@ map[lisi:Hi, lisi. Welcome! wangwu:Great to see you, wangwu! 张三:Hail, 张三
 - 创建一个映射 make(map[key-type]value-type)
 - 初始化切片 []string{"张三", "lisi", "wangwu"}
 - for 循环`_, name := range names`写法
+
+
+#### 6. 添加测试
+1. 在greetings目录下，新建一个测试文件`touch greetings_test.go`
+```go
+// greetings_test.go
+package greetings
+
+import (
+    "testing" // go原生支持
+    "regexp" // 原生支持
+)
+
+// 测试输入一个name后能正常返回
+func TestHelloName(t *testing.T) {
+    name := "Gladys"
+
+    // 正则其中包含名称 name
+    want := regexp.MustCompile(`\b`+name+`\b`)
+    msg, err := Hello("Gladys")
+    if !want.MatchString(msg) || err != nil {
+        t.Fatalf(`Hello("Gladys") = %q, %v, want match for %#q, nil`, msg, err, want)
+    }
+}
+
+// 测试名称为空时 应返回错误
+func TestHelloEmpty(t *testing.T) {
+    msg, err := Hello("")
+    if msg != "" || err == nil {
+        t.Fatalf(`Hello("") = %q, %v, want "", error`, msg, err)
+    }
+}
+```
+2. 在greetings目录下运行`go test`
+```
+ dongmingyan@pro ⮀ ~/go_playground/greetings ⮀ go test
+PASS
+ok  	example.com/greetings	0.547s
+ dongmingyan@pro ⮀ ~/go_playground/greetings ⮀ go test -v
+=== RUN   TestHelloName
+--- PASS: TestHelloName (0.00s)
+=== RUN   TestHelloEmpty
+--- PASS: TestHelloEmpty (0.00s)
+PASS
+ok  	example.com/greetings	0.118s
+```
+
+小结：
+1. go原生支持测试(testing)
+2. go中的测试通过函数实现，函数名表明测试项
+3. 发现测试不通过直接产生错误
+4. 命令`go test` 和 `go test -v`
+
+#### 7.编译和安装应用
+前面我们已经写了些go代码，但是对go命令的了解还少，这里学习下go相关的命令
+
+1. 我们来到hello目录下，执行`go build`,此时生成了hello 可执行文件，在当前目录下 `./hello` 可执行
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go build
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ tree
+.
+├── go.mod
+├── hello
+└── hello.go
+
+1 directory, 3 files
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ ./hello
+map[lisi:Hail, lisi! Well met! wangwu:Great to see you, wangwu! 张三:Hail, 张三! Well met!]
+```
+
+2. `go install`的作用是生成可执行文件并放置到配置的bin目录下
+首先我们看下当前执行会放到的目录是哪个,执行命令`go list -f '{{.Target}}'`
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go list -f '{{.Target}}'
+/Users/dongmingyan/go/bin/hello
+```
+可以看到放置的路径是`/Users/dongmingyan/go/bin`,这里本质上是默认的GOPATH下的bin路径
+我们可以设置GOBIN路径来更改此路径，执行` go env -w GOBIN=/usr/local/go/bin`
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go env | grep GOPATH
+GOPATH="/Users/dongmingyan/go"
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go env -w GOBIN=/usr/local/go/bin
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go list -f '{{.Target}}'
+/usr/local/go/bin/hello
+```
+> 将这个bin路径放到PATH变量中，那么执行`go install`后在任意目录下，都可以执行我们生成的命令
+
+3. 执行`go install`
+上一步我们已经将路径改成了`/usr/local/go/bin`,在hello目录下执行`go install`,然后去`/usr/local/go/bin`检查可以看到我们生成的hello可执行文件
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ sudo go install
+Password:
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ cd /usr/local/go/bin
+ dongmingyan@pro ⮀ /usr/local/go/bin ⮀ ls
+go    gofmt hello
+```
+
+补充go环境变量`go env`
+```
+dongmingyan@pro ⮀ /usr/local/go/bin ⮀ go env
+GO111MODULE="on"
+GOARCH="amd64"
+GOBIN="/usr/local/go/bin"
+GOCACHE="/Users/dongmingyan/Library/Caches/go-build"
+GOENV="/Users/dongmingyan/Library/Application Support/go/env"
+GOEXE=""
+GOEXPERIMENT=""
+GOFLAGS=""
+GOHOSTARCH="amd64"
+GOHOSTOS="darwin"
+GOINSECURE=""
+GOMODCACHE="/Users/dongmingyan/go/pkg/mod"
+GONOPROXY=""
+GONOSUMDB=""
+GOOS="darwin"
+GOPATH="/Users/dongmingyan/go"
+GOPRIVATE=""
+GOPROXY="https://goproxy.cn,direct"
+GOROOT="/usr/local/go"
+GOSUMDB="sum.golang.org"
+GOTMPDIR=""
+GOTOOLDIR="/usr/local/go/pkg/tool/darwin_amd64"
+GOVCS=""
+GOVERSION="go1.20.5"
+GCCGO="gccgo"
+GOAMD64="v1"
+AR="ar"
+CC="clang"
+CXX="clang++"
+CGO_ENABLED="1"
+GOMOD="/dev/null"
+GOWORK=""
+CGO_CFLAGS="-O2 -g"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-O2 -g"
+CGO_FFLAGS="-O2 -g"
+CGO_LDFLAGS="-O2 -g"
+PKG_CONFIG="pkg-config"
+GOGCCFLAGS="-fPIC -arch x86_64 -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=/var/folders/j8/08btplt912l0m3jg760nkbpw0000gn/T/go-build496445168=/tmp/go-build -gno-record-gcc-switches -fno-common"
+```
+当前关注以下几个
+- GOPATH go主要目录（一般在家目录下）
+- GOBIN go可执行文件安装位置
+- GOPROXY 包下载url地址
+
+小结：
+- `go run` 用于代码的快速编译和运行，不会生成可执行文件（常用于写代码即使运行）
+- `go build` 生成本地可执行文件,但不会安装
+- `go install` 生成可执行文件并安装到本地
+- `go env -w` 用于改变go 环境变量的值
+
+
 
