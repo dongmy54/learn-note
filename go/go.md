@@ -798,8 +798,139 @@ func main() {
 小结：
 工作空间的主要目的在于管理多个模块，使用模块之间的调用变得简单，同时也获得了在工作空间直接调用模块的能力。
 
+### 使用Gin web框架开发api
+gin框架是go语言用于开发web的框架，开发一个api,仍然包含路由、控制器、数据处理、响应返回这么几部分。
 
+#### 1.项目准备
+初始化项目
+```shell
+mkdir web-server-gin 
+cd web-server-gin
 
+go mod init example/web-server-gin # 初始化模块
+touch main.go # 作为入口文件，为简单起见，所有请求和处理都放在这里
+```
+main.go 文件内容
+```go
+// main.go
+package main 
+
+import(
+    "net/http"
+	"github.com/gin-gonic/gin" // 引入我们要的用的gin框架
+)
+
+func main() {
+}
+```
+
+#### 2. 开始我们第一个api
+这里我们以唱片album需求来实现，遵从restful api原则，开发
+`GET /alubms` 获取唱片列表
+
+- 先写入路由
+```go
+// main.go
+package main 
+
+import(
+    "net/http"
+	"github.com/gin-gonic/gin" // 引入我们要的用的gin框架
+)
+
+// 此步骤添加
+func main() {
+	router := gin.Default()
+	router.GET("/albums", getAlbums) // 路由写在这里
+
+	router.Run("localhost:8080")
+}
+```
+
+- 补全控制器
+```go
+// main.go
+package main 
+
+import(
+    "net/http"
+	"github.com/gin-gonic/gin" // 引入我们要的用的gin框架
+)
+
+// 此步骤添加
+func main() {
+	router := gin.Default()
+	router.GET("/albums", getAlbums) // 路由写在这里
+
+	router.Run("localhost:8080")
+}
+
+// 控制器函数 gin.Context 是框架的上下问
+func getAlbums(c *gin.Context) {
+    // c.IndentedJSON是返回缩减的json
+	c.IndentedJSON(http.StatusOK, albums)
+}
+
+// 结构体 ID（字段） String(字段类型)
+type album struct {
+	ID     string  `json:"id"`
+	Title  string  `json:"title"`
+	Artist string  `json:"artist"`
+	Price  float64 `json:"price"`
+}
+
+// 用新的结构体类型 定义一个唱片集合
+var albums = []album{
+	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
+	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
+	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
+}
+```
+
+- 运行
+```shell
+go mod tidy # 运行获取需要用到的依赖,为什么在最终这里执行，不在一开始引入模块的时候执行，目前的理解是，最终才会知道需要用到哪些依赖
+go run .    # 运行
+```
+在命令行`curl http://localhost:8080/albums`
+```
+ dongmingyan@pro ⮀ ~/go_playground/web-server-gin ⮀ go run .
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /albums                   --> main.getAlbums (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on localhost:8080
+[GIN] 2023/07/10 - 22:34:52 | 200 |     116.705µs |       127.0.0.1 | GET      "/albums"
+```
+
+```
+dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/albums
+[
+    {
+        "id": "1",
+        "title": "Blue Train",
+        "artist": "John Coltrane",
+        "price": 56.99
+    },
+    {
+        "id": "2",
+        "title": "Jeru",
+        "artist": "Gerry Mulligan",
+        "price": 17.99
+    },
+    {
+        "id": "3",
+        "title": "Sarah Vaughan and Clifford Brown",
+        "artist": "Sarah Vaughan",
+        "price": 39.99
+    }
+]%
+```
 
 
 
