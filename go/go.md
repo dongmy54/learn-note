@@ -937,6 +937,107 @@ dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/albums
 ]%
 ```
 
+#### 2.添加接口 `POST /albums`创建唱片
+- 添加路由
+```go
+// main.go
+   //  main函数中添加
+   router.POST("/albums", postAlbums)
+```
 
+- 添加控制器,main.go文件底部添加
+```go
+// main.go
+
+// 添加条目到albums
+func postAlbums(c *gin.Context) {
+    // 定义一个变量 为结构体类型album
+	var newAlbum album
+
+	// 调用 BindJSON 绑定接受到的json到 newAlbum变量
+	if err := c.BindJSON(&newAlbum); err != nil {
+			return
+	}
+
+	// 将newAlbum 加入到albums中,这里是加到内存中的
+	albums = append(albums, newAlbum)
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+```
+
+- 运行，如果之前是运行的需要先终止掉，重新`go run .`
+
+```shell
+dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/albums \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"id": "4","title": "The Modern Sound of Betty Carter","artist": "Betty Carter","price": 49.99}'
+
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+Date: Tue, 11 Jul 2023 13:15:06 GMT
+Content-Length: 116
+
+{
+    "id": "4",
+    "title": "The Modern Sound of Betty Carter",
+    "artist": "Betty Carter",
+    "price": 49.99
+}%
+```
+
+#### 3. 添加`GET /albums/:id` 接口
+- 在main函数中，添加路由
+```go
+// main.go
+router.GET("/albums/:id", getAlbumByID)
+```
+
+- 添加控制器函数
+```go
+// main.go
+func getAlbumByID(c *gin.Context) {
+	id := c.Param("id") // 路径参数获取值
+
+	// 循环找到id
+	for _, a := range albums {
+			if a.ID == id {
+					c.IndentedJSON(http.StatusOK, a)
+					return
+			}
+	}
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+}
+```
+
+- 运行，`go run .`
+
+```shell
+✘ dongmingyan@pro ⮀ ~/go_playground/web-server-gin ⮀ go run .
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /albums                   --> main.getAlbums (3 handlers)
+[GIN-debug] POST   /albums                   --> main.postAlbums (3 handlers)
+[GIN-debug] GET    /albums/:id               --> main.getAlbumByID (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on localhost:8080
+[GIN] 2023/07/11 - 21:24:02 | 200 |     108.951µs |       127.0.0.1 | GET      "/albums/3"
+[GIN] 2023/07/11 - 21:24:05 | 200 |      74.037µs |       127.0.0.1 | GET      "/albums/1"
+```
+```shell
+dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/albums/1
+{
+    "id": "1",
+    "title": "Blue Train",
+    "artist": "John Coltrane",
+    "price": 56.99
+}%
+```
 
 
