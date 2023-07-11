@@ -41,6 +41,11 @@
 2. https://gfw.go101.org/ (101适合入门)
 3. https://www.topgoer.com/ 比较全面-不够细（语法、框架、微服务）
 
+#### 其它
+1. package查询 https://pkg.go.dev/
+2. gin 框架文档 https://gin-gonic.com/docs/
+3. go 语言语法文档 https://devdocs.io/go/
+
 ### 安装go
 有多种安装方式，推荐使用官网的直接下载安装（下载好后一路next就可以了）
 ![](2023-07-02-21-41-04.png)
