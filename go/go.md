@@ -45,6 +45,7 @@
 1. package查询 https://pkg.go.dev/
 2. gin 框架文档 https://gin-gonic.com/docs/
 3. go 语言语法文档 https://devdocs.io/go/
+4. go语法使用常见例子 https://gobyexample.com/
 
 ### 安装go
 有多种安装方式，推荐使用官网的直接下载安装（下载好后一路next就可以了）
@@ -1039,5 +1040,171 @@ dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/albums/1
     "price": 56.99
 }%
 ```
+
+### go泛型入门
+什么是泛型，简单点说就是，用同一个函数，处理不同的数据类型。
+
+看下面的例子，会有深入的感受
+#### 1.用两个不同类型的函数，处理不同的类型
+- 初始化项目
+```shell
+mkdir generics
+cd generics
+go mod init example/generics # 初始化模块
+```
+
+- 完善main.go文件
+创建`touch main.go`文件
+```go
+// mian.go
+package main
+
+import "fmt"
+
+func main() {
+     // 初始化整数映射
+    ints := map[string]int64{
+        "first":  34,
+        "second": 12,
+    }
+
+    // 初始化浮点数映射
+    floats := map[string]float64{
+        "first":  35.98,
+        "second": 26.99,
+    }
+
+    fmt.Printf("Non-Generic Sums: %v and %v\n",
+        SumInts(ints),
+        SumFloats(floats))
+}
+
+// int64 求和
+func SumInts(m map[string]int64) int64 {
+    var s int64
+    for _, v := range m {
+        s += v
+    }
+    return s
+}
+
+// float64求和
+func SumFloats(m map[string]float64) float64 {
+    var s float64
+    for _, v := range m {
+        s += v
+    }
+    return s
+}
+```
+
+- 运行，`go run .`
+```shell
+dongmingyan@pro ⮀ ~/go_playground/generics ⮀ go run .
+Non-Generic Sums: 46 and 62.97
+```
+#### 2.引入泛型
+在上面我们用了两个不同的函数分别处理int和float类型，实在有点麻烦；这里我们用一个函数实现
+```go
+// main.go
+package main
+
+import "fmt"
+
+func main() {
+     // 初始化整数映射
+    ints := map[string]int64{
+        "first":  34,
+        "second": 12,
+    }
+
+    // 初始化浮点数映射
+    floats := map[string]float64{
+        "first":  35.98,
+        "second": 26.99,
+    }
+
+    fmt.Printf("Non-Generic Sums: %v and %v\n",
+        SumIntsOrFloats[string, int64](ints), // 使用时候也多传下类型，如果可以类型推断出来可以省略
+        SumIntsOrFloats[string, float64](floats))
+
+		// 和上写法等效
+		fmt.Printf("Non-Generic Sums: %v and %v\n",
+        SumIntsOrFloats(ints),
+        SumIntsOrFloats(floats))
+}
+// 求和浮点数或整数
+// [] 里申明类型
+// comparable代表一种可以比较的类型
+func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
+    var sum V
+
+    for _, v := range m {
+        sum += v
+    }
+    return sum
+}
+```
+
+运行
+```shell
+dongmingyan@pro ⮀ ~/go_playground/generics ⮀ go run .
+Non-Generic Sums: 46 and 62.97
+Non-Generic Sums: 46 and 62.97
+```
+小结：方式就是在函数开头加上[]，设定好支持哪些类型
+
+#### 3.优化-类型约束
+上面的写法已经实现了替代两个函数，但是并不简洁，如果有许多个地方都需要用到这种数据类型，我们并没有办法复用；我们可以把这里的类型抽取出来
+
+```go
+// main.go
+package main
+
+import "fmt"
+
+func main() {
+     // 初始化整数映射
+    ints := map[string]int64{
+        "first":  34,
+        "second": 12,
+    }
+
+    // 初始化浮点数映射
+    floats := map[string]float64{
+        "first":  35.98,
+        "second": 26.99,
+    }
+
+    fmt.Printf("Non-Generic Sums: %v and %v\n",
+        SumIntsOrFloats[string, int64](ints), // 使用时候也多传下类型，如果可以类型推断出来可以省略
+        SumIntsOrFloats[string, float64](floats))
+
+		// 和上写法等效
+		fmt.Printf("Non-Generic Sums: %v and %v\n",
+        SumIntsOrFloats(ints),
+        SumIntsOrFloats(floats))
+}
+
+// 这里申明一种Number类型 可以同时代表int64和float64
+type Number interface{
+	int64 | float64 // 注意这里是单竖线
+}
+
+// 求和浮点数或整数
+// [] 里申明类型
+// compareable代表一种可以比较的类型 Number复用其中
+func SumIntsOrFloats[K comparable, V Number](m map[K]V) V {
+    var sum V
+
+    for _, v := range m {
+        sum += v
+    }
+    return sum
+}
+```
+
+
+
 
 
