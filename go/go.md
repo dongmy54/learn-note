@@ -1412,3 +1412,86 @@ ok  	example/fuzz	10.532s
 3. 指定运行时间`go test -fuzz=Fuzz -fuzztime=10s`
 4. 模糊测试失败后会在项目下生成一个`testdata`文件夹用于存放失败用例
 
+
+### vscode中go代码如何调试？
+写代码的过程中难免会产生bug，我们需要学会如何调试代码，这非常重要，无论你调试程序还说阅读源码这都非常重要。
+
+#### 准备：插件go
+在开始前先介绍一个插件-go
+![](2023-07-16-15-22-02.png)
+这个插件有非常多的好处：
+1. 函数跳转（mac按住cmd键）
+2. 鼠标移动在函数上,显示函数介绍
+3. 自动引入包（当使用了某个包时）
+4. import的包，带了链接，可以直接点击跳转
+5. 代码自动格式化
+6. 检查语法错误
+7. 写代码时，会自动补全提示
+...
+总之非常推荐安装，对新手非常友好
+
+#### step1: 安装Delve调试器
+最基本的调试，我们可以通过记录日志和打印输出两种方式，但是不够好。
+
+在go中我们通过 Delve go调试来实现，非常强大，它可以在任意位置打断点、进入函数内部、查看变量值等等。
+
+- 安装delve `go get -u github.com/go-delve/delve/cmd/dlv`
+
+#### step2: 配置`launch.json`文件
+在项目路径下，添加一个目录 
+```shell
+mkdir .vscode
+touch launch.json
+```
+
+```json
+// .vscode/launch.json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch",
+        "type": "go",
+        "request": "launch",
+        "mode": "auto",
+        "program": "${fileDirname}",
+        "env": {},
+        "args": [],
+        // 这里跳过go版本检查时因为我本地go版本有点高，所以跳过了
+        "dlvFlags": ["--check-go-version=false"] 
+      }
+    ]
+}
+```
+
+一般而言,vscode左侧在点击`Run and Debug`后，如果没有配置文件，会有提示，让你创建 launch.json文件，上面我配置的时候直接去创建；你也可以点击去创建。
+
+![](2023-07-16-15-38-28.png)
+
+#### step3: 开始调试
+- 遇到的坑
+大多数时候，经过上面的配置就可以正常调试了；但是我自己遇到了一个坑，一直不行，后来发现是自己少装了一些东西，而为什么少装是由于,vscode自动安装某些东西的时候，需要操作go的目录(/usr/local/go) 文件，但是没有权限。
+
+解决办法：
+```shell
+# 递归打开这个目录下相关权限
+sudo chmod -R 777 /usr/local/go
+```
+- 调试步骤
+1. 在需要查看的点位，打断点
+2. 按照run and debug
+3. continue/skip over/ skip into / restart / stop
+![](2023-07-16-15-53-23.png)
+
+- continue 只在断点停留
+- skip over 只在当前代码块-非常关键，不进入具体跳入函数中，用于关注当前上下文执行
+- skip into 调入函数执行细节中
+- restart 重新再次执行（丢弃本次）
+- stop 停止调试
+
+
+
+
