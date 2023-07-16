@@ -1493,5 +1493,71 @@ sudo chmod -R 777 /usr/local/go
 - stop 停止调试
 
 
+### go 开发web应用
+前面我们体验了利用GIN框架快速开发了web接口；但就go语言本身而言，它已经包含了许多用于开发web应用的包，不用框架也是可以直接写的，下面我们尝试着做下。
 
+#### 1.初始化项目
+```go
+mkdir gowiki
+cd gowiki
+go mod init example/gowiki
+touch wiki.go
+```
+
+```go
+// wiki.go
+package main
+
+import (
+    "fmt"
+    "os"
+)
+
+func main() {
+    // 这里&相当于Page的实例变量
+    p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
+    // 存入文件
+    p1.save()
+    // 读取出来
+    p2, _ := loadPage("TestPage")
+    fmt.Println(string(p2.Body))
+}
+
+// 结构体页面 相当于面向对象的class
+type Page struct {
+    Title string // 字段title标题
+    Body  []byte // 字段body内容
+}
+
+// 参数 p相当于，Page的实例
+func (p *Page) save() error {
+    filename := p.Title + ".txt"
+    // 将body内容写入文件中，文件权限为 600
+    return os.WriteFile(filename, p.Body, 0600)
+}
+
+func loadPage(title string) (*Page, error) {
+    filename := title + ".txt"
+    // 读取文件
+    body, err := os.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+    // page实例 和 错误
+    return &Page{Title: title, Body: body}, nil
+}
+```
+
+运行,运行完项目下会有一个TestPage.txt文件（程序写入的）
+```shell
+dongmingyan@pro ⮀ ~/go_playground/gowiki ⮀ go run .
+This is a sample Page.
+ dongmingyan@pro ⮀ ~/go_playground/gowiki ⮀ tree
+.
+├── TestPage.txt
+├── go.mod
+└── wiki.go
+
+1 directory, 3 files
+```
 
