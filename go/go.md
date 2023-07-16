@@ -1561,3 +1561,75 @@ This is a sample Page.
 1 directory, 3 files
 ```
 
+#### 2. 初始化web服务监听
+这里主要使用`net/http`包,接受请求、路由、处理请求
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	// 这里&相当于Page的实例变量
+	p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
+	// 存入文件
+	p1.save()
+	// 读取出来
+	p2, _ := loadPage("TestPage")
+	fmt.Println(string(p2.Body))
+
+	// ===================================新加部分=================
+	// 根目录下所有请求 交给handler处理
+	http.HandleFunc("/", handler)
+	// 监听8080端口 有错误时直接退出
+	log.Fatal(http.ListenAndServe(":8080", nil))
+	// ===================================新加部分=================
+}
+
+// 结构体页面 相当于面向对象的class
+type Page struct {
+	Title string // 字段title标题
+	Body  []byte // 字段body内容
+}
+
+// 参数 p相当于，Page的实例
+func (p *Page) save() error {
+	filename := p.Title + ".txt"
+	// 将body内容写入文件中，文件权限为 600
+	return os.WriteFile(filename, p.Body, 0600)
+}
+
+func loadPage(title string) (*Page, error) {
+	filename := title + ".txt"
+	// 读取文件
+	body, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	// page实例 和 错误
+	return &Page{Title: title, Body: body}, nil
+}
+
+// ===================================新加部分=================
+// 请求处理
+// http.ResponseWriter 响应对象
+// http.Request 请求对象
+func handler(w http.ResponseWriter, r *http.Request) {
+	// Fprintf 将格式化后的字符写入w中
+	// r.URL.Path[1:] 代表去掉 “/”后的后面字符
+	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+}
+
+// ===================================新加部分=================
+```
+
+运行后，用curl调用
+```shell
+dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/dmy
+Hi there, I love dmy!%
+```
