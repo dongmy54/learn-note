@@ -1204,7 +1204,211 @@ func SumIntsOrFloats[K comparable, V Number](m map[K]V) V {
 }
 ```
 
+### 模糊测试（Fuzz Test)
+版本要求：go 1.18(至少)
+
+#### 什么是模糊测试?
+模糊顾名思义它不是指定某个具体测试数据，然后去测试；它的原理是根据我们给了一个基本的种子测试数据，自动随机生成一系列未知的测试数据，去测试。
+
+用途：通常用于测试一些普通测试无法覆盖到的临界测试条件，它的覆盖更广、更全面
+
+>PS：启动模糊测试后，如果未发生测试失败的情况下，测试会一直运行下去，除非人为终止（当然我们可以手动指定一个允许测试的耗费时间，比如10s）
 
 
+#### 初始化项目代码
+```shell
+mkdir fuzz
+cd fuzz
+go mod init example/fuzz
+touch main.go
+```
 
+- 写main.go文件
+```go
+// main.go
+package main
+
+import "fmt"
+
+func main() {
+    input := "The quick brown fox jumped over the lazy dog"
+    rev := Reverse(input)
+    doubleRev := Reverse(rev)
+    fmt.Printf("original: %q\n", input)
+    fmt.Printf("reversed: %q\n", rev)
+    fmt.Printf("reversed again: %q\n", doubleRev)
+}
+
+// 将字符串进行反转
+func Reverse(s string) string {
+    b := []byte(s) // 将字符串按照字节转换成切片
+    for i, j := 0, len(b)-1; i < len(b)/2; i, j = i+1, j-1 {
+        b[i], b[j] = b[j], b[i]
+    }
+    return string(b)
+}
+```
+- 运行
+```shell
+dongmingyan@pro ⮀ ~/go_playground/fuzz ⮀ go run .
+original: "The quick brown fox jumped over the lazy dog"
+reversed: "god yzal eht revo depmuj xof nworb kciuq ehT"
+reversed again: "The quick brown fox jumped over the lazy dog"
+```
+
+#### 添加模糊测试
+模糊测试的文件和普通测试一样
+
+- 测试代码
+在当前项目列表下，添加文件`touch reverse_test.go`
+
+```go
+// reverse_test.go
+package main
+
+import (
+	"testing"
+	"unicode/utf8"
+)
+
+// 模糊测试函数以Fuzz开头
+// *testing.go 代表的是指针变量
+func FuzzReverse(f *testing.F) {
+	testcases := []string{"Hello, world", " ", "!12345"}
+	
+    for _, tc := range testcases {
+		f.Add(tc) // 添加种子测试数据,模糊测试将以此种子数据为基础生成测试数据
+	}
+
+    // 模糊测试部分
+	f.Fuzz(func(t *testing.T, orig string) {
+		rev := Reverse(orig)
+		doubleRev := Reverse(rev)
+        // 由于模糊测试具有随机性，我们事先并不清楚，输入是什么，因此
+        // 只能按照某些规则去写测试，这里按照生成
+        // 1. 生成前后都是uft8
+        // 2. 反转之后再反转应该和原来相同进行测试
+		if orig != doubleRev {
+			t.Errorf("Before: %q, after: %q", orig, doubleRev)
+		}
+		if utf8.ValidString(orig) && !utf8.ValidString(rev) {
+			t.Errorf("Reverse produced invalid UTF-8 string %q", rev)
+		}
+	})
+}
+```
+
+- 运行测试`go test -fuzz=Fuzz`
+```shell
+✘ dongmingyan@pro ⮀ ~/go_playground/fuzz ⮀ go test -fuzz=Fuzz
+fuzz: elapsed: 0s, gathering baseline coverage: 0/38 completed
+fuzz: minimizing 47-byte failing input file
+fuzz: elapsed: 0s, gathering baseline coverage: 5/38 completed
+--- FAIL: FuzzReverse (0.02s)
+    --- FAIL: FuzzReverse (0.00s)
+        reverse_test.go:21: Reverse produced invalid UTF-8 string "\xb8\xca"
+
+    Failing input written to testdata/fuzz/FuzzReverse/0463d8535940015d
+    To re-run:
+    go test -run=FuzzReverse/0463d8535940015d
+FAIL
+exit status 1
+FAIL	example/fuzz	0.639s
+```
+
+- 修复错误
+注意这时候如果你仔细观察会发现在项目下生成了一个`testdata/fuzz/FuzzReverse/xxxxxxxx`文件，这个文件记录的是模糊测试失败的用例
+
+从上面的报错中我们可以看出，这个是由于reverse后产生了非utf8字符导致的。
+为了调试这里的错误，我们可以通过 打印`fmt.Printf` 或者 日志`t.Logf`等方式找出错误原因，这里省略此过程
+
+1. 修复main.go文件
+```go
+// main.go
+package main
+
+import (
+    "errors"
+    "fmt"
+    "unicode/utf8"
+)
+
+func main() {
+    input := "The quick brown fox jumped over the lazy dog"
+    rev, revErr := Reverse(input)
+    doubleRev, doubleRevErr := Reverse(rev)
+    fmt.Printf("original: %q\n", input)
+    fmt.Printf("reversed: %q, err: %v\n", rev, revErr)
+    fmt.Printf("reversed again: %q, err: %v\n", doubleRev, doubleRevErr)
+}
+
+func Reverse(s string) (string, error) {
+    // 防止输入过程中包含 无效uft8字符
+    if !utf8.ValidString(s) {
+        return s, errors.New("input is not valid UTF-8")
+    }
+
+    r := []rune(s) // 对于有些字符，可能需要几个字节，比如中文，所以这里不能用字节类型，用rune-32位
+    for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r), nil
+}
+```
+2. 修复测试文件
+```go
+// reverse_test.go
+package main
+
+import (
+    "testing"
+    "unicode/utf8"
+)
+
+func FuzzReverse(f *testing.F) {
+    testcases := []string{"Hello, world", " ", "!12345"}
+    for _, tc := range testcases {
+        f.Add(tc) // 
+    }
+    f.Fuzz(func(t *testing.T, orig string) {
+        rev, err1 := Reverse(orig)
+        // 有错误直接跳过
+        if err1 != nil {
+            return
+        }
+
+        doubleRev, err2 := Reverse(rev)
+        if err2 != nil {
+            return
+        }
+        if orig != doubleRev {
+            t.Errorf("Before: %q, after: %q", orig, doubleRev)
+        }
+        if utf8.ValidString(orig) && !utf8.ValidString(rev) {
+            t.Errorf("Reverse produced invalid UTF-8 string %q", rev)
+        }
+    })
+}
+```
+
+- 修复后再次运行
+```shell
+ dongmingyan@pro ⮀ ~/go_playground/fuzz ⮀ go test -fuzz=Fuzz
+fuzz: elapsed: 0s, gathering baseline coverage: 0/39 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 39/39 completed, now fuzzing with 8 workers
+fuzz: elapsed: 3s, execs: 365386 (121788/sec), new interesting: 1 (total: 40)
+fuzz: elapsed: 6s, execs: 744288 (126305/sec), new interesting: 1 (total: 40)
+fuzz: elapsed: 9s, execs: 1114466 (123388/sec), new interesting: 1 (total: 40)
+^Cfuzz: elapsed: 10s, execs: 1237156 (121777/sec), new interesting: 1 (total: 40)
+PASS
+ok  	example/fuzz	10.532s
+```
+
+另外也可以通过`go test -fuzz=Fuzz -fuzztime=10s`指定运行时间为10s
+
+小结：
+1. 模糊测试和普通测试在同一个文件
+2. 模糊测试命令`go test -fuzz=Fuzz`
+3. 指定运行时间`go test -fuzz=Fuzz -fuzztime=10s`
+4. 模糊测试失败后会在项目下生成一个`testdata`文件夹用于存放失败用例
 
