@@ -1633,3 +1633,522 @@ func handler(w http.ResponseWriter, r *http.Request) {
 dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/dmy
 Hi there, I love dmy!%
 ```
+
+#### 3. 添加view和编辑（edit)页面
+
+- 添加view页面
+```go
+// wiki.go
+
+func main() {
+    // 省略...
+    http.HandleFunc("/", handler)
+    // 添加路由view路径
+    http.HandleFunc("/view/", viewHandler)
+    // 监听8080端口 有错误时直接退出
+    log.Fatal(http.ListenAndServe(":8080", nil))
+    // 省略...
+}
+
+
+// ... 省略
+// 这里查找的是view后面的txt内容，需要先保存一个文件比如 test.txt
+// 就可以请求 /view/test 路径
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+    // 取出view后的内容
+    title := r.URL.Path[len("/view/"):]
+    p, _ := loadPage(title)
+    fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
+}
+```
+
+为了便于测试这里，添加也给测试文件（位于项目下）`test.txt`内容随便写
+```txt
+我是test.txt文件
+```
+
+运行后测试
+```shell
+dongmingyan@pro ⮀ ~ ⮀ curl http://localhost:8080/view/test
+<h1>test</h1><div>我是test.txt文件
+</div>%
+```
+
+- 添加edit页面
+```go
+// wiki.go
+
+func main() {
+    // 省略...
+    http.HandleFunc("/view/", viewHandler)
+    http.HandleFunc("/edit/", editHandler)
+    // 监听8080端口 有错误时直接退出
+    log.Fatal(http.ListenAndServe(":8080", nil))
+    // 省略...
+}
+
+// 编辑页面处理
+func editHandler(w http.ResponseWriter, r *http.Request) {
+	title := r.URL.Path[len("/edit/"):]
+	p, err := loadPage(title)
+	if err != nil {
+		p = &Page{Title: title}
+	}
+
+	//  这里手动编写了html代码
+	fmt.Fprintf(w, "<h1>Editing %s</h1>"+
+		"<form action=\"/save/%s\" method=\"POST\">"+
+		"<textarea name=\"body\">%s</textarea><br>"+
+		"<input type=\"submit\" value=\"Save\">"+
+		"</form>",
+		p.Title, p.Title, p.Body)
+}
+```
+
+`curl http://localhost:8080/edit/test` 就可以测试
+
+#### 4. 优化-使用模版渲染页面
+前面我们虽然实现了功能，但是非常丑；这里我们用`html/template`包，剥离出模版。
+
+1. 项目路径下创建一个`edit.html`文件
+```html
+<h1>Editing {{.Title}}</h1>
+
+<form action="/save/{{.Title}}" method="POST">
+<div><textarea name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea></div>
+<div><input type="submit" value="Save"></div>
+</form>
+```
+2. 项目路径下创建一个`view.html`文件
+```html
+<h1>{{.Title}}</h1>
+
+<p>[<a href="/edit/{{.Title}}">edit</a>]</p>
+
+<div>{{printf "%s" .Body}}</div>
+```
+3. 重写前面的`editHandler`和`viewHandler`函数
+```go
+// wiki.go
+func editHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/edit/"):]
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+
+    // 把模版文件解析出来
+    t, _ := template.ParseFiles("edit.html")
+    // 渲染 p传入 使用内部的.Title展示
+    t.Execute(w, p)
+}
+
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/view/"):]
+    p, _ := loadPage(title)
+    t, _ := template.ParseFiles("view.html")
+    t.Execute(w, p)
+}
+```
+注意到前面，我们的方法中都有解析模版和渲染的步骤，提炼出来
+
+```go
+// wiki.go
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/view/"):]
+    p, _ := loadPage(title)
+    renderTemplate(w, "view", p)
+}
+
+func editHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/edit/"):]
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+    // 渲染页面
+    renderTemplate(w, "edit", p)
+}
+
+// 提炼出渲染方法
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+    t, _ := template.ParseFiles(tmpl + ".html")
+    t.Execute(w, p)
+}
+```
+
+4. 处理view中不存在页面的情况
+```go
+// wiki.go
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/view/"):]
+    p, err := loadPage(title)
+    // 如果错误存在，则重定向到edit页面
+    if err != nil {
+        http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+        return
+    }
+    renderTemplate(w, "view", p)
+}
+```
+
+5. `renderTemplate`模版解析可能失败，添加异常处理
+```go
+// wiki
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+    t, err := template.ParseFiles(tmpl + ".html")
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    err = t.Execute(w, p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}
+```
+
+#### 5.添加save处理
+1. 添加save处理
+```go
+// wiki.go
+
+func main() {
+    // ...
+    // save路由
+    http.HandleFunc("/save/", saveHandler)
+    // ...
+}
+
+// 这里save后会在项目下写入文件
+func saveHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/save/"):]
+    // 取出表单中的body参数
+    body := r.FormValue("body")
+    p := &Page{Title: title, Body: []byte(body)}
+    p.save()
+    // 保存后重定向
+    http.Redirect(w, r, "/view/"+title, http.StatusFound)
+}
+```
+2. 添加save异常处理
+```go
+// wiki.go
+
+func saveHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/save/"):]
+    body := r.FormValue("body")
+    p := &Page{Title: title, Body: []byte(body)}
+    // save的时候可能会有错误的
+    err := p.save()
+    if err != nil {
+        // http.Error http异常处理
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    http.Redirect(w, r, "/view/"+title, http.StatusFound)
+}
+```
+#### 6. 添加模版缓存
+前面我们每次view/edit页面都需要取解析一次模版，效率比较低，我们可以一次性初始化好 后续直接使用就ok.
+
+```go
+// wiki.go
+
+// 初始化模版
+var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+
+// 这里渲染
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+    // 直接从templates中执行渲染
+    err := templates.ExecuteTemplate(w, tmpl+".html", p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}
+```
+
+#### 7. 添加路径验证
+前面我们的路由用户可以写任意的东西，比如在view后，不够安全，这里我们添加一个验证，只有符合验证我们才继续处理请求。
+
+添加验证
+```go
+// wiki.go
+
+// regexp 正则表达试
+var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+
+// 编写一个函数用于做路径的验证
+func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
+    m := validPath.FindStringSubmatch(r.URL.Path)
+    // 如果不匹配正则，返回错误
+    if m == nil {
+        http.NotFound(w, r)
+        return "", errors.New("invalid Page Title")
+    }
+    // 否则返回匹配的标题 错误nil
+    return m[2], nil
+}
+```
+
+依次在每个函数中添加路径验证
+
+```go
+// wiki.go
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+    // 使用getTitle去做验证
+    title, err := getTitle(w, r)
+    if err != nil {
+        return
+    }
+    p, err := loadPage(title)
+    if err != nil {
+        http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+        return
+    }
+    renderTemplate(w, "view", p)
+}
+
+func editHandler(w http.ResponseWriter, r *http.Request) {
+    // 使用getTitle去做验证
+    title, err := getTitle(w, r)
+    if err != nil {
+        return
+    }
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+    renderTemplate(w, "edit", p)
+}
+
+func saveHandler(w http.ResponseWriter, r *http.Request) {
+    // 使用getTitle去做验证
+    title, err := getTitle(w, r)
+    if err != nil {
+        return
+    }
+    body := r.FormValue("body")
+    p := &Page{Title: title, Body: []byte(body)}
+    err = p.save()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    http.Redirect(w, r, "/view/"+title, http.StatusFound)
+}
+```
+
+#### 8. 优化-使用匿名函数
+前面我们虽然添加了验证，但是在三个函数中都重复使用了getTitle方法，不够美观，我们继续优化。
+
+我们可以使用匿名函数，来对每个传入的函数都执行验证路径
+
+```go
+// wiki.go
+
+// 改路有中的调用函数
+func main() {
+    // ...
+    http.HandleFunc("/view/", makeHandler(viewHandler))
+    http.HandleFunc("/edit/", makeHandler(editHandler))
+    http.HandleFunc("/save/", makeHandler(saveHandler))
+    // ...
+}
+
+// 这里传入一个函数 这个函数有三个参数
+// 1. http响应 
+// 2. http请求
+// 3. 字符串
+func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+    // 返回一个匿名函数 相当于对fn函数进行了改写
+    return func(w http.ResponseWriter, r *http.Request) {
+        // 进入后先验证路径
+        m := validPath.FindStringSubmatch(r.URL.Path)
+        if m == nil {
+            http.NotFound(w, r)
+            return
+        }
+        // 调用传入的函数
+        fn(w, r, m[2])
+    }
+}
+
+// 改为三个参数 多title
+func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
+    p, err := loadPage(title)
+    if err != nil {
+        http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+        return
+    }
+    renderTemplate(w, "view", p)
+}
+
+// 改为三个参数 多title
+func editHandler(w http.ResponseWriter, r *http.Request, title string) {
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+    renderTemplate(w, "edit", p)
+}
+
+// 改为三个参数 多title
+func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
+    body := r.FormValue("body")
+    p := &Page{Title: title, Body: []byte(body)}
+    err := p.save()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    http.Redirect(w, r, "/view/"+title, http.StatusFound)
+}
+```
+
+#### 9. 完整代码
+```go
+// wiki.go
+
+package main
+
+import (
+	"errors"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+	"os"
+	"regexp"
+)
+
+func main() {
+	// 这里&相当于Page的实例变量
+	p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
+	// 存入文件
+	p1.save()
+	// 读取出来
+	p2, _ := loadPage("TestPage")
+	fmt.Println(string(p2.Body))
+
+	// 根目录下所有请求 交给handler处理
+	http.HandleFunc("/", handler)
+	// 路由view路径
+	http.HandleFunc("/view/", makeHandler(viewHandler))
+	http.HandleFunc("/edit/", makeHandler(editHandler))
+	http.HandleFunc("/save/", makeHandler(saveHandler))
+	// 监听8080端口 有错误时直接退出
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+// 初始化模版
+var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+
+// regexp 正则表达试
+var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+
+// 结构体页面 相当于面向对象的class
+type Page struct {
+	Title string // 字段title标题
+	Body  []byte // 字段body内容
+}
+
+// 参数 p相当于，Page的实例
+func (p *Page) save() error {
+	filename := p.Title + ".txt"
+	// 将body内容写入文件中，文件权限为 600
+	return os.WriteFile(filename, p.Body, 0600)
+}
+
+func loadPage(title string) (*Page, error) {
+	filename := title + ".txt"
+	// 读取文件
+	body, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	// page实例 和 错误
+	return &Page{Title: title, Body: body}, nil
+}
+
+// 请求处理
+// http.ResponseWriter 响应对象
+// http.Request 请求对象
+func handler(w http.ResponseWriter, r *http.Request) {
+	// Fprintf 将格式化后的字符写入w中
+	// r.URL.Path[1:] 代表去掉 “/”后的后面字符
+	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+}
+
+// 编写一个函数用于做路径的验证
+func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
+	m := validPath.FindStringSubmatch(r.URL.Path)
+	// 如果不匹配正则，返回错误
+	if m == nil {
+		http.NotFound(w, r)
+		return "", errors.New("invalid Page Title")
+	}
+	// 否则返回匹配的标题 错误nil
+	return m[2], nil
+}
+
+// 这里传入一个函数 这个函数有三个参数
+// 1. http响应
+// 2. http请求
+// 3. 字符串
+func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+	// 返回一个匿名函数 相当于对fn函数进行了改写
+	return func(w http.ResponseWriter, r *http.Request) {
+		// 进入后先验证路径
+		m := validPath.FindStringSubmatch(r.URL.Path)
+		if m == nil {
+			http.NotFound(w, r)
+			return
+		}
+		// 调用传入的函数
+		fn(w, r, m[2])
+	}
+}
+
+// 改为三个参数 多title
+func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
+	p, err := loadPage(title)
+	if err != nil {
+		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+		return
+	}
+	renderTemplate(w, "view", p)
+}
+
+// 改为三个参数 多title
+func editHandler(w http.ResponseWriter, r *http.Request, title string) {
+	p, err := loadPage(title)
+	if err != nil {
+		p = &Page{Title: title}
+	}
+	renderTemplate(w, "edit", p)
+}
+
+// 改为三个参数 多title
+func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
+	body := r.FormValue("body")
+	p := &Page{Title: title, Body: []byte(body)}
+	err := p.save()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/view/"+title, http.StatusFound)
+}
+
+// 提炼出渲染方法
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+	// 直接从templates中执行渲染
+	err := templates.ExecuteTemplate(w, tmpl+".html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+```
+
