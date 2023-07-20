@@ -67,5 +67,11 @@ truncate exception_logs;
 SELECT datname, pg_size_pretty(pg_database_size(datname)) FROM pg_database;
 ```
 
+#### copy一个已存在数据的表结构到一个新的数据库
+```shell
+CREATE DATABASE kuban_test; 
 
+pg_dump -s kuban_dev > kuban_dev_structure.sql // 导出表结构到kuban_dev_structure.sql
+psql -d kuban_test -f kuban_dev_structure.sql  // 将kuban_dev_structure.sql 文件表结构引入 kuban_test中
+```
 
