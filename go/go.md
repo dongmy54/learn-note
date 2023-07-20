@@ -2152,3 +2152,146 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 
 ```
 
+#### go中如何组织代码
+#### 概念总结
+虽然之前我们都有接触，但都没有细说，这一节我们来细说下：
+
+1. go中所有代码都是通过包（package）进行组织的——所有`.go`文件都以`package xxx`开头；
+2. 同一个包中的变量、常量、函数相互可见;
+3. 同一目录下,不同的`.go`文件需要属于同一个包
+4. 如果有不同的包，需要新开目录，在新目录下组织
+
+关于模块名作用：
+1. 当我们go mod tidy拉取远程包的时候，会去`仓库地址 + 模块名路径`拉去
+2. 用于引入包路径,一个模块下，可能有多个包，我们通过`模块名 + 路径`引入指定包
+
+关于测试：
+直接在对应的go文件相同路径下，创建`xxx_test.go`文件编写即可
+
+#### 实践验证
+我们在实践中验证，前面我们总结的结论。
+
+1. 初始化项目
+```shell
+mkdir hello
+cd hello
+go mod init example/user/hello # 这里命名了一个模块叫 example/user/hello
+touch hello.go
+```
+hello.go文件内容
+```go
+// hello.go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, world.")
+}
+```
+这里可以直接运行 我们先行跳过
+
+2. 添加另外一个main包文件
+在当前目录创建一个文件`touch hu.go`
+
+```go
+// hu.go
+package main
+
+import "fmt"
+
+var a = "hello A" // 在同一个包，不同文件名下创建了变量a
+
+// 在同一个包，不同文件名下创建函数hu
+func hu(){
+    fmt.Println("hu.go file hu function")
+}
+```
+
+更新`hello.go`文件
+```go
+// hello.go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, world.")
+    fmt.Println(a) // 使用hu.go中的 a变量（同一个包下）
+    hu() // 使用hu函数 同一个包下
+}
+```
+此时可以运行`go run .`
+PS：在当前目录下,下面的命令等效
+-  `go run example/user/hello`
+-  `go run .`
+
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Hello, world.
+hello A
+hu.go file hu function
+```
+
+3. 路径下添加另外一个包
+此时仍在hello目录下
+```shell
+mkdir morestrings 
+touch morestrings/reverse.go
+```
+`reverse.go`文件
+```go
+// hello/morestrings/reverse.go
+package morestrings // 这是我们新引入的包
+
+// 反转字符
+// 对于大写的函数名 import后可以被其它包使用
+func ReverseRunes(s string) string {
+    r := []rune(s)
+    for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r)
+}
+```
+
+更新hello.go文件
+```go
+// hello.go
+package main
+
+import (
+    "fmt"
+    "example/user/hello/morestrings" // 注意这里是 模块名 + 路径
+)
+
+func main() {
+    fmt.Println("Hello, world.")
+    fmt.Println(a) // 使用hu.go中的 a变量（同一个包下）
+    hu() // 使用hu函数 同一个包下
+    fmt.Println(morestrings.ReverseRunes("!ko !ko")) //调用另外一个模块中的方法
+}
+```
+
+运行
+```shell
+dongmingyan@pro ⮀ ~/go_playground/hello ⮀ go run .
+Hello, world.
+hello A
+hu.go file hu function
+ok! ok!
+```
+
+PS: 如果应用的是仓库中的包，我们import后直接运行`go mod tidy`获取
+
+4. 最终项目文件结构
+```shell
+ dongmingyan@pro ⮀ ~/go_playground/hello ⮀ tree
+.
+├── go.mod
+├── hello.go
+├── hu.go
+└── morestrings
+    └── reverse.go
+
+```
