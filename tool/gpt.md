@@ -18,6 +18,7 @@
 ### 5.图表形式
 以Mermaid的方式，输出服务器处理请求的过程
 > PS: 这里可以在vscode中安装插件——Markdown Preview 预览
+> 在线展示工具：http://tooltag.cn/playground/mermaid-plugin
 ```mermaid
 sequenceDiagram
   participant User as User's Browser
