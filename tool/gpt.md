@@ -15,6 +15,26 @@
 ### 4. 知识树
 结合分块学习法，将[go语言]拆分成小块，并搭建知识树，以帮助我快速掌握
 
+### 5.图表形式
+以Mermaid的方式，输出服务器处理请求的过程
+> PS: 这里可以在vscode中安装插件——Markdown Preview 预览
+```mermaid
+sequenceDiagram
+  participant User as User's Browser
+  participant DNS as DNS Resolver
+  participant Server as Web Server
+  participant Client as HTTP Client
+
+  User->>+DNS: Input URL and press Enter
+  DNS-->>-User: Resolve domain name to IP address
+  User->>+Client: Send HTTP request to Server
+  Client->>+Server: Send HTTP GET request
+  Server-->>+Client: Process HTTP request
+  Client-->>-User: Receive HTTP response
+  Server->>+Client: Generate HTTP response
+  Client-->>-User: Display Web page
+```
+
 
 
 
