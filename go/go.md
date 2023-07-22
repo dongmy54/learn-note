@@ -46,6 +46,7 @@
 2. gin 框架文档 https://gin-gonic.com/docs/
 3. go 语言语法文档 https://devdocs.io/go/
 4. go语法使用常见例子 https://gobyexample.com/
+5. https://github.com/golang/go/wiki
 
 ### 安装go
 有多种安装方式，推荐使用官网的直接下载安装（下载好后一路next就可以了）
