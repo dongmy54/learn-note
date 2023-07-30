@@ -2298,3 +2298,168 @@ PS: 如果应用的是仓库中的包，我们import后直接运行`go mod tidy`
     └── reverse.go
 
 ```
+
+### go结构体
+#### 1. 基础
+在go中结构体相当于面向对象语言中的类,是一个非常非常重要的概念。
+既然它相当于类，那么它就有类似类的一些功能，下面我们一起看看。
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// 定义Dog结构体——相当于 Dog类
+type Dog struct {
+	name string // 字段名 - 类型
+	age  int
+}
+
+// 这个相当于dog的实例方法 —— 在go中也称为方法
+// d * Dog 相当于面向对象语言中的self
+func (d *Dog) call() {
+	fmt.Println("汪汪")
+}
+
+func (d *Dog) intro() {
+	fmt.Println("name:", d.name, "age:", d.age)
+}
+
+func main() {
+	d1 := &Dog{name: "小黄", age: 1} // &Dog 和 new(Dog) 都是指针引用的写法
+	d2 := new(Dog)                 // 实际项目中&Dog用的多
+	d2.name = "小黑"
+	d2.age = 2
+
+	d3 := Dog{name: "小柯j", age: 2} // 一般不推荐这样写 这样直接copy结构体
+	d4 := &Dog{"小小", 3}            // 不用带字段 安装顺序传入也是ok的
+
+	d1.call()
+	d1.intro() // 调用的d1实例上的 intro方法
+
+	d2.intro()
+	d3.intro()
+	d4.intro()
+}
+
+// 输出：
+
+// 汪汪
+// name: 小黄 age: 1
+// name: 小黑 age: 2
+// name: 小柯j age: 2
+// name: 小小 age: 3
+```
+
+#### 2. 继承（值类型嵌套）
+首先，结构体中的字段类型，是不局限于常规变量（比如： string boolean int 等），也可以是结构体。
+
+go中的继承是通过，内嵌结构体实现的，内嵌后，当前结构体将获得基础结构体字段和方法的能力。
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// 建立Animal作为基础类
+type Animal struct {
+	name string
+	age  int
+}
+
+func (a *Animal) intro() {
+	fmt.Println("name: ", a.name, "age: ", a.age)
+}
+
+// Dog类
+type Dog struct {
+	desc   string
+	Animal // 以值类型的方式引入 Animal基础类 这里没有字段，也称匿名字段 此时字段名就是Animal
+	// 会将Animal中的字段方法，上升到dog直接可以调用的层度
+}
+
+func (a *Dog) call() {
+	fmt.Println("汪汪")
+}
+
+func main() {
+
+	d1 := &Dog{
+		Animal: Animal{name: "小黄", age: 1}, // 这里必须以内嵌的方式书写
+		desc:   "This is dog!",
+	}
+
+	fmt.Println(d1.name)       // 直接调用animal内 name字段
+	fmt.Println(d1.age)        // 直接调用animal内 age字段
+	fmt.Println(d1.Animal.age) // 这时先找到Animal字段它是一个结构体，然后调用age()
+	d1.call()
+	d1.intro() // 直接调用animal上的intro方法
+}
+
+// 输出：
+
+// 汪汪
+// name: 小黄 age: 1
+// name: 小黑 age: 2
+// name: 小柯j age: 2
+// name: 小小 age: 3
+```
+
+#### 3. 指针类型嵌套
+指针类型嵌套区别于继承（值类型嵌套），在使用上它会显示多经过一层。
+
+但它有如下好处：
+1. 可以避免大结构体复制，占用大量内存
+2. 可以避免循环引用
+
+下面看具体代码
+```go
+package main
+
+import "fmt"
+
+// 内部结构体
+type Address struct {
+	City     string
+	Province string
+}
+
+// 外部结构体
+type Person struct {
+	Name    string
+	Age     int
+	Address *Address // 以指针类型嵌套
+}
+
+func main() {
+	address := &Address{
+		City:     "成都",
+		Province: "四川",
+	}
+
+	person := &Person{
+		Name:    "张三",
+		Age:     12,
+		Address: address, // 引入前面的address 注意这里是指针
+	}
+
+	// 直接访问外部结构体
+	fmt.Println("姓名：", person.Name, "年龄：", person.Age)
+
+	// 间接访问内部结构体
+	fmt.Println(person.Address.City) // 注意这里多了一层 Address
+	fmt.Println(person.Address.Province)
+
+	// fmt.Println(person.City) 这是错误写法 区别于继承（值嵌套）
+}
+
+// 输出
+// 姓名： 张三 年龄： 12
+// 成都
+// 四川
+
+```
