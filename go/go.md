@@ -2389,6 +2389,7 @@ type Dog struct {
 	desc   string
 	Animal // 以值类型的方式引入 Animal基础类 这里没有字段，也称匿名字段 此时字段名就是Animal
 	// 会将Animal中的字段方法，上升到dog直接可以调用的层度
+    // 现实项目中更多的时候这里用*Animal 更普遍，有指针在方法/属性调用上上没有区别
 }
 
 func (a *Dog) call() {
