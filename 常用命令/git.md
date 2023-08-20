@@ -5,6 +5,15 @@
 
 
 ```
+Host github.com
+    Hostname ssh.github.com
+    Port 20
+
+连接恢复
+ssh -T git@github.com
+```
+
+```
 git init              git初始化（会在当前目录产生.git文件 ）
 rm -rf .git           移除所有git 数据
 
