@@ -14,3 +14,12 @@ sqlite3 xx.sqlite_file # 打卡xx数据库的文件
 PRAGMA table_info(permissions); # 查看表permissions字段
 .exit 退出
 ```
+
+```sql
+ALTER TABLE permissions
+ADD COLUMN user_floors VARCHAR(255);
+
+
+ALTER TABLE permissions
+ADD COLUMN user_name VARCHAR(255);
+```
