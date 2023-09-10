@@ -1,12 +1,31 @@
 ### docker
 ```bash
+# 构建镜像
+# docker build -t IMAGE_NAME:TAG PATH_TO_DOCKERFILE
+# 利用当前目录下的Dockefile去构建一个叫 weclome-to-docker的镜像(默认情况下tag为：latest)
+docker build -t welcome-to-docker . 
+# 多了:xx 构建镜像的同时指定tag(同一个镜像名可有多个tag)
+docker build -t welcome-to-docker:20230910 .
+# docker save -o my-image.tar my-image:tag
+# 将镜像welcome-to-docker打包成welcome-to-docker.tar
+docker save -o welcome-to-docker.tar welcome-to-docker
+
 docker load < my-image.tar.gz # 从文件中加载docker镜像
 
 docker images # 查看有哪些镜像
+# 删除镜像 weclcome-to-docker tag名为20230910
+docker rmi welcome-to-docker:20230910 
+
+# docker run --name my-container my-image # 通过镜像 创建容器
+# 指定容器名my_container 
+# 端口映射 4000（外部）- 3000（容器内） 
+# -d 后台运行
+# weclcome-to-docker-镜像名
+# lastest- tag号
+docker run --name my_container -p 4000:3000 -d weclcome-to-docker:latest
+
 docker ps -a  # 查看有哪些容器
 docker exec -it kb-ent-api(container name) /bin/bash # 进入容器内部
-
-docker run --name my-container my-image # 通过镜像 创建容器
 
 docker stop container_name # 优雅关闭容器
 docker kill container_name # 强制关闭
