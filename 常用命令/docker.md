@@ -1,5 +1,9 @@
 ### docker
 ```bash
+docker --help # 帮助信息
+docker -v # 查看docker版本
+docker info # docker 信息
+
 # 构建镜像
 # docker build -t IMAGE_NAME:TAG PATH_TO_DOCKERFILE
 # 利用当前目录下的Dockefile去构建一个叫 weclome-to-docker的镜像(默认情况下tag为：latest)
@@ -27,9 +31,9 @@ docker run --name my_container -p 4000:3000 -d weclcome-to-docker:latest
 docker ps -a  # 查看有哪些容器
 docker exec -it kb-ent-api(container name) /bin/bash # 进入容器内部
 
-docker stop container_name # 优雅关闭容器
+docker stop container_name # 优雅关闭容器(推荐使用，使用后在rm删除容器)
 docker kill container_name # 强制关闭
-dokcer rm container_name   # 强力删除（除了关闭容器，还会删除相关文件系统、网络、卷等）
+dokcer rm container_name   # 强力删除（这个命令 不能直接用于running状态的容器，除了关闭容器，还会删除相关文件系统、网络、卷等）
 
 docker start container_name   # 用于容器已经死了 或退出
 docker restart container_name # 容器还活着
@@ -48,4 +52,12 @@ docker exec -it my_postgres_container pg_dump -U postgres -W -F t my_database > 
 
 # 将备份文件从容器复制到宿主机
 docker cp my_postgres_container:/path/to/backup/in/container/my_database_backup.tar /path/to/backup/on/host/
+
+
+# compose
+docker compose up -d # 开启容器组
+docker-compose down  # 关闭容器组
+docker-compose ps    # 查看容器组
+docker-compose logs  # 查看容器组日志
+docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 ```
