@@ -19,4 +19,14 @@
 ##### 构建params参数
 ```ruby
 ActionController::Parameters.new(hash)
+
+
+# 默认情况下 params是不能直接转换成hash的
+params.to_unsafe_h # 允许任意参数 不经过permit
 ```
+
+#### 启动服务
+指定到0.0.0.0 方便本地局域网请求到 默认rails s 不行
+`rails s -b 0.0.0.0` 
+
+
