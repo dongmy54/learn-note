@@ -28,6 +28,10 @@ du -sh * | sort -h | tail -n 10
 # 清空
 > xxx.log 
 sudo sh -c 'echo > production.log'  # 有时候需要sudo权限
+
+
+# 批量清理2022年的开门记录文件
+find . -type f -newermt 2022-01-01 ! -newermt 2023-01-01 -delete
 ```
 
 ### 命令展开
