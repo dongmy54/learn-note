@@ -1,5 +1,7 @@
 ### pg 相关命令
 > `psql --help` 帮助
+
+> psql -U root -h b6ae14ed425f4c068d7b7a0dc2e2888ein03.internal.cn-north-4.postgresql.rds.myhuaweicloud.com -p 5432 -d postgres 如果这里不指定postrges 他会以用户名相同的数据库进入
 > * createdb mydb 创建数据库
 > * dropdb mydb 删除数据库
 > * psql -U dmy mydb 已dmy身份进入数据库
