@@ -39,7 +39,7 @@ done
 #### 2. 添加cron
 `crontab -e`
 写入路径
-`0 0 * * * /bin/bash /path/to/clear_large_files.sh /path/to/file1 /path/to/file2 /path/to/file3`
+`0 0 * * * /bin/bash /home/kuban/clear_large_files.sh /home/kuban/largefile`
 
 
 #### 制造大文件 用于测试
