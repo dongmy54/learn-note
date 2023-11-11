@@ -1,37 +1,132 @@
-### goroutinue 和 channel
-在正式学习go之前，对go的一个基本了解是，它非常适合高并发场景；但自己并不了高并发场景代码是如何编写的。
+### channel-通道
+为什么要有通道呢？
+通道的作用是解决各个gorountine之间通行的问题;
 
-这就要说到今天的主角goroutine和channel了。
+在开始之前可以先记住一个原则，通道必须和gorountine一起使用，一个直观的体现就是必须要和`go`关键字搭配使用。
+其实也非常好理解，因为如果只有一个gorountine，那么也用不着通信，所以也就用不着通道了。
 
-#### 一、什么是goroutinue?
-在操作系统层我们知道有进程和线程，线程位于进程之下，线程相比于进程更轻量，因此我们在其它变成语言中可以看到对于并发场景可以采用多线程编程。
+#### 1. 如何理解通道？
+我们可以把通道类比为队列-（先进先出）,因此在它内部是可以存值和取值的，但是它有些自己的特点:
+1. 线程安全
+2. 它是一种类型,用`chan`表示,`chan int`代表这是一个int型的通道
+3. 既然它是一种类型,那就涉及是引用类型还是值类型，它是引用类型，所以需要make初始化
 
-但是在go中，认为线程还不够轻量，于是搞出了goroutinue（协程），一般而言一个goroutinue大小为（4-8K），而一个线程大小一般在几M左右；可以看出goroutine确实非常的轻量；这也是为什么go可以轻松的开启上万个goroutine的原因。
+对于通道的操作来讲，主要就三种操作：
+1. `ch<- 10` 往通道存值
+2. `<-ch ` 从通道取值
+3. `close(ch)` 关闭通道
 
-- 上下文开销切换大小：
-> **进程 > 线程 > goroutine(协程)**
+PS: 
+- ch这里是一个通道类型的变量名,不是go关键字
+- 如何记忆呢 <-指向通道，则存/否则取值
 
-对**goroutinue我们可以通过类比线程去理解**，比如开启一个goroutine可以简单的类比开启了一个线程（其它语言）。
+#### 2. 定义通道
+前面说了一大堆，一行代码没看，我们来定义通道,写一段代码看看,前面说了**通道是引用类型**,因此我们需要通过make初始化通道。
 
-- 那么goroutine和线程之间到底有什么关系呢？
-1. **goroutinue是go并发执行单元**（由go运行时调度-go内部的）
-2. 线程是操作系统级并执行单元（由操作系统内核调度）
-3. **多个goroutine可在一个线程内交替执行**，它于线程的映射是由go去管理的，开发者不需要直接管理
-4. goroutine切换更轻量，切换开销更小
+```go
+package main
 
-- goroutinue有什么用？
-**让程序异步执行，增加了并发性，提高性能**
+import "fmt"
 
-- goroutinue是并发还是并行执行呢？
-默认情况下goroutinue是并发执行的，默认在一个核心上执行，如果要在多个核心上并行执行需要设置GOMAXPROCS大于1.
+func main() {
+	ch := make(chan int) // 定义一个装int型的通道
 
-现在我们对goroutinue已经有了一个大体的认识，但是还不清楚如何开启gorotinue?
+	go func() {
+		ch <- 10 // 从通道存
+	}()
 
-#### 二、如何开启goroutine?
-开启goroutine非常简单，通过go关键字就可以开启，语法如下：
-> go 函数
+	fmt.Println(<-ch) // 从通道取
+}
+```
 
-例子
+上面的代码可以正确运行，会打印出10；我们先不用纠结为是10；我还是继续讨论这里的为啥必须用make初始化，下面不用make看看
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var ch chan int // 定义一个装int型的通道,通道是引用类型,没有make是nil
+
+	go func() {
+		ch <- 10 // 从通道存
+	}()
+
+	fmt.Println(<-ch) // 从通道取
+	// fatal error: all goroutines are asleep - deadlock! 
+}
+```
+看到了吧 报错了，如果你是一个初学者，很可能会多次遇到上述错误。
+
+#### 3. 通道的阻塞性
+通道在存和取的过程中是存在阻塞的,那么什么时候阻塞呢？
+比如：
+  1. 从通道中取出一个值`<- ch` 而此时通道中没有值
+  2. 向通道中存入一个值`ch<- 10` 而此时通道中没有地方可以存 
+
+然后我们再回过头来看通道定义中的代码
+```go
+func main() {
+	ch := make(chan int) // 定义一个装int型的通道
+
+  // goroutinue 是异步的不会阻塞
+	go func() {
+		ch <- 10 // 向通道中存ch
+	}()
+
+  // 但是执行到这里 从通道中取值(<-ch)但是此时通道中并没有值，所以阻塞了
+	// 等待前面的go 匿名函数中存入通道后，这里阻塞解除，打印出了10
+	fmt.Println(<-ch) // 从通道取
+}
+```
+
+上述代码加了注释，希望可以帮助你理解通道中的阻塞。
+
+#### 4. 非缓冲通道- 同步通道
+什么是非缓冲通道?
+指的是通道中一个元素也不能存下,存入和取出必须同时进行，这有点像两个人A和B,A只能直接把东西交给B,不能放到快递点后，过一段时间B再去取;因此非阻塞通道也叫同步通道。
+
+再定义通道的例子中那就是一个同步通道，打印的时候和存必须同时进行。
+我们再来看一个例子
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int) // 非缓冲通道 - 同步通道
+  
+	// 理论上：这里会阻塞 因为ch是一个非缓冲通道，它在等待另一个goruntine 从通道取值
+	// 但是这里找不到其它gorountine 取值
+	// 所以这里会deadlock报错
+	// 这也是为什么说通道都是和go关键字一起使用的原因
+	ch <- 10
+	fmt.Println(<-ch) // 虽然这里是向通道取值 但是他们不是另外一个gorountine
+}
+```
+改成下面这样，程序将正常运行
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int) // 非缓冲通道 - 同步通道
+
+	// 有go关键字哦
+	go func() {
+		fmt.Println(<-ch)
+	}()
+
+	ch <- 10
+}
+```
+
+#### 5. 缓冲通道
+经过前面的非缓冲通道的叙述，相信聪明的你，一定能立马清楚什么是缓冲通道：
+**也就是通道中可以存一定数量的东东,现在在也不用像上面那么一手交钱一手交货啦**
+
+我们还是来看一段代码
 ```go
 package main
 
@@ -41,311 +136,108 @@ import (
 )
 
 func main() {
-	// 开启goroutine（以外部函数）
-	go hello()
-	// 以匿名函数方式开启gorotinue
+	ch := make(chan int, 6) // 这个通道可以存6个元素
+
 	go func() {
-		fmt.Println("匿名函数goroutine")
+		// 由于从通道中取（range)中有sleep
+		// 且由于这里是(缓冲通道) 所以这里会一次将6个值全部存入通道 并不会阻塞
+		for i := 0; i < 6; i++ {
+			ch <- i
+		}
+
+		close(ch) // 存完后关闭通道 不会影响通道的接收
+		fmt.Println("6个通道元素全部存完")
 	}()
 
-	// 等待异步执行完成
-	time.Sleep(time.Second)
-}
-
-func hello() {
-	fmt.Println("hello world!")
-}
-```
-
-运行结果：
-```shell
-dongmingyan@pro ⮀ ~/go_playground/play ⮀ go run .
-匿名函数goroutine
-hello world!
-```
-
-#### 三、sync.WaitGroup优化time.Sleep
-虽然上面的代码中我们开启goroutine,但是引入了time.Sleep不够优雅，我们优化下，在go中可以通过`sync.WaitGroup`自动等待goroutine结束，而不用通过time.Sleep去保证。
-
-优化后代码如下：
-```go
-package main
-
-import (
-	"fmt"
-	"sync"
-)
-
-var wg sync.WaitGroup
-
-func main() {
-	wg.Add(2) // 开启了两个goroutinue所以这里写2
-
-	// 开启goroutine（以外部函数）
-	go hello()
-	// 以匿名函数方式开启gorotinue
-	go func() {
-		fmt.Println("匿名函数goroutine")
-		wg.Done() // 标记该goroutine已完成
-	}()
-
-	// 等待异步执行完成
-	wg.Wait()
-}
-
-func hello() {
-	fmt.Println("hello world!")
-	wg.Done()
-}
-```
-
-#### 四、channel-通道
-在开始介绍channel-通道之前，先来看一个问题：
-
-假设我们有两个goroutine，分别用于做计算任务，我们希望在他们完成计算结果后，将结果合并展示到外层主程序，我们如何实现呢？
-
-```go
-// 伪代表
-
-func main() {
-  go worker1() // 两个worker做计算任务
-  go worker2() 
-
-  // 这里汇总结果
-  // go worker1() + go worker2()
-}
-```
-
-我们知道两个worker采用goroutine（协程）方式启动，他们是异步的，需要把结果汇总,我们可以定义一个共享变量,但是这样会引发竞态问题。
-
-到这里，我们的channel可以登场了，它的主要作用在：
-> **解决协程之间的通信和同步，避免使用共享数据引发竞态问题**
-
-- 那么为什么通道可以做到呢？
-**通道是线程安全的，同一个时间点只有一个goroutine可以从通道中写入/读取**
-
-有了这个基本认识，我们看看通道如何解决上面的问题：
-```go
-package main
-
-import (
-	"fmt"
-	"time"
-)
-
-func worker1(ch chan int) {
-	// 模拟耗时工作
-	time.Sleep(time.Second)
-	ch <- 42 // 将结果发送到通道
-}
-
-func worker2(ch chan int) {
-	// 模拟耗时工作
-	time.Sleep(2 * time.Second)
-	ch <- 23 // 将结果发送到通道
-}
-
-func main() {
-	// 创建一个整数通道
-	ch := make(chan int)
-
-	// 启动两个协程进行工作
-	go worker1(ch)
-	go worker2(ch)
-
-	// 从通道接收工作结果
-	result1 := <-ch
-	result2 := <-ch
-
-	// 合并结果
-	finalResult := result1 + result2
-
-	fmt.Printf("Final Result: %d\n", finalResult)
-}
-```
-```shell
-dongmingyan@pro ⮀ ~/go_playground/play ⮀ go run .
-Final Result: 65
-```
-
-#### 五、探究channel语法
-我们在四中看到了如何用channel解决问题，但是并没有说明其语法特性，这里做说明。
-
-**channel是一种数据线程安全的数据结构，类似于队列，遵循先进先出。**
-
-channel用`chan`表示,
-##### 1. channel 根据是否可以写/读可以分成三种：
-```go
-// 双向 可读也可写
-func dd(ch chan int) {
-	ch <- 1
-	fmt.Println(10)
-}
-
-// 只能（发送）写
-func foo(ch chan<- int) {
-	ch <- 1
-}
-
-// 只能(接收）读
-func bar(ch <-chan int) {
-	fmt.Println(<-ch)
-}
-```
-
-##### 2. channel分为无缓冲通道/缓冲通道
-无缓冲通道：**没有指定通道大小默认为0，单独的写和读都会导致阻塞；同时一边读且另一边读的时候才不会阻塞，因此它是同步的，又称同步通道。**
-```go
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	ch := make(chan int) // 无缓冲通道 没有指定通道大小默认为0
-	go foo(ch)
-	fmt.Println(<-ch)
-}
-
-func foo(ch chan<- int) {
-	ch <- 1
-}
-```
-
-缓冲通道：**在初始化通道时，指定缓冲数；这样可以在现将数据先行发送到通道中，直到缓冲区满，才会阻塞。因此又称异步通道。**
-```go
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	ch := make(chan int, 10) // 缓冲通道 初始化时指定大小为10
-	go foo(ch)
-
-	// rang 通道可以遍历通道 在通道关闭后自动停止
-	for x := range ch {
-		fmt.Println(x)
+	for i := range ch {
+		fmt.Printf("从通道取出值: %d\n", i)
+		time.Sleep(time.Second)
 	}
 }
+```
+输出结果如下：
+```
+6个通道元素全部存完
+从通道取出值: 0
+从通道取出值: 1
+从通道取出值: 2
+从通道取出值: 3
+从通道取出值: 4
+从通道取出值: 5
+```
 
-func foo(ch chan<- int) {
-	for i := 0; i < 10; i++ {
+#### 6. 单向通道
+顾名思义，单向，要么是只能存，要么只能取；
+一般是用于函数参数中
+
+看代码
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// ch只能存
+func counter(ch chan<- int) {
+	for i := 0; i < 6; i++ {
 		ch <- i
 	}
-	close(ch) // 关闭通道
+
+	close(ch) // 存完后关闭通道（放心不影响取）
 }
-```
 
-##### 3. 通道的使用条件
-通道的使用是有条件的，并非所有时候都能使用通道，使用不当会报错-死锁！
-> fatal error: all goroutines are asleep - deadlock!
+// ch1只能存
+// ch2只能取
+func squarer(ch1 chan<- int, ch2 <-chan int) {
+	for i := range ch2 {
+		ch1 <- i * i
+	}
 
-1. 必须搭配goroutine使用
-2. 比如要同时有通道的发送 - 接收，这是一对
+	close(ch1) // ch1存完关闭
+}
 
-##### 4. `var ch1 chan int`和`ch1 := make(chan int)`区别
-`var ch1 chan int`只声明了通道变量，此时并没有初始化，没有分配真正的内存空间，这个时候直接使用是会报错的。
-
-下面会报错
-```go
-package main
-
-import (
-	"fmt"
-)
+// ch 只能取
+func printer(ch <-chan int) {
+	for i := range ch {
+		fmt.Println(i)
+	}
+}
 
 func main() {
-	var ch chan int
-	// ch = make(chan int) // 打开这里注释才不会报错
-	go foo(ch)
+	ch1 := make(chan int)
+	ch2 := make(chan int)
+	go counter(ch1)
+	go squarer(ch2, ch1)
 
-	// rang 通道可以遍历通道 在通道关闭后自动停止
-	fmt.Println(<-ch)
-}
-
-func foo(ch chan<- int) {
-	ch <- 1
+	printer(ch2)
 }
 ```
 
-##### 5. 通道读取结果判断
-主要用两种方式：
+#### 7.通道取值
+主要有两种方式：
+1. range
 ```go
-// 1. range 方式（推荐）
-for x := range ch{
-  //...
+for i := range ch{
+	// xxx
 }
-
-// 2. val , oK := <- ch 方式
+```
+2. data,ok := ch
+```go
 for {
-		i, ok := <-ch
-		if !ok {
-			fmt.Println("通道关闭")
-			break
-		}
-
-		fmt.Println("读取成功，值为：", i)
-	}
-```
-
-##### 6. select同时监听多个通道
-select 同时监听多个通道，从而实现多通道的非阻塞操作。select 会找其中已经就绪的case去执行
-
-它类似于switch，只不过这里作用对象是通道，它可以实现许多有用的操作，比如超时退出、多久执行一次等等。
-
-```go
-package main
-
-import (
-	"fmt"
-	"time"
-)
-
-func main() {
-	ch1 := make(chan string)
-	ch2 := make(chan string)
-
-	go func() {
-		time.Sleep(2 * time.Second) // 2s后发送
-		ch1 <- "Hello from ch1"
-	}()
-
-	go func() {
-		time.Sleep(3 * time.Second) // 3s后发送
-		ch2 <- "Hello from ch2"
-	}()
-
-	for {
-		select {
-		case msg1 := <-ch1: // 当ch1接收到后 执行
-			fmt.Println(msg1)
-		case msg2 := <-ch2: //当ch2接收到后 执行
-			fmt.Println(msg2)
-		case <-time.After(3 * time.Second): // 3s后超时
-			fmt.Println("Timeout: No message received")
-			return
-		}
+	if data,ok := ch; ok{
+		// xxx
+	} else {
+		break
 	}
 }
 ```
+这两种方式都必须要close(ch)
 
-输出：
-```shell
-dongmingyan@pro ⮀ ~/go_playground/play ⮀ go run .
-Hello from ch1
-Hello from ch2
-Timeout: No message received
-```
+#### 8. close通道
+通道和文件不同，创建后通道可以不用写close;它可以被垃圾回收；
+但是推荐再发送完后都写下，这样做的一个好处时，可以`range` 和 `data,ok`取值。
 
-
-
-
-
-
-
-
+对于close另外一点是，close通道后，即使通道内还有数据，也不影响接收，所以放心大胆的`close`吧.
 
 
