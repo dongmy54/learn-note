@@ -141,7 +141,7 @@ func main() {
 
 	wp.Run() // 先运行起来
 	for i := 0; i < 10; i++ {
-		id := i + 1 // 注意这里 单独取出id
+		id := i + 1 // 注意这里 匿名函数参数引用的原因
 		// PS: 匿名函数(非执行)不能是一个带参数的函数;通过匿名函数的特性传参数
 		wp.AddTask(func() {
 			log.Printf("[main] Starting task %d\n", id)
