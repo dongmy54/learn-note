@@ -44,6 +44,8 @@ phpmyadmin访问端口：888
 
 #### 6. 添加网站
 
+#### 7. 证书
+bt 自带 Let’s Encrypt
 
 
 
