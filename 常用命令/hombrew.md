@@ -8,6 +8,7 @@ brew list memcached          查询已安装包路径
 
 brew search mysql            查询可用包
 brew install wine            安装xx包
+HOMEBREW_NO_AUTO_UPDATE=1 brew install formula  安装时跳过自动更新
 brew update                  更新
 brew uninstall --force mysql 卸载
 brew remove postgresql@9.4   移除（和uninstall 等效）
