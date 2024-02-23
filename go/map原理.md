@@ -201,3 +201,7 @@ func modifyMap(m map[int]int) {
 // 修改前map: map[1:2]
 // 修改后map: map[1:2 2:3]
 ```
+
+参考资料：
+1. https://mp.weixin.qq.com/s/pvzO8wu13gLKK00zp77zWA
+2. https://mp.weixin.qq.com/s/04aIpJCT9gdTaWaFX1lbrw
