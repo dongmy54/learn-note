@@ -240,4 +240,27 @@ for {
 
 对于close另外一点是，close通道后，即使通道内还有数据，也不影响接收，所以放心大胆的`close`吧.
 
+#### 9. 底层实现
+它的底层是过`hchan`实现，结构如下：
+```go
+type hchan struct {
+	qcount   uint           // 队列中元素总数
+	dataqsiz uint           // 循环队列大小
+	buf      unsafe.Pointer // 指向循环队列指针
+	elemsize uint16
+	closed   uint32
+	elemtype *_type // element type
+	sendx    uint   // 待发送元素在buf中索引
+	recvx    uint   // 待接收元素在buf中索引
+	recvq    waitq  // 待接收goroutine等待队列
+	sendq    waitq  // 待发送goroutine等待队列
+
+	lock mutex // 有锁哦
+}
+```
+
+我们简单看下：
+- lock 有锁哦，线程安全的
+- buf 循环队列，用于缓冲通道存放元素
+- recvq、sendq 接收/发送阻塞时用于存放goroutine
 
