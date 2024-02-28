@@ -329,6 +329,47 @@ type ReaderWithInfo interface {
 }
 ```
 
+### 7. 接口底层实现
+接口底层是由两个结构体实现的：
+1. eface e代表empty，即empty interface,没有任何方法的接口
+2. iface 代表包含有方法的接口
+
+```go
+type iface struct {
+	tab  *itab
+	data unsafe.Pointer
+}
+
+type eface struct {
+	_type *_type
+	data  unsafe.Pointer
+}
+
+// ita内部有fun用于存储方法
+type itab struct {
+	inter *interfacetype
+	_type *_type
+	hash  uint32 // copy of _type.hash. Used for type switches.
+	_     [4]byte
+	fun   [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
+}
+```
+在这里我们可以看出eface里有type和data，再次映证了,一个接口需要类型和值都为nil才等同于nil；
+
+那么我们应该怎么解决这个问题呢？是反射——只要值是nil就返回true
+
+```go
+func isInterfaceValueNil(i interface{}) bool {
+    if i == nil {
+        return true
+    }
+    // 使用反射获取接口的动态值
+    val := reflect.ValueOf(i)
+    // 如果动态值是零值，则返回 true
+    return val.Kind() == reflect.Ptr && val.IsNil()
+}
+```
+
 
 
 
