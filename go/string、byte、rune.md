@@ -199,8 +199,14 @@ func main() {
 // aello 中国
 ```
 
-
-
+#### 8. 底层实现
+字符串底层是一个字节数组，它的结构体如下：
+```go
+type stringStruct struct {
+	str unsafe.Pointer
+	len int
+}
+```
 
 
 
