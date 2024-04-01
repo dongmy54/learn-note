@@ -1,7 +1,62 @@
 ## GORM 实践
 前面我们快速入门的gorm，这里针对一些常见场景进行一些实践。
 
-### 1. 事务
+### 1. 表名推断
+gorm还是比较智能的，能根据我们的输入参数，推断出表名，在推断不出表名时，就会提示报错。
+
+在具体之前先补充两个基础知识：
+1. `db.Table("users")` 字符串指定表名
+2. `db.Model(User{})` 通过model名指定表名
+
+上面两个写法，我们经常可以看到，它们的作用都是指定表名；但这不是必须的，有些时候不写这两个查询也是可以的， 比如：
+
+```go
+var user User
+db.First(&user, 1) // 推断出表名出
+
+var users User
+db.Find(&users)   // 推断出表名
+```
+
+### 2. 批量处理
+默认情况下Find会查所有数据,数量大量时，我们需要批处理方法，这个`FindInBatches`非常实用。
+```go
+var users []models.User
+// 批量查询
+db.FindInBatches(&users, 2, func(tx *gorm.DB, batch int) error {
+  fmt.Printf("第%d批数据: \n", batch) // batch 从1开始
+  // 处理获取到的本批次数据
+  for _, user := range users {
+    fmt.Println(user.ID, user.Name)
+  }
+
+  return nil
+})
+```
+
+### 3. Scopes重用查询条件
+我们可以把常见的查询条件以scope的方式写好，方便复用。
+```go
+// scope方法
+// 查询年龄大于xx的用户 带参数
+func AgeGreaterThan(age int) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("age > ?", age)
+	}
+}
+
+// state为有效的用户
+func ValidState(db *gorm.DB) *gorm.DB {
+	return db.Where("state = ?", "valid")
+}
+
+
+// 使用
+var users []models.User
+db.Scopes(models.ValidState, models.AgeGreaterThan(18)).Find(&users)
+```
+
+### 3. 事务
 #### 1.1 手动事务
 ```go
 // 创建一个事务
@@ -41,7 +96,7 @@ db.Transaction(func(tx *gorm.DB) error {
 })
 ```
 
-### 2. 排它锁
+### 4. 排它锁
 ```go
 err := db.Transaction(func(tx *gorm.DB) error {
   // 原生sql加锁
@@ -64,7 +119,7 @@ err := db.Transaction(func(tx *gorm.DB) error {
 tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id =?", productID).First(&product)
 ```
 
-### 3. FirstOrInit vs FirstOrCreate
+### 5. FirstOrInit vs FirstOrCreate
 查找和初始化/创建一体
 ```go
 // FirstOrInit 初始化
@@ -98,7 +153,7 @@ db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).Fi
 FirstOrInit和FirstOrCreate 使用比较广泛，他们常常与`Attrs`和`Assign`搭配使用。
 
 
-### 4. 自定义数据类型
+### 6. 自定义数据类型
 有时候我们希望存储一些自定义数据类型，比如切片、map等，这个时候我们可以自定义数据类型,我们需要做的是自己做数据的存和取的解析过程。
 
 `user`model
@@ -151,9 +206,9 @@ fmt.Printf("User's hobbies: %#v\n", user.Hobbies)
 // User's hobbies: models.DataJSONB{"reading", "swimming"}
 ```
 
-### 5. 常见迁移的写法
+### 7. 常见迁移的写法
 
-### 5. 复杂查询
+### 8. 复杂查询
 - preload
 - joins
 计数等
