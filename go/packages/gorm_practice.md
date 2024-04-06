@@ -1,7 +1,41 @@
 ## GORM 实践
-前面我们快速入门的gorm，这里针对一些常见场景进行一些实践。
+经过前面快速入门gorm的学习,我们已经对gorm建立了整体的认知;但是距离实践还存在一定的距离,这里从实际使用的角度出发，对使用过程中的高频知识点进行了汇总，希望对您有所帮助。
 
-### 1. 表名推断
+### 1. 单个对象First/Last/Take
+- `First` 主键升序第一个
+- `Last`  主键降序第一个
+- `Take` 不排序
+
+### 2. 单列/多列提取Pluck
+```go
+var names []string
+// 一次提取所有的name出来
+db.Table("users").Pluck("name", &names)
+
+// 可以用Scan/Find 结合Map提取出多列
+var user_data []map[string]interface{}
+// 多列提取，这里用Scan也行
+db.Model(&models.User{}).Select("id", "name").Find(&user_data)
+for _, data := range user_data {
+  log.Printf("user data id: %v, name: %v\n", data["id"], data["name"])
+}
+```
+
+### 3. Where写法
+支持字符串、结构体、Map多种方式。
+```go
+var users []models.User
+// 1. 字符串
+db.Where("name = ?", "李四").Find(&users)
+
+// 2. 结构体
+db.Where(models.User{Name: "李四"}).Find(&users)
+
+// 3. map
+db.Where(map[string]interface{}{"name": "李四"}).Find(&users)
+```
+
+### 4. 表名推断
 gorm还是比较智能的，能根据我们的输入参数，推断出表名，在推断不出表名时，就会提示报错。
 
 在具体之前先补充两个基础知识：
@@ -18,8 +52,10 @@ var users User
 db.Find(&users)   // 推断出表名
 ```
 
-### 2. 批量处理
-默认情况下Find会查所有数据,数量大量时，我们需要批处理方法，这个`FindInBatches`非常实用。
+### 5. 批处理
+默认情况下`Find`会查所有数据,数量大量时，我们需要批处理方法，这个`FindInBatches`非常实用。
+
+> 除了这种方式外，gorm中还有`Rows`方法更底层点。
 ```go
 var users []models.User
 // 批量查询
@@ -34,7 +70,7 @@ db.FindInBatches(&users, 2, func(tx *gorm.DB, batch int) error {
 })
 ```
 
-### 3. Scopes重用查询条件
+### 6. Scopes重用查询
 我们可以把常见的查询条件以scope的方式写好，方便复用。
 ```go
 // scope方法
@@ -56,70 +92,8 @@ var users []models.User
 db.Scopes(models.ValidState, models.AgeGreaterThan(18)).Find(&users)
 ```
 
-### 3. 事务
-#### 1.1 手动事务
-```go
-// 创建一个事务
-tx := db.Begin()
 
-user := models.User{
-  Name:     "Dongmingyan",
-  Email:    "dongmingyan@gmail.com",
-  Password: "123456",
-}
-
-// 这里换成tx做处理
-if err := tx.Create(&user).Error; err != nil {
-  tx.Rollback()
-  log.Fatalf("failed to create user: %v", err)
-}
-
-tx.Commit()
-```
-
-#### 1.2 自动事务（简明）
-`db.Transaction`简化了很多，也不用自己写回滚还是挺方便的。
-```go
-user := models.User{
-  Name:     "Dongmingyan",
-  Email:    "dongmingyan@gmail.com",
-  Password: "123456",
-}
-
-db.Transaction(func(tx *gorm.DB) error {
-  // 这里user使用的是外层的 —— 闭包
-  if err := tx.Create(&user).Error; err != nil {
-    return err
-  }
-
-  return nil // 返回nil表示事务成功
-})
-```
-
-### 4. 排它锁
-```go
-err := db.Transaction(func(tx *gorm.DB) error {
-  // 原生sql加锁
-  if err := tx.Raw("SELECT * FROM products WHERE id = ? FOR UPDATE", productID).Scan(&product).Error; err != nil {
-    return err
-  }
-
-  newStockNum := product.StockNum - quantity
-  if newStockNum < 0 {
-    return errors.New("库存不足")
-  }
-
-  return tx.Model(&product).Update("stock_num", newStockNum).Error
-})
-```
-
-原生sql加锁比较直观，还有一种方式
-```go
-// 使用clauses.Locking来做 看起来要专业点
-tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id =?", productID).First(&product)
-```
-
-### 5. FirstOrInit vs FirstOrCreate
+### 7. FirstOrInit vs FirstOrCreate
 查找和初始化/创建一体
 ```go
 // FirstOrInit 初始化
@@ -152,8 +126,105 @@ db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).Fi
 
 FirstOrInit和FirstOrCreate 使用比较广泛，他们常常与`Attrs`和`Assign`搭配使用。
 
+### 8. 预加载Preload
+```go
+// 避免N+1查询
+// 底层生成单独的两个sql 
+db.Preload("CreditCard").Find(&models.User{}) 
 
-### 6. 自定义数据类型
+// joins 则是一个sql
+db.Joins("CreditCard").Find(&models.User{})
+// SELECT "users"."id", xxx,"CreditCard"."id" AS "CreditCard__id",yyy,"CreditCard"."number" AS "CreditCard__number","CreditCard"."user_id" AS "CreditCard__user_id" FROM "users" LEFT JOIN "credit_cards" "CreditCard" ON "users"."id" = "CreditCard"."user_id" AND "CreditCard"."deleted_at" IS NULL WHERE "users"."deleted_at" IS NULL
+```
+
+### 9. 事务
+#### 9.1 手动事务
+```go
+// 创建一个事务
+tx := db.Begin()
+
+user := models.User{
+  Name:     "Dongmingyan",
+  Email:    "dongmingyan@gmail.com",
+  Password: "123456",
+}
+
+// 这里换成tx做处理
+if err := tx.Create(&user).Error; err != nil {
+  tx.Rollback()
+  log.Fatalf("failed to create user: %v", err)
+}
+
+tx.Commit()
+```
+
+#### 9.2 自动事务（简明）
+`db.Transaction`简化了很多，也不用自己写回滚还是挺方便的。
+```go
+user := models.User{
+  Name:     "Dongmingyan",
+  Email:    "dongmingyan@gmail.com",
+  Password: "123456",
+}
+
+db.Transaction(func(tx *gorm.DB) error {
+  // 这里user使用的是外层的 —— 闭包
+  if err := tx.Create(&user).Error; err != nil {
+    return err
+  }
+
+  return nil // 返回nil表示事务成功
+})
+```
+
+### 10. 排它锁
+```go
+err := db.Transaction(func(tx *gorm.DB) error {
+  // 原生sql加锁
+  if err := tx.Raw("SELECT * FROM products WHERE id = ? FOR UPDATE", productID).Scan(&product).Error; err != nil {
+    return err
+  }
+
+  newStockNum := product.StockNum - quantity
+  if newStockNum < 0 {
+    return errors.New("库存不足")
+  }
+
+  return tx.Model(&product).Update("stock_num", newStockNum).Error
+})
+```
+
+原生sql加锁比较直观，还有一种方式
+```go
+// 使用clauses.Locking来做 看起来要专业点
+tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id =?", productID).First(&product)
+```
+
+### 11. 常见迁移的写法
+```go
+type Account struct {
+	gorm.Model
+	// 组合索引 同时命名了idx_space_location 它用于两个字段上
+	SpaceId    uint `gorm:"index:idx_space_location;not null"` // 组合索引
+	LocationId uint `gorm:"index:idx_space_location;not null"` // 组合索引
+
+	Age uint `gorm:"not null"` // 整型
+
+	Name     string `gorm:"type:varchar(255);not null"`        // 字符串
+	Email    string `gorm:"type:varchar(255);not null;index"`  // 字符串(普通索引)
+	PhoneNum string `gorm:"type:varchar(255);not null;unique"` // 字符串（唯一索引）
+	// 描述
+	Description string `gorm:"type:text;not null"` // 文本类型
+	// 余额
+	Balance float64 `gorm:"not null"` // 浮点类型
+	// 是否有效 默认有效
+	Active bool `gorm:"default:true"` // 布尔类型 默认值true
+	// 有效期
+	ExpiredAt *time.Time // 时间类型
+}
+```
+
+### 12. 自定义数据类型
 有时候我们希望存储一些自定义数据类型，比如切片、map等，这个时候我们可以自定义数据类型,我们需要做的是自己做数据的存和取的解析过程。
 
 `user`model
@@ -205,13 +276,3 @@ db.Find(&user, 1)
 fmt.Printf("User's hobbies: %#v\n", user.Hobbies)
 // User's hobbies: models.DataJSONB{"reading", "swimming"}
 ```
-
-### 7. 常见迁移的写法
-
-### 8. 复杂查询
-- preload
-- joins
-计数等
-
-
-
