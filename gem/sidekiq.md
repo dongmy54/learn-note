@@ -161,14 +161,20 @@ cap -T sidekiq # 可以列出支持的操作
 
 消息队列清空
 ```ruby
-queue = Sidekiq::Queue.new("high")
+queue = Sidekiq::Queue.new("enterprise_prod_default")
 queue.each do |job|
-  job.klass # => 'MyWorker'
-  job.args # => [1, 2, 3]
-  job.value # 有时候args是空的这个时候就要用value
-  # 通过这里的删除job 用某些条件判断
-  job.delete if job.jid == 'abcdef1234567890'
+  # job.klass # => 'MyWorker'
+  # job.args # => [1, 2, 3]
+  # job.value
+  if job.to_json.include?("SyncIDMMembers")
+    job.delete
+    puts "delete======"
+  end
+  #job.delete if job.jid == 'abcdef1234567890'
 end
+
+# 清除重试
+Sidekiq::DeadSet.new.clear
 ```
 
 ###### 一些公开api
