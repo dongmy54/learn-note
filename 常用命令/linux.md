@@ -31,6 +31,10 @@ du -sh * | sort -h | tail -n 10
 sudo sh -c 'echo > production.log'  # 有时候需要sudo权限
 
 
+# 清理路径
+#1. 应用的日志
+#2. /var/log下日志
+
 # 批量清理2022年的开门记录文件
 find . -type f -newermt 2022-01-01 ! -newermt 2023-01-01 -delete
 ```
