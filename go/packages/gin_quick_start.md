@@ -116,3 +116,69 @@ func mian {
 
 可以响应html也可以传参到页面上，理论上不区分前后端一起开发也是支持的。
 
+### 4. POST/PUT/Delete请求
+前面我们快速的上手了响应了json和html页面，但是我们请求的方式都是`GET`，这里一起学习下其它的请求方式。
+
+#### 4.1 POST
+```go
+func main {
+  // ...
+
+  // POST请求
+	r.POST("/login", func(c *gin.Context) {
+		name := c.PostForm("name")         // 获取表单数据
+		password := c.PostForm("password") // 获取表单数据
+
+		type any map[string]interface{}
+		c.JSON(200, gin.H{
+			"code":    200,
+			"message": "login success",
+			"data":    any{"name": name, "password": password}, // 传递给客户端的数据
+		})
+	})
+
+	r.Run() // 启动服务
+}
+```
+您可以在`postman`或者`apifox`这样的工具中测试
+```shell
+ dongmingyan@pro ⮀ ~ ⮀ curl --location --request POST 'http://localhost:8080/login' \
+--form 'name="dmy"' \
+--form 'password="123456"'
+
+{"code":200,"data":{"name":"dmy","password":"123456"},"message":"login success"}
+```
+
+#### 4.2 PUT
+```go
+func main {
+  // ...
+
+  // PUT更新请求
+	r.PUT("/user/:id", func(c *gin.Context) {
+		id := c.Param("id") // 获取路径参数
+		name := c.PostForm("name")
+		password := c.PostForm("password")
+
+		type any map[string]interface{}
+		c.JSON(200, gin.H{
+			"code":    200,
+			"message": "update success",
+			"data":    any{"id": id, "name": name, "password": password},
+		})
+	})
+	r.Run() // 启动服务
+}
+```
+
+为简单起见我们直接命令行执行吧。
+```shell
+curl --location --request PUT 'http://localhost:8080/user/12' \
+  --form 'name="dmy"' \
+  --form 'password="123456"'
+
+{"code":200,"data":{"id":"12","name":"dmy","password":"123456"},"message":"update success"}
+```
+
+
+
