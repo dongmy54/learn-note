@@ -332,7 +332,7 @@ token := c.GetHeader("Authorization")
 ```
 
 ### 7. 中间件
-- 定义中间键
+- 定义中间件
 ```go
 // 定义用户中间件
 func userMiddleware() gin.HandlerFunc {
