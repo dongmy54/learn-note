@@ -1,9 +1,10 @@
-### docker
+### docker命令
 ```bash
 docker --help # 帮助信息
 docker -v # 查看docker版本
 docker info # docker 信息
 
+docker pull golang:1.22.2-bullseye # 拉取指定镜像版本
 # 构建镜像
 # docker build -t IMAGE_NAME:TAG PATH_TO_DOCKERFILE
 # 利用当前目录下的Dockefile去构建一个叫 weclome-to-docker的镜像(默认情况下tag为：latest)
@@ -61,3 +62,6 @@ docker-compose ps    # 查看容器组
 docker-compose logs  # 查看容器组日志
 docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 ```
+
+
+### 

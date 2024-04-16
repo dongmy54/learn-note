@@ -430,6 +430,25 @@ docker-compose logs  # 查看容器组日志
 docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 ```
 
+### 八. 使用中常见问题汇总
+#### 1. docker for desktop比较慢、占用内存高怎么办？
+可以试试[orbStack](https://orbstack.dev/)，非常轻量，启动也很快。
+
+#### 2. `docker build`构建镜像过程卡死
+在获取某一个镜像时非常时间都停留在那里，先手动拉取`docker pull`下这个镜像试试,多半不行; 考虑换镜像源解决，多半是镜像源的原因；
+
+- 我们构件镜像时，可以先pull下必须的镜像
+- 如果您使用`orbStack`那么它的镜像源配置位置在`~/.orbstack/config/docker.json`
+- 如果使用默认的镜源`https://hub.docker.com/` 终端配置下代理
+- 配置完镜像源后使用`docker info`检查下是否生效了
+
+#### 3. 运行镜像——启动容器后，容器立即停止
+
+一般是发生了一些报错导致的。
+
+- 如果是本地，我们可以直接前台运行容器看看报错信息
+- 如果是线上环境，我们通过`docker logs`查看日志信息
+
 
 
 
