@@ -64,4 +64,11 @@ docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 ```
 
 
-### 
+### dockerfile
+```shell
+// 复制目录到 下对方必须要带目录哦
+COPY templates/ ./templates
+```
+
+
+
