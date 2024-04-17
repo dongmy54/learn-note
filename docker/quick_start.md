@@ -396,6 +396,20 @@ docker rmi welcome-to-docker:20230910
 # lastest- tag号
 docker run --name my_container -p 4000:3000 -d weclcome-to-docker:latest
 
+
+# 假设我宿主机的配置文件在当前路径下的config目录  我容器中的配置文件目录在/root/app/config目录
+docker run -v ./config:/root/app/config my_image
+
+# PS:
+# 1. 容器中的路径必须写绝对路径
+# 2. 宿主机路径如果是当前路径下，前面不能少了 ./
+# 3. 无论是挂载目录还是容器都遵循，替换原则（如果不存在则创建——比如如果上面/root/app下没有config则会创建一个）
+
+# docker配置自动重启
+# always 即使你是手动停止的容器，下次重启宿主机它还是会自动启动。
+# unless-stopped 如果是手动停止的容器，则不会自动重启更**推荐方式**。
+docker run --restart=unless-stopped my_image
+
 docker ps -a  # 查看有哪些容器
 docker exec -it kb-ent-api(container name) /bin/bash # 进入容器内部
 
@@ -438,12 +452,12 @@ docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 在获取某一个镜像时非常时间都停留在那里，先手动拉取`docker pull`下这个镜像试试,多半不行; 考虑换镜像源解决，多半是镜像源的原因；
 
 - 我们构件镜像时，可以先pull下必须的镜像
+  > 补充一点：如果已经将构建镜像时依赖的镜像拉下来，那么构建时直接使用；如果本地没有，则会去仓库拉取，这种**临时拉取的镜像并不会存在于本地**,你用`docker images`是看不到的。
 - 如果您使用`orbStack`那么它的镜像源配置位置在`~/.orbstack/config/docker.json`
 - 如果使用默认的镜源`https://hub.docker.com/` 终端配置下代理
 - 配置完镜像源后使用`docker info`检查下是否生效了
 
-#### 3. 运行镜像——启动容器后，容器立即停止
-
+#### 3. 启动容器后，容器为什么会立即停止？
 一般是发生了一些报错导致的。
 
 - 如果是本地，我们可以直接前台运行容器看看报错信息
@@ -452,6 +466,43 @@ docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 #### 4. 容器正常运行了，但是本的步能使用容器服务？
 需要把容器服务中端口映射到宿主机上后才能正常使用。
 
+#### 5. 项目使用的配置文件如何处理？
+1. 镜像构建过程中可以留一份配置模版文件（当然不留也没有不影响，不过推荐留一份）
+2. 部署时，在宿主机准备好真实使用的配置文件
+3. 在容器启动时通过挂载虚拟卷的方式，将宿主机的配置文件挂载到指定路径文件（如果前面留了配置模版文件，则直接替换它）就行。
+4. 如果配置文件比较多都在一个目录下也是可以的，挂载目录就ok。
 
+举例说明：
+`Dockerfile`文件
+```
+# 假设配置文件都在config目录下，构建时添加到镜像中
+COPY config/ ./config
+```
+
+启动docker时
+```shell
+# 假设我宿主机的配置文件在当前路径下的config目录  我容器中的配置文件目录在/root/app/config目录
+docker run -v ./config:/root/app/config my_image
+
+# PS:
+# 1. 容器中的路径必须写绝对路径
+# 2. 宿主机路径如果是当前路径下，前面不能少了 ./
+# 3. 无论是挂载目录还是容器都遵循，替换原则（如果不存在则创建——比如如果上面/root/app下没有config则会创建一个）
+```
+
+#### 6. 容器成功启动，如果宿主机不小心关机，如何保证宿主机启动后容器自动启动？
+`docker`已经帮我们考虑到了这里点，你只需要在启动docker的时候，加上启动策略就行。
+
+- always 即使你是手动停止的容器，下次重启宿主机它还是会自动启动。
+- unless-stopped 如果是手动停止的容器，则不会自动重启更**推荐方式**。
+
+相同点：
+1. 在宿主机重新启动后，只要docker守护进程启动，就会自动重启容器
+2. 如果容器意外退出，他们都会自动重启容器
+
+用法
+```shell
+docker run --restart=unless-stopped my_image
+```
 
 
