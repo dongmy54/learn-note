@@ -29,6 +29,19 @@ docker rmi welcome-to-docker:20230910
 # lastest- tag号
 docker run --name my_container -p 4000:3000 -d weclcome-to-docker:latest
 
+
+# restart重启方式 保证宿主机重启后能启动
+docker run --restart=unless-stopped my_image
+
+# 挂载
+docker run -v ./config:/root/app/config my_image
+
+# PS:
+# 1. 容器中的路径必须写绝对路径
+# 2. 宿主机路径如果是当前路径下，前面不能少了 ./
+# 3. 无论是挂载目录还是容器都遵循，替换原则（如果不存在则创建——比如如果上面/root/app下没有config则会创建一个）
+
+
 docker ps -a  # 查看有哪些容器
 docker exec -it kb-ent-api(container name) /bin/bash # 进入容器内部
 
