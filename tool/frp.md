@@ -53,22 +53,65 @@ nohup ./frps -c ./frps.ini &
 
 我用mac下载版本为： `https://github.com/fatedier/frp/releases/download/v0.42.0/frp_0.42.0_darwin_amd64.tar.gz`
 
-```bash
-# frpc.ini
-[common]
-server_addr = xxx.x.xx.xxx  # 公网ip
-server_port = 7000          # 服务端提供服务的端口号
+```shell
+wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz
+tar -xvf frp_0.44.0_linux_amd64.tar.gz
+mv frp_0.44.0_linux_amd64.tar.gz frp
+vim frpc.ini
+```
 
-[ssh]
+```bash
+# frpc.ini 注意这里的注释要分开行写 不要和指令写在同一行
+[common]
+# 公网ip
+server_addr = 39.105.xxx.xxx
+# 服务端提供服务的端口号
+server_port = 7000          
+token = kuban.io
+
+[ssh-(remote-9047)]
 type = tcp
 local_ip = 127.0.0.1
 local_port = 22
-remote_port = 6000         # ssh 连接时用的端口号 
+# ssh 连接时用的端口号
+remote_port = 9047          
 ```
 
 启动
 ```
 ./frpc -c frpc.ini
+```
+
+
+```shell
+# 确保服务安装了ssh
+
+# 确保密码
+sudo adduser kuban # 这个用户用于ssh 连接的时候使用的user
+# 密码 kuxx123
+```
+
+保证frp一直启动
+`sudo vim /etc/systemd/system/frpc.service`
+```shell
+[Unit]
+Description=FRP Client Service
+After=network.target
+
+[Service]
+Type=simple
+# 这里user改成 系统上存在的用户
+User=kb
+Restart=on-failure
+RestartSec=5s
+ExecStart=/home/huiyizhongxin/frp/frpc -c /home/huiyizhongxin/frp/frpc.ini
+
+[Install]
+WantedBy=multi-user.target
+```
+```shell
+sudo systemctl daemon-reload
+sudo systemctl start frpc.service
 ```
 
 ##### 测试ssh 连接
