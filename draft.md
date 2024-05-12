@@ -192,10 +192,10 @@ log.retention.check.interval.ms=300000 # 5 minutes
 - 提高并发处理能力max.in.flight.requests.per.connection
 
 消费者
-- 提高提取子节数fetch.min.bytes
-- 每个分区提取最大子节数 max.partition.fetch.bytes
+- 提高提取字节数fetch.min.bytes
+- 每个分区提取最大子字数 max.partition.fetch.bytes
 - 每次轮训记录数 max.poll.records
-- session过期时间 session.timeout.ms
+- 提高session过期时间 session.timeout.ms
 
 分区设置
 合适的分区数量，通常为2-3倍消费者数量
