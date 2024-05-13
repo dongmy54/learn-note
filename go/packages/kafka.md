@@ -60,11 +60,183 @@ kafka做为一款高并发、高可用、高性能的消息系统,非常适合�
 
 ### 4. 在go中怎么用？
 #### 4.1 搭建kafka服务
+kafka是分布式的依赖于zookeeper做服务管理,所以我们在搭建kafka时也必须启动zookeeper服务，你可以单独下载zookeeper和kafka进行安装。但是我更推荐你使用docker安装，这样会非常方便，如果你还不会docker，可以去看[这篇](https://juejin.cn/post/7359402386605588490)。
+
+好啦！我们采用`docker compose`的方式启动`zookeeper`和`kafka`
+
+本地新增一个文件`kafka-docker-compose.yml`文件，内容如下：
+```yml
+version: '2'
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka1:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092
+      # 必须要有KAFKA_ADVERTISED_LISTENERS
+      # 注意这里的kafka1是服务名称 不能随意写成其它的
+      # 定义的是其它docker服务如何联系上这个服务
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # 副本因子
+
+  kafdrop:  # 定义一个名为 kafdrop 的服务用于UI界面
+    image: obsidiandynamics/kafdrop  # 使用 obsidiandynamics/kafdrop 镜像来运行服务
+    restart: "no"  # 定义在出现问题时不自动重启服务
+    ports:  # 定义服务端口映射
+      - "9000:9000"  # 将宿主机的 9000 端口映射到容器的 9000 端口
+    environment:  # 设置环境变量
+      KAFKA_BROKERCONNECT: "kafka1:29092"  # 指定 Kafka 服务器的连接信息
+    depends_on:  # 定义服务间的依赖关系
+      - "kafka1"  # kafdrop 服务依赖于 kafka 服务服务依赖于 kafka 服务
+```
+可以看到这里除了定义了zookeeper和kafka外，还额外加了一个服务`kafdrop`它提供了一个kafka的可视化UI界面，方便我们查看。
+
+通过`docker compose -f kafka-docker-compose.yml up`即可启动服务。
+
+启动成功，通过浏览器`http://localhost:9000`可以看到们的kafka可视化界面如下。
+
+![alt text](images/kafdrop.png)
+
+PS：如果启动时，镜像不好拉取，可能需要开启代理。
+
 #### 4.2 生产者
+服务已启动，我们开始连接我们的kafka服务吧，前面我们在启动时定义了9092端口，直接连接就行。我们开始编写生产者代码。
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/IBM/sarama"
+)
+
+func main() {
+	// 创建 Kafka 同步生产者
+	config := sarama.NewConfig()
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Partitioner = sarama.NewRandomPartitioner
+	config.Producer.Return.Successes = true
+
+	producer, err := sarama.NewSyncProducer([]string{"localhost:9092"}, config)
+	if err != nil {
+		log.Fatalln("Failed to create producer:", err)
+	}
+	defer producer.Close()
+
+	// 发布消息
+	msg := &sarama.ProducerMessage{
+		Topic: "my-topic",
+		Value: sarama.StringEncoder("Hello, Kafka!"),
+	}
+
+	// 发送消息后返回分区和偏移量
+	partition, offset, err := producer.SendMessage(msg)
+	if err != nil {
+		log.Fatalln("Failed to send message:", err)
+	}
+	fmt.Printf("Message sent to partition %d at offset %d\n", partition, offset)
+}
+```
+
 ### 4.3 消费者
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/IBM/sarama"
+)
+
+func main() {
+	// 创建 Kafka 消费者
+	config := sarama.NewConfig()
+	config.Consumer.Return.Errors = true
+
+	consumer, err := sarama.NewConsumer([]string{"localhost:9092"}, config)
+	if err != nil {
+		log.Fatalln("Failed to create consumer:", err)
+	}
+	defer consumer.Close()
+
+	// 从 "my-topic" 主题中消费消息
+	partitionConsumer, err := consumer.ConsumePartition("my-topic", 0, sarama.OffsetNewest)
+	if err != nil {
+		log.Fatalln("Failed to start partition consumer:", err)
+	}
+	defer partitionConsumer.Close()
+
+	// 循环接收消息
+	for msg := range partitionConsumer.Messages() {
+		fmt.Printf("Received message: %s\n", string(msg.Value))
+	}
+}
+```
+
+先启动消费者后，再启动生产者将看到日志消息`Received message: Hello, Kafka!`
+
+好啦！看到这里我们的kafkaf服务已经可以正常跑起来了，在实际项目中，往往还需要进行一些封装才能再次使用，您可以在此基础上进一步探索。
 
 ### 5. 一些问题
+在刚开始了解kafka时你可能有些问题不太清楚，这里列出一些，供您参考。
 
+#### 5.1为什么kafka非常快？
+1. 顺序写入
+   以顺序写入磁盘方式进行，避免磁盘的寻址开销
+2. 零拷贝技术
+   在网络传输数据时，直接从内核态将数据传输到网络通道（减少用户态的中间环节），利用操作系统的`sendfile`系统调用。
+3. 批量写入
+   生产者将多条消息批量发送到broker,减少网络开销
+4. 数据压缩
+
+#### 5.2 kafka如何保证高可用性？
+1. 副本机制
+   每一个partition都不是单独的，由一个leader和多个follower（副本）组成,leader宕机，会从follower中选择新的leader
+2. 分区机制
+  partition的多个副本是位于不同broker上，分散存储的（鸡蛋不放在同一个篮子里），某一个broker宕机不会影响整服务
+3. 同步机制
+  leader会自动向它的follower做同步保持数据的一致
+4. offset机制
+  每个消费者在消费时都会有一个偏移量（`offset`）的记录，它记录了当前消费到哪里了。消费者宕机后，重启后可以继续从之前的消费点消费。
+5. 控制器高可用
+  集群中会有一个控制器掌管所有分区和副本的状态，如果控制器宕机后，zookeeper会重新选择新的控制器
+
+#### 5.3 如何提高Kafka的吞吐量？有哪些关键的配置参数？
+这里有一个大体原则，围绕提高生产者的生产能力、消费者的消费力、broker的处理能力展开。
+
+1. 生产者
+   - 提高批处理大小（batch.size）
+   - 使用压缩（compression.type）
+   - 提高缓冲区大小（buffer.memory）
+2. 消费者
+  - 提高单次轮询获取消费者条数(max.poll.records)
+  - 提高单次拉取数据量大小（fetch.max.bytes）
+3. broker
+  - 适当增大分区数，分区是消费者数量的3-5倍（num.partitions）
+
+
+
+
+
+
+   
 
 
 
