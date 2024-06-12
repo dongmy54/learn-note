@@ -149,6 +149,84 @@ func TestPrintUserInfo(t *testing.T) {
 2. step2：**定义一个mock方式（固定的）**
 3. step3：**设定mock方法的的传参数和返回值**
 
+#### 3. mock要求
+我们先看一个需要测试的函数：
+
+```go
+// 除一个随机数
+func divByRand(numerator int) int {
+	return numerator / int(rand.Intn(10))
+}
+```
+我们如何测试这个函数呢？由于`rand.Intn(10)`是一个随机数，所以本质上我们测试时无法确定结果，所以无法测试。
+
+试想，如果我们能mock出随机数为一个固定数，那么就可以测试。但是上面的代码生成随机数的所有部分`rand.Intn(10)`都存于函数内部，我们无法mock。
+
+那怎么办呢？可以把随机数的生成部分抽象出来成一个接口，这个接口包含随机数的签名函数即可。
+```go
+// mock_example/main.go
+package main
+
+import "math/rand"
+
+// 随机数生成器接口
+type randGenerator interface {
+	randInt(max int) int
+}
+
+// 随机数生成器结构体
+type standardRand struct{}
+
+// 随机数生成器实现
+func (r *standardRand) randInt(max int) int {
+	return rand.Intn(max)
+}
+
+// 除一个随机数 rg 随机数生成器接口
+func divByRand(rg randGenerator, numerator int) int {
+	return numerator / int(1+rg.randInt(10))
+}
+
+func main() {
+	// 创建一个随机数生成器
+	rg := &standardRand{}
+	// 使用随机数生成器
+	divByRand(rg, 100)
+}
+```
+
+现在我们可以对`divByRand`这个函数进行测试了。
+测试代码如下：
+```go
+// mock_example/main_test.go
+package main
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
+
+type MockRandGenerator struct {
+	mock.Mock
+}
+
+func (m *MockRandGenerator) randInt(max int) int {
+	args := m.Called(max)
+	return args.Int(0)
+}
+
+func TestDivByRand(t *testing.T) {
+	mockRand := &MockRandGenerator{}
+	mockRand.On("randInt", 10).Return(4)
+
+	result := divByRand(mockRand, 10)
+	assert.Equal(t, 2, result)
+}
+```
+
+由此可见，非常重要的一步是，**把依赖项抽象出来，形成接口，然后mock测试**。这也是为什么go中可以看到大量的interface的原因之一，它便与测试。
 
 ### 四、套件
 ### 五、总结
