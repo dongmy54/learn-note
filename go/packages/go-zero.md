@@ -80,8 +80,65 @@ tree
 15 directories, 1 file
 ```
 
-### 四、实战
+在上面我看到每一个模块都是由三个部分组成，分别是`rpc`、`model`、`api`，他们之间怎么交互呢？在传统的api服务中，只需要api去和model交互就行，但是在微服务中，会多一层那就是rpc,是由rpc去和model交互的，整体关系如下：
+**`api` -> `rpc` -> `model`**
 
+
+### 四、实战
+虽然上面列出了三个模块，但是实际上我们只需要完整的实现一个模块就能达到练习的目的，这里使用`users`模块来演示。
+
+#### 4.1 model创建
+为了演示方便，我们使用mysql数据库，可以在本地先创建一个`forum`数据库database, 然后创建一个`users`表，为了方便您可以执行以下sql生成：
+```sql
+CREATE TABLE users (
+    id bigint AUTO_INCREMENT,
+    name varchar(255) NULL COMMENT 'The username',
+    password varchar(255) NOT NULL DEFAULT '' COMMENT 'The user password',
+    mobile varchar(255) NOT NULL DEFAULT '' COMMENT 'The mobile phone number',
+    gender char(10) NOT NULL DEFAULT 'male' COMMENT 'gender,male|female|unknown',
+    nickname varchar(255) NULL DEFAULT '' COMMENT 'The nickname',
+    type tinyint(1) NULL DEFAULT 0 COMMENT 'The user type, 0:normal,1:vip, for test golang keyword',
+    create_at timestamp NULL,
+    update_at timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE mobile_index (mobile),
+    UNIQUE name_index (name),
+    PRIMARY KEY (id)
+) ENGINE = InnoDB COLLATE utf8mb4_general_ci COMMENT 'user table';
+```
+
+终端切换到`forum/service/users/model`目录下，在此目录下新建`user.sql`文件。然后将上述sql内容放进去。
+
+命令行终端执行: `goctl model mysql ddl --src user.sql --dir .`
+看到`Done`则表示model代码生成成功了。
+
+它会在当前目录下生成三个文件：
+1. `vars.go` 存放一些常量
+2. `usermodel.go` model初始化入口
+3. `usermodel_gen.go` 数据库操作具体实现 
+
+这里我们着重关注下`usermodel.go`中
+```go
+// 我们到时候通过model.NewUserModel(sqlConn)就可以初始化model啦
+func NewUserModel(conn sqlx.SqlConn) UserModel {
+	return &customUserModel{
+		defaultUserModel: newUserModel(conn),
+	}
+}
+
+// 这里返回的UserModel是一个接口类型，这个接口需要实现Insert、FindOne、FindOneByMobile、FindOneByName、Update、Delete等方法
+
+// 这些方法的实现是通过defaultUserModel这个结构体去实现的
+```
+
+除了上面的通过sql去生成model外，go-zero还可以通过当前的数据库中的表去生成model代码，使用如下命令：
+`goctl model mysql datasource --url="root:12345678@tcp(127.0.0.1:3306)/forum" --table=users --dir=./`
+
+需要注意的是，执行`goctl model`命令并不会直接到我们本地的数据库创建表，因此我们需要手动到数据库中去新建表或增减字段。虽然我们可以通过本地数据库直接生成model，但是为了别人拿到项目后能快速初始化表结构，还是建议在model层下放置完整的表sql文件。
+
+#### 4.2 rpc创建
+
+
+#### 4.3 api创建
 
 ### 五、套路总结
 
