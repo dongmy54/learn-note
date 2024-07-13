@@ -84,10 +84,9 @@ tree
 **`api` -> `rpc` -> `model`**
 
 
-### 五、实战
+### 五、model实战
 虽然上面列出了三个模块，但是实际上我们只需要完整的实现一个模块就能达到练习的目的，这里使用`user`模块来演示。
 
-#### 5.1 model创建
 为了演示方便，我们使用mysql数据库，可以在本地先创建一个`forum`数据库database, 然后创建一个`users`表，为了方便您可以执行以下sql生成：
 ```sql
 CREATE TABLE users (
@@ -135,7 +134,8 @@ func NewUserModel(conn sqlx.SqlConn) UserModel {
 
 需要注意的是，执行`goctl model`命令并不会直接到我们本地的数据库创建表，因此我们需要手动到数据库中去新建表或增减字段。虽然我们可以通过本地数据库直接生成model，但是为了别人拿到项目后能快速初始化表结构，还是建议在model层下放置完整的表sql文件。
 
-#### 5.2 rpc结构初始化
+### 六、rpc实战
+#### 6.1 rpc结构初始化
 下面我们来开始创建rpc层，创建rpc首先需要创建proto文件，在`forum/service/user/rpc`目录下新建`user.proto`文件。
 
 文件内容如下：
@@ -166,8 +166,8 @@ message RegisterResponse {
 
 // 登录请求
 message LoginRequest {
-  string mobile = 1;
-	string password = 2;
+  string Mobile = 1;
+	string Password = 2;
 }
 
 // 登录响应
@@ -246,7 +246,7 @@ service User {
 
 对生成文件有一个大概认识后，我们来编写我们的代码，在开始前我们先`go mod tidy`一下，拉取必要的依赖。
 
-#### 5.3 rpc配置model关联
+#### 6.2 rpc配置model关联
 前面我们已经说了，api不与model直接交互，与之交互的是rpc，因此我们在生成rpc代码后，第一要做的就是配置数据库连接。
 
 1. etc数据库配置
@@ -296,7 +296,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 ```
 配置完成！我们继续。
 
-#### 5.4 rpc用户注册实现
+#### 6.3 rpc用户注册实现
 有了前面的配置，实现逻辑就比较简单了，我们只需要在`service/user/rpc/internal/logic/registerlogic.go`中实现`RegisterLogic`方法即可。
 
 ```go
@@ -394,11 +394,248 @@ $ grpcurl -plaintext -d '{"Name": "李四", "Mobile": "18200365766", "Password":
 
 可以看出在架子搭起后，编写业务逻辑还是很快捷简单的。
 
-#### 5.4 rpc用户登录实现
-#### 5.5 rpc用户信息实现
+#### 6.4 rpc用户登录实现
+有了前面的经验，我们照葫芦画瓢，修改用户登录业务代码`service/user/rpc/internal/logic/loginlogic.go`
 
+```go
+func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
+	// 先查用户
+	u, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
+	if err != nil {
+		return &user.LoginResponse{}, status.Error(400, err.Error())
+	}
 
-#### 5.3 api创建
+	// 判断密码对么
+	if u.Password != in.Password {
+		return &user.LoginResponse{}, status.Error(400, "无效密码")
+	}
+
+	return &user.LoginResponse{
+		Id:     u.Id,
+		Name:   u.Name,
+		Mobile: u.Mobile,
+		Gender: u.Gender,
+	}, nil
+}
+```
+
+同理在终端进行测试效果如下：
+```shell
+$ grpcurl -plaintext -d '{"Mobile": "18200365766", "Password": "123456"}' 127.0.0.1:8080 user.User/Login
+{
+  "Id": "3",
+  "Name": "李四",
+  "Mobile": "18200365766"
+}
+```
+
+```shell
+grpcurl -plaintext -d '{"Mobile": "18200365766", "Password": "123"}' 127.0.0.1:8080 user.User/Login
+ERROR:
+  Code: Code(400)
+  Message: 无效密码
+```
+
+还是很快吧！
+#### 6.5 rpc用户信息实现
+修改`service/user/rpc/internal/logic/userinfologic.go`文件
+
+```go
+func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
+	u, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return &user.UserInfoResponse{}, status.Error(400, err.Error())
+	}
+
+	return &user.UserInfoResponse{
+		Id:     u.Id,
+		Name:   u.Name,
+		Mobile: u.Gender,
+		Gender: u.Gender,
+	}, nil
+}
+```
+
+终端测试
+```shell
+$ grpcurl -plaintext -d '{"Id": 3}' 127.0.0.1:8080 user.User/UserInfo
+{
+  "Id": "3",
+  "Name": "李四"
+}
+```
+
+### 七、api实战
+前面我们已经将rpc服务成功搭建起来了，这个部分我们以来搭建api部分。
+
+#### 7.1 api结构初始化
+和rpc类似，api结构的初始化，我们也可以通过`goctl`命令生成，它的生成也是通过定义`.api`文件实现的，这是一个专属语言的格式，我们按照格式写就行。
+
+切换到`service/user/api`目录下，添加`user.api`文件，内容如下：
+```go
+// api路径下执行 goctl api go -api ./user.api -dir ./
+type (
+	// 注册请求
+	RegisterRequest {
+		Name     string `json:"name"`
+		Mobile   string `json:"mobile"`
+		Gender   string `json:"gender"`
+		Password string `json:"password"`
+	}
+	// 注册响应
+	RegisterResponse {
+		ID     int64  `json:"id"`
+		Name   string `json:"name"`
+		Mobile string `json:"mobile"`
+		Gender string `json:"gender"`
+	}
+)
+
+// api定义的地方
+service user {
+	@handler Register // 注册接口请求的方法名
+	get /api/user/register (RegisterRequest) returns (RegisterResponse)
+}
+```
+
+终端执行api代码生成命令`goctl api go -api ./user.api -dir ./`
+
+我们看下都生成了哪些文件
+```shell
+.
+├── etc          # 配置文件存放位置
+│   └── user.yaml
+├── internal     # 内部代码位置 重点关注
+│   ├── config   # 配置层
+│   │   └── config.go
+│   ├── handler  # 特殊（只有api层有）作用是路由导向，到logic层
+│   │   ├── registerhandler.go
+│   │   └── routes.go
+│   ├── logic    # 逻辑层（封装了服务上下文svc） 业务主要处理层
+│   │   └── registerlogic.go
+│   ├── svc      # 服务上下文（封装了config)
+│   │   └── servicecontext.go
+│   └── types    # 存放请求响应结构体（一般无需修改）
+│       └── types.go
+├── user.api     # 定义api的专属文件
+└── user.go      # api启动入口
+
+8 directories, 9 files
+```
+
+从上面我们可以看出，它的结构基本和`rpc`一样，只是多了一个特殊的hander层用于路由导向到`logic`,它的功能类比与rpc中的server。
+
+#### 7.2 api配置rpc关联
+api不直接与model通信，它是和rpc通信，所以需要将api和rpc做关联，这一步可以类比与rpc与model关联。
+
+1. 配置etc文件
+在`service/user/api/etc/user.yaml`中添加
+```yaml
+#...省略
+
+# 一个rpc一个配置项
+# rpc通过etcd来做服务发现和注册
+UserRpc:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379 # 注意这里是etcd的地址而非rpc服务的地址
+    Key: user.rpc
+```
+
+2. 配置config
+修改`service/user/api/internal/config/config.go`文件
+```go
+type Config struct {
+	rest.RestConf
+
+	// 这里直接定义一个字段就行 在config初始化时，会自动将etc中rpc配置加载到config中
+	// zrpc.RpcClientConf 是一个结构体,在svc中初始化上下文时使用
+	UserRpc zrpc.RpcClientConf
+}
+```
+
+3. 配置svc
+修改`service/user/api/internal/svc/servicecontext.go`
+```go
+type ServiceContext struct {
+	Config config.Config
+
+	UserRpc userclient.User // 关联user rpc,userclient是rpc中提供的客户端包
+}
+
+func NewServiceContext(c config.Config) *ServiceContext {
+	return &ServiceContext{
+		Config:  c,
+    // 这里c.UserRpc取config中的配置此时已从配置中载入
+		UserRpc: userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
+	}
+}
+```
+配置完成，下面开始实现接口。
+
+#### 7.3 注册api实现
+直接修改文件注册logic文件`service/user/api/internal/logic/registerlogic.go`
+
+```go
+func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.RegisterResponse, err error) {
+	// 注意这里是直接使用的userclient中的结构体组装的，并无单独的工厂方法
+	res, err := l.svcCtx.UserRpc.Register(l.ctx, &userclient.RegisterRequest{
+		Name:     req.Name,
+		Mobile:   req.Mobile,
+		Gender:   req.Gender,
+		Password: req.Password,
+	})
+
+	if err != nil {
+		return &types.RegisterResponse{}, err
+	}
+
+	return &types.RegisterResponse{
+		ID:     res.Id,
+		Name:   res.Name,
+		Mobile: res.Mobile,
+		Gender: res.Gender,
+	}, nil
+}
+```
+
+现在我们来测试下，由于api依赖rpc所以我们需要分别开启rpc服务和api服务，然后再测试接口。
+
+切换到`service/user/rpc`目录下,开启rpc服务
+```shell
+$ go run user.go
+Starting rpc server at 0.0.0.0:8080...
+```
+
+切换到`service/user/api`下,开启api服务
+```shell
+$ go run user.go
+Starting server at 0.0.0.0:8888...
+```
+
+curl测试
+```shell
+$ curl --location --request GET 'http://localhost:8888/api/user/register' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "大哥",
+    "mobile": "17655434567",
+    "password": "ksdafsda",
+    "gender": "male"
+}'
+
+{
+    "id": 4,
+    "name": "大哥",
+    "mobile": "17655434567",
+    "gender": "male"
+}
+```
+
+ok成功啦！
+
+#### 7.4 登录api实现
+
 
 ### 五、套路总结
 
