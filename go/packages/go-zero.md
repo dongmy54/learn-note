@@ -465,7 +465,7 @@ $ grpcurl -plaintext -d '{"Id": 3}' 127.0.0.1:8080 user.User/UserInfo
 }
 ```
 
-#### 6.4 bcrypt密码
+#### 6.6 bcrypt密码
 前面我们为了便于理解，密码数据库的存储和认证都是明文存储的，但是实际生产中，我们一般都会对密码进行加密存储，防止数据库被攻击。
 
 1. 密码公共包
@@ -792,7 +792,7 @@ type Config struct {
 }
 ```
 
-#### 7.4 登录api实现
+#### 7.5 登录api实现
 有了前面的jwt铺垫，我们实现登录api就很容易了,我们在业务上只需要，在认证成功后，返回token，后过期时间即可。
 
 1. api文件添加接口信息
@@ -867,9 +867,78 @@ curl --location 'http://localhost:8888/api/user/login' \
 {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA5NDEzMDcsImlhdCI6MTcyMDkzNzcwNywidWlkIjo1fQ.deZRXcuyydg3DgpHURXD-SZDJ2ct3gZvLpWGe1e0rGY","expired":1720941307}
 ```
 
-### 五、套路总结
+#### 7.6 用户信息api实现
+在登录的情况下，由于请求时带上了jwt token，而token中已经存放了用户id，所以可以直接通过id获取用户信息。而无需其它参数。
 
-### 六、相关学习资源推荐
+1. api文件添加接口信息
+修改`service/user/api/user.api`文件
+```go
+type (
+	// ...
+
+	// 用户信息请求 由于无需参数所以不写
+	// 用户信息响应
+	UserInfoResponse {
+		ID     int64  `json:"id"`
+		Name   string `json:"name"`
+		Mobile string `json:"mobile"`
+		Gender string `json:"gender"`
+	}
+)
+
+// 其下的所有service都会使用jwt鉴权,注意这里是server不是service
+@server (
+	jwt: Auth
+)
+service user {
+	@handler UserInfo
+	// 这里没有请求参数哦
+	get /api/user/info returns (UserInfoResponse)
+}
+```
+
+执行`goctl api go -api user.api -dir .`自动生成代码。
+
+2. logic实现
+修改`service/user/api/internal/logic/userinfologic.go`文件
+
+```go
+func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
+	// 注意这里ctx的uid是框架自动帮我们解析出来
+	// uid是签发授权时存的user id,这里取出来的是interface{}类型
+	uid, err := l.ctx.Value("uid").(json.Number).Int64()
+	if err != nil {
+		return nil, err
+	}
+	user, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &userclient.UserInfoRequest{
+		Id: uid,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.UserInfoResponse{
+		ID:     user.Id,
+		Name:   user.Name,
+		Mobile: user.Mobile,
+		Gender: user.Gender,
+	}, nil
+}
+```
+
+启动服务执行测试
+```shell
+curl --location 'http://localhost:8888/api/user/info' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjV9._uaaeq2_bzyJomQLVg9-ZH7kxdpWZ565eum6ZJYgcRI'
+```
+
+这里的token可以从登录接口获取,也可以根据工具生成一个token值。
+
+### 八、套路总结
+
+
+
+### 九、相关学习资源推荐
 
 
 
