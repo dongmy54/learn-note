@@ -465,6 +465,77 @@ $ grpcurl -plaintext -d '{"Id": 3}' 127.0.0.1:8080 user.User/UserInfo
 }
 ```
 
+#### 6.4 bcrypt密码
+前面我们为了便于理解，密码数据库的存储和认证都是明文存储的，但是实际生产中，我们一般都会对密码进行加密存储，防止数据库被攻击。
+
+1. 密码公共包
+我们使用bcrypt包时间密码的加密和对比。我们简单封装到`common`目录公共包中。
+
+新建`common/bcryptx`目录，添加文件`common/bcrypt/bcryptx.go`文件，内容如下：
+
+```go
+package bcryptx
+
+import "golang.org/x/crypto/bcrypt"
+
+// password转hash
+func HashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hashedPassword), err
+}
+
+// 验证密码
+func ValidatePassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+```
+
+2. 注册存密码hash
+修改注册逻辑`service/user/rpc/internal/logic/registerlogic.go`
+```go
+func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
+	// ...
+
+	// 加这个判断是为了避免其它错误导致去创建
+	if err == model.ErrNotFound {
+		// 使用公用包的hash密码
+		hashPass, err := bcryptx.HashPassword(in.Password)
+		if err != nil {
+			return &user.RegisterResponse{}, status.Error(400, err.Error())
+		}
+
+		res, err := l.svcCtx.UserModel.Insert(l.ctx,
+			&model.Users{
+				Name:     in.Name,
+				Mobile:   in.Mobile,
+				Password: hashPass, // 这里存hash密码
+				Gender:   in.Gender,
+			})
+
+		// ...
+	}
+
+	// ...忽略
+}
+```
+此时再此测试会发现，数据库里已经存的不是明文了。
+
+3. 登录验证
+登录部分需要同步修改成hash认证，修改文件`service/user/rpc/internal/logic/loginlogic.go`
+
+```go
+func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
+	// ...
+
+	// 判断密码对么
+	if err = bcryptx.ValidatePassword(u.Password, in.Password); err != nil {
+		return &user.LoginResponse{}, status.Error(400, "无效密码")
+	}
+
+	// ...
+}
+```
+
 ### 七、api实战
 前面我们已经将rpc服务成功搭建起来了，这个部分我们以来搭建api部分。
 
@@ -634,8 +705,167 @@ $ curl --location --request GET 'http://localhost:8888/api/user/register' \
 
 ok成功啦！
 
-#### 7.4 登录api实现
+#### 7.4 jwt鉴权
+在开始实现登录前，我们需要有鉴权机制。
 
+1. api配置jwt
+`go-zero`是支持jwt鉴权的，直接在`service/user/api/user.api`中添加`@service`块就行。
+```go
+// ...忽略
+
+// 其下的所有service都会使用jwt鉴权,注意这里是server不是service
+@server (
+	jwt: Auth
+)
+// 具体服务先留着
+service User {}
+```
+
+2. token签发
+jwt需要签发token，我们使用`jwt`包实现,这部分属于公用逻辑，我们封装到`common`目录下。
+
+新建`common/jwtx`目录，下面添加文件`common/jwtx/jwt.go`
+```go
+package jwtx
+
+import (
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
+)
+
+// GenToken 生成JWT令牌
+// 参数:
+//
+//	uid: 用户唯一标识
+//	exp: 令牌过期时间
+//	signKey: 签名密钥
+//
+// 返回值:
+//
+//	生成的令牌字符串
+//	错误对象，如果生成令牌过程中出现错误
+func GenToken(uid int64, exp time.Time, signKey string) (string, error) {
+	claims := jwt.MapClaims{
+		"uid": uid, // 用户id
+		"exp": exp.Unix(),
+		"iat": time.Now().Unix(), // 签发时间
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(signKey))
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+```
+
+3. etc配置jwt签名时间、过期时间
+在`service/user/api/etc/user.yaml`中添加下面信息
+
+```yaml
+# 用于jwt授权
+Auth:
+  AccessSecret: "abcdefg22434" # 签名密钥 注意这里要求长度不少于8
+  AccessExpire: 3600      # 单位秒 默认1小时
+
+```
+
+4. config添加Auth配置
+修改`service/user/api/internal/config/config.go`文件
+
+```go
+type Config struct {
+	rest.RestConf
+
+	// 这里直接定义一个字段就行 在config初始化时，会自动将etc中rpc配置加载到config中
+	// zrpc.RpcClientConf 是一个结构体,在svc中初始化上下文时使用
+	UserRpc zrpc.RpcClientConf
+
+	// 授权配置信息
+	Auth struct {
+		AccessSecret string
+		AccessExpire int64
+	}
+}
+```
+
+#### 7.4 登录api实现
+有了前面的jwt铺垫，我们实现登录api就很容易了,我们在业务上只需要，在认证成功后，返回token，后过期时间即可。
+
+1. api文件添加接口信息
+修改`service/user/api/user.api`文件
+
+```go
+type (
+	// ...
+
+  // 登录请求
+	LoginRequest {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+	}
+	// 登录响应
+	LoginResponse {
+		Token   string `json:"token"`
+		Expired int64  `json:"expired"`
+	}
+)
+
+// api定义的地方
+service user {
+	// ....
+
+	@handler Login
+	post /api/user/login (LoginRequest) returns (LoginResponse)
+}
+```
+
+执行`goctl api go -api user.api -dir .`自动生成代码。
+
+
+2. logic实现
+修改`service/user/api/internal/logic/loginlogic.go`文件
+
+```go
+func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
+	res, err := l.svcCtx.UserRpc.Login(l.ctx, &user.LoginRequest{
+		Mobile:   req.Mobile,
+		Password: req.Password,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	// 到期时间
+	expireTime := time.Now().Add(time.Duration(l.svcCtx.Config.Auth.AccessExpire) * time.Second)
+	secret := l.svcCtx.Config.Auth.AccessSecret
+	// 生成签名token
+	accessToken, err := jwtx.GenToken(res.Id, expireTime, secret)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.LoginResponse{
+		Token:   accessToken,
+		Expired: expireTime.Unix(),
+	}, nil
+}
+```
+
+启动rpc、以及api服务终端测试
+```shell
+curl --location 'http://localhost:8888/api/user/login' \
+--header 'Content-Type: application/json' \
+--data '{
+    "mobile": "18200365866",
+    "password": "12312"
+}'
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA5NDEzMDcsImlhdCI6MTcyMDkzNzcwNywidWlkIjo1fQ.deZRXcuyydg3DgpHURXD-SZDJ2ct3gZvLpWGe1e0rGY","expired":1720941307}
+```
 
 ### 五、套路总结
 
