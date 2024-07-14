@@ -565,7 +565,7 @@ type (
 // api定义的地方
 service user {
 	@handler Register // 注册接口请求的方法名
-	get /api/user/register (RegisterRequest) returns (RegisterResponse)
+	post /api/user/register (RegisterRequest) returns (RegisterResponse)
 }
 ```
 
@@ -686,19 +686,19 @@ Starting server at 0.0.0.0:8888...
 
 curl测试
 ```shell
-$ curl --location --request GET 'http://localhost:8888/api/user/register' \
+$ curl --location 'http://localhost:8888/api/user/register' \
 --header 'Content-Type: application/json' \
 --data '{
-    "name": "大哥",
-    "mobile": "17655434567",
+    "name": "keke",
+    "mobile": "17655434667",
     "password": "ksdafsda",
     "gender": "male"
 }'
 
 {
-    "id": 4,
-    "name": "大哥",
-    "mobile": "17655434567",
+    "id": 7,
+    "name": "keke",
+    "mobile": "17655434667",
     "gender": "male"
 }
 ```
