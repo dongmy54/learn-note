@@ -81,3 +81,19 @@ client.reindex(body: {source: { index: 'users'}, dest: {index: 'users-reindex' }
 response = client.indices.get_mapping(index: 'users')
 ```
 
+### 动态更改某个字段的类型
+```ruby
+EmployeeWorkStatus.search_index.delete
+EmployeeWorkStatus.search_index.create({mappings: {
+    properties: {
+      state: {type: "keyword"},
+      created_at: { type: "date", format: "epoch_second" },
+      updated_at: { type: "date", format: "epoch_second" },
+      date: { type: "date", format: "strict_date" },
+    },
+  }
+})
+
+EmployeeWorkStatus.reindex
+```
+
