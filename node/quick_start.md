@@ -68,4 +68,12 @@ param1: 1; param2: 2
 #### 其它
 我们可以在项目服务器上直接修改文件后，重启pm2后进行测试
 
+```js
+socket.on(BASE_HTTP_REQUEST, async (message, resp) => {
+    // 保证层级下 信息完全展示
+    console.log("http request -- ", JSON.stringify(message.payload, null, 2));
+    const result = await base_http_request.sendProxyRequest(message.payload);
+    resp(result);
+});
+```
 
