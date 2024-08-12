@@ -41,6 +41,10 @@ docker run -v ./config:/root/app/config my_image
 # 2. 宿主机路径如果是当前路径下，前面不能少了 ./
 # 3. 无论是挂载目录还是容器都遵循，替换原则（如果不存在则创建——比如如果上面/root/app下没有config则会创建一个）
 
+# 查看容器磁盘空间使用
+docker system df -v
+docker inspect --format='{{.GraphDriver.Data}}' 容器ID # 某个容器的磁盘空间使用
+
 
 docker ps -a  # 查看有哪些容器
 docker exec -it kb-ent-api(container name) /bin/bash # 进入容器内部
@@ -55,6 +59,8 @@ docker restart container_name # 容器还活着
 docker inspect <container_name_or_id> #查看容器信息，非常详细
 # 格式化输出容器信息 这里代码查看ip信息
 docker inspect --format='{{.NetworkSettings.IPAddress}}' <container_name_or_id>
+# 查看容器挂载信息
+docker inspect -f '{{ .Mounts }}' 容器id和名称
 
 # 日志
 docker logs kb-ent-api       # 查看容器运行情况（制定容器日志）
