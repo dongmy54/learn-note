@@ -190,6 +190,15 @@ sudo usermod -aG sudo admind
 sudo visudo
 # 添加 admind ALL=(ALL) NOPASSWD: ALL
 
+# ========================= 备份 ============================
+scp ./Downloads/web.zip ent_pro:apps/
+unzip web.zip 
+mv h5 old_h5
+mv web h5
+
+tar -zcvf h5_20240820.tar.gz h5
+cp -rf h5 old_h5
+
 
 # ===============================较少用到======================
 du                             # 列出当前目录下 所有文件
