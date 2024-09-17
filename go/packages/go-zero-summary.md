@@ -4,6 +4,32 @@
 `gctl`提供语法高亮和提示。
 
 ### 一. api
+创建api文件
+```api
+type (
+  // 注册请求
+  RegisterRequest {
+    Name     string `json:"name"`
+    Mobile   string `json:"mobile"`
+    Gender   string `json:"gender"`
+    Password string `json:"password"`
+  }
+  // 注册响应
+  RegisterResponse {
+    ID     int64  `json:"id"`
+    Name   string `json:"name"`
+    Mobile string `json:"mobile"`
+    Gender string `json:"gender"`
+  }
+)
+
+// api定义的地方
+service user {
+  @handler Register // 注册接口请求的方法名
+  post /api/user/register (RegisterRequest) returns (RegisterResponse)
+}
+```
+
 1. 添加别名`alias genapi='goctl api go -api *.api -dir ../  --style=goZero'`;
 到xx.api同一目录下执行`genapi`即可，会在此上层目录生成文件
 
@@ -13,6 +39,7 @@ import (
   "order/order.api" // 导入order目录下的order.api文件
 )
 ```
+
 
 ### 二、rpc
 1. 创建一个`pb`目录，在此目录下，创建xx.proto文件
@@ -49,6 +76,32 @@ service User {
 
 2. 添加别名`alias genrpc='goctl rpc protoc *.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../ --style=goZero'`
 
+3. sql2pb自动生成pb
+安装`go install github.com/Mikaelemmmm/sql2pb@latest`
+
+```shell
+#!/usr/bin/env bash
+
+# 使用方法：
+# ./genPb.sh usercenter user
+# ./genPb.sh usercenter user_auth
+# ./genPb.sh usercenter user_auth,user # 多个表逗号分隔
+# 添加权限 chmod +x genPb.sh
+# 再将./genPb下的文件剪切到对应服务的pb目录里面,如果需要改下服务名
+# 当然也可以在创建下的pb目录下执行，这样就不用多去做一步复制了
+
+#生成的表名
+tables=$2
+
+# 数据库配置
+host=127.0.0.1
+port=3306
+dbname=$1
+username=root
+passwd=12345678
+
+sql2pb -go_package ./pb -host="${host}" -package pb -password="${passwd}" -port="${port}" -schema="${dbname}" -service_name="${tables}" -table="${tables}" -user="${username}"> "${tables}".proto
+```
 
 ### 三、model
 #### 3.1. 通过表生成model
@@ -59,7 +112,7 @@ service User {
 # 使用方法：
 # ./genModel.sh usercenter user
 # ./genModel.sh usercenter user_auth
-# 添加权限 chmod +x genModel
+# 添加权限 chmod +x genModel.sh
 # 再将./genModel下的文件剪切到对应服务的model目录里面，记得改package
 
 
@@ -81,6 +134,7 @@ goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${
 # 样式指文件样式，保持统一
 # gozero/goZero/go_zero 三种
 ```
+
 #### 3.2 添加自定义查询
 在`xxxModel.go`中添加自定义查询才不会被覆盖
 
