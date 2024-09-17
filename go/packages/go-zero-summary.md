@@ -200,6 +200,27 @@ order/cmd/rpc
 我们各种生成脚本放到deploy/script目录下
 
 
+### 五. 日志
+```yaml
+Log: 
+  Mode: console
+  Encoding: plain # 打开这个方便查看日志
+```
 
+### 六、自定义中间件
+```go
+server.Use(middleware)
 
+// 自定义的中间件
+func middleware(next http.HandlerFunc) http.HandlerFunc {
+  return func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Add("X-Middleware", "static-middleware")
+    fmt.Println("========这是我的中间件========")
+    next(w, r)
+  }
+}
+```
+
+### 七、rpc拦截器
+### 八、api参数校验
 
