@@ -139,6 +139,67 @@ goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${
 在`xxxModel.go`中添加自定义查询才不会被覆盖
 
 
+### 四、项目结构
+1. 大体上
+```shell
+$ tree
+.
+├── app        # 各个服务、消息队列
+├── common     # 通用逻辑代码
+├── deploy     # 部署相关
+└── go.mod
+```
+
+2. 细看服务（服务划块）
+```shell
+# 一个order 服务
+$ tree order -L 2
+
+order
+├── cmd
+│   ├── api
+│   ├── mq
+│   └── rpc
+└── model    # model是放在外层的 供它们api/rpc使用
+    ├── homestayOrderModel.go
+    ├── homestayOrderModel_gen.go
+    └── vars.go
+
+
+$ tree order/cmd/api -L 2
+order/cmd/api
+├── desc         # 注意api特殊，这里有一个desc文件夹，api通过目录管理起来
+│   ├── order
+│   └── order.api
+├── etc
+│   └── order.yaml
+├── internal
+│   ├── config
+│   ├── handler
+│   ├── logic
+│   ├── svc
+│   └── types
+└── order.go
+
+$ tree order/cmd/api -L 2
+order/cmd/rpc
+├── etc
+│   └── order.yaml
+├── internal
+│   ├── config
+│   ├── logic
+│   ├── server
+│   └── svc
+├── order
+│   └── order.go
+├── order.go
+└── pb
+    ├── order.pb.go
+    └── order.proto
+```
+我们各种生成脚本放到deploy/script目录下
+
+
 
 
 
