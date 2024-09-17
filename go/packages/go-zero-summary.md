@@ -1,0 +1,90 @@
+## go-zero开发指南
+
+### vscode插件安装
+`gctl`提供语法高亮和提示。
+
+### 一. api
+1. 添加别名`alias genapi='goctl api go -api *.api -dir ../  --style=goZero'`;
+到xx.api同一目录下执行`genapi`即可，会在此上层目录生成文件
+
+2. 所有api文件统一放到一个目录下比如：`desc`，下面有一个主文件，通过`import`方式导入
+```
+import (
+  "order/order.api" // 导入order目录下的order.api文件
+)
+```
+
+### 二、rpc
+1. 创建一个`pb`目录，在此目录下，创建xx.proto文件
+```proto
+syntax = "proto3";
+
+package pb;
+// go_package指定生成go包（也就是生成的.pb.go文件）的路径
+// PS: 路径中要带/
+// 在同级目录下执行 goctl rpc protoc *.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../ --style=goZero 生成
+option go_package = "./pb";
+
+// 注册请求
+message RegisterRequest {
+  string Name = 1;
+  string Mobile = 2;
+  string Gender = 3;
+  string Password = 4;
+}
+
+// 注册响应
+message RegisterResponse {
+  int64 Id = 1; // 注册完返回ID信息
+  string Name = 2;
+  string Mobile = 3;
+  string Gender = 4;
+}
+
+// 这里命名为User 它生成客户端代码时，会生成一个userclient的目录
+service User {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+}
+```
+
+2. 添加别名`alias genrpc='goctl rpc protoc *.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../ --style=goZero'`
+
+
+### 三、model
+#### 3.1. 通过表生成model
+现在脚本位置生成后，然后移动到对应目录
+```shell
+#!/usr/bin/env bash
+
+# 使用方法：
+# ./genModel.sh usercenter user
+# ./genModel.sh usercenter user_auth
+# 添加权限 chmod +x genModel
+# 再将./genModel下的文件剪切到对应服务的model目录里面，记得改package
+
+
+#生成的表名
+tables=$2
+#表生成的genmodel目录
+modeldir=./genModel
+
+# 数据库配置
+host=127.0.0.1
+port=3306
+dbname=$1
+username=root
+passwd=12345678
+
+
+echo "开始创建库：$dbname 的表：$2"
+goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" -cache=true --style=goZero
+# 样式指文件样式，保持统一
+# gozero/goZero/go_zero 三种
+```
+#### 3.2 添加自定义查询
+在`xxxModel.go`中添加自定义查询才不会被覆盖
+
+
+
+
+
