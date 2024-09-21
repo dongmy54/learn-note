@@ -81,6 +81,16 @@ docker-compose down  # 关闭容器组
 docker-compose ps    # 查看容器组
 docker-compose logs  # 查看容器组日志
 docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
+
+
+# 网络
+docker network create go-zero-looklook_looklook_net # 创建自定义网络
+docker network list # 查看当前网络列表
+docker network rm go-zero-looklook_looklook_net # 删除
+docker network inspect go-zero-looklook_looklook_net # 检查容器中的网络连接
+
+docker run --name=app1 --network=go-zero-looklook_looklook_net -d hello-world # 启动时指定网络
+docker network connect go-zero-looklook_looklook_net container-name # 启动后加入某个网络
 ```
 
 
