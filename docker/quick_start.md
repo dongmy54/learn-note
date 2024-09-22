@@ -538,4 +538,24 @@ docker cp my_container_name:/path/to/xxx /path/to/on/host/yyy
 docker run --restart=unless-stopped my_image
 ```
 
+#### 10. docker网络
+```yaml
+# 这种是自定义网络叫looklook_net 生成时以项目名称 + 只定义名称命名
+# PS: 注意此时端口无需暴露给宿主机容器就能通信了
+networks:
+  looklook_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 
+# 环境变量写法1
+environment:
+  - KEY1=VALUE1
+  - KEY2=VALUE2
+
+# 环境变量写法2
+environment:
+  KEY1: VALUE1
+  KEY2: VALUE2
+```
