@@ -221,6 +221,47 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
 }
 ```
 
+### 七、数据
+```go
+// ========== QueryRow 查询操作 ===============
+// QueryRowCtx 查询单行数据
+
+
+// 查询一个计算总数的
+query := fmt.Sprintf("select count(*) from %s", m.table)
+var cnt int64
+err := m.QueryRowNoCacheCtx(ctx, &cnt, query)
+
+// QueryRowsCtx 查询多行数据
+query := fmt.Sprintf("select  from %s limit 10", m.table)
+var posts []*Post
+err := m.QueryRowsNoCacheCtx(ctx, &posts, query)
+
+
+// ======== ExecCtx 执行增删改 ==================
+sql_str := fmt.Sprintf("insert into %s (title, content, user_id) values (?,?,?)", m.table)
+result, err := m.ExecNoCacheCtx(ctx, sql_str, "标题", "内容", 1)
+
+
+// =============== TransactCtx事务 =====================
+m.TransactCtx(ctx, func(ctx context.Context, s sqlx.Session) error {
+  // 只要其中一个报错 则失败
+  _, err := s.ExecCtx(ctx, "insert into post (title, content, user_id) values (?,?, ?)", "标题1", "内容1", 1)
+  if err != nil {
+    return err
+  }
+
+  // 这里user_id必填会为空
+  _, err = s.ExecCtx(ctx, "insert into post (title, content, user_id) values (?,?,?)", "标题1", "内容1", 11)
+  if err != nil {
+    return err
+  }
+
+  return nil
+})
+```
+
+
 ### 七、rpc拦截器
 ### 八、api参数校验
 
