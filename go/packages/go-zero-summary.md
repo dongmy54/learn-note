@@ -260,8 +260,16 @@ m.TransactCtx(ctx, func(ctx context.Context, s sqlx.Session) error {
   return nil
 })
 ```
+分布式项目不同于单体项目，它的查询一般都是对单张表做操作，一般不会涉及类似joins这种情况，因此对orm的需求其实并不强。
 
 
 ### 七、rpc拦截器
 ### 八、api参数校验
+
+### 九、其它
+1. 为了便于编写sql语句可以使用包`github.com/Masterminds/squirrel`
+2. 为了数据之间便于拷贝使用`github.com/jinzhu/copier`
+
+
+
 
