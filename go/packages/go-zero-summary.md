@@ -102,6 +102,8 @@ passwd=12345678
 
 sql2pb -go_package ./pb -host="${host}" -package pb -password="${passwd}" -port="${port}" -schema="${dbname}" -service_name="${tables}" -table="${tables}" -user="${username}"> "${tables}".proto
 ```
+4. 注意它不像api,它不支持import哦
+
 
 ### 三、model
 #### 3.1. 通过表生成model
@@ -208,8 +210,9 @@ Log:
 ```
 
 ### 六、自定义中间件
+api中间件
 ```go
-server.Use(middleware)
+server.Use(middleware) // 注意这个是在api.go中
 
 // 自定义的中间件
 func middleware(next http.HandlerFunc) http.HandlerFunc {
@@ -218,6 +221,24 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
     fmt.Println("========这是我的中间件========")
     next(w, r)
   }
+}
+```
+
+rpc中间件
+```go
+func main() {
+  flag.Parse()
+
+  //...
+  s.AddUnaryInterceptors(exampleUnaryInterceptor)
+  //...
+  s.Start()
+}
+
+func exampleUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+  // TODO: fill your logic here
+  logx.Error("这是我自己的rpc中间件哦")
+  return handler(ctx, req)
 }
 ```
 
@@ -260,13 +281,23 @@ m.TransactCtx(ctx, func(ctx context.Context, s sqlx.Session) error {
   return nil
 })
 ```
-分布式项目不同于单体项目，它的查询一般都是对单张表做操作，一般不会涉及类似joins这种情况，因此对orm的需求其实并不强。
+1. 分布式项目不同于单体项目，它的查询一般都是对单张表做操作，一般不会涉及类似joins这种情况，因此对orm的需求其实并不强。
+2. 在一个rpc中既可以调用其它rpc也可以直接调用model做数据查询；很多时候一个rpc是要依靠几个rpc或者model才能完成业务需要。
 
 
-### 七、rpc拦截器
-### 八、api参数校验
+### 八、自定义模版
+在执行
+```shell
+goctl template init #  初始化模版到本地
+# 它会在你的家目录下生成一个.goctl目录，里面就有对应的模版文件
+# 只需要在这个目录下的文件做修改，goctl生成对应的命令就会生效了
 
-### 九、其它
+goctl template clean # 删除本地模版
+```
+
+### 九、api参数校验
+
+### 十、其它
 1. 为了便于编写sql语句可以使用包`github.com/Masterminds/squirrel`
 2. 为了数据之间便于拷贝使用`github.com/jinzhu/copier`
 
