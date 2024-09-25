@@ -296,6 +296,7 @@ goctl template clean # 删除本地模版
 ```
 
 ### 九、api参数校验
+使用 validator 这个库
 
 ### 十、其它
 1. 为了便于编写sql语句可以使用包`github.com/Masterminds/squirrel`
