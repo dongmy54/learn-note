@@ -278,6 +278,9 @@ crontab -r           # 删除所有定时任务
 0,5,10 * * * * pwd > <command-to-execute>           # 每个小时中0、5、10分（PS：, 代表多个）
 0 0 * * 1-5 <command-to-execute>                    # 每个工作日00:00分
 15 16 1 * * <command-to-execute>                    # 每月1日16:15分
+
+# 查看执行情况
+grep CRON /var/log/syslog | tail -10
 ```
 
 
