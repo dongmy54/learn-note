@@ -10,6 +10,18 @@ SET foreign_key_checks = 0;  -- 禁用外键检查（导数据时非常有用）
 -- 批量更新字符集
 ALTER DATABASE databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE tablename CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
+
+SET NAMES 'utf8';         -- 设置字符集
+SET foreign_key_checks = 0;  -- 禁用外键检查（导数据时非常有用）
+
+-- 批量更新字符集
+ALTER DATABASE dxp CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+ALTER TABLE tablename CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
 ```
 
 ##### 准备语句（PREPARED)
