@@ -67,4 +67,25 @@ func main() {
 	copier.Copy(&ss1, &ss2)
 	fmt.Printf("%#v\n", ss1)
 	// []main.User{main.User{Name:"张三", Age:18}, main.User{Name:"李四", Age:28}}
+
+	// =============== slice <- 结构体 ==============
+	// 主要针对 切片和结构体类型不一样的情况
+	ss3 := []Employee{}
+	uu := User{Name: "zhansan", Age: 12}
+	copier.Copy(&ss3, &uu)
+	fmt.Printf("%#v\n", ss3)
+	// []main.Employee{main.Employee{Name:"zhansan", Age:12, Salary:0}}
+
+	//  多次拷贝还是会有去重效果的
+	copier.Copy(&ss3, &uu)
+	fmt.Printf("%#v\n", ss3)
+	// []main.Employee{main.Employee{Name:"zhansan", Age:12, Salary:0}}
+
+	// ============== map <-> map ===============
+	// 类型不一定完全一样
+	m1 := map[string]int{}
+	m2 := map[string]int32{"a": 34, "b": 234, "c": 355}
+	copier.Copy(&m1, &m2)
+	fmt.Printf("=======%#v\n", m1)
+	// =======map[string]int{"a":34, "b":234, "c":355}
 }
