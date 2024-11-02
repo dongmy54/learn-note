@@ -21,6 +21,26 @@ for _, data := range user_data {
 }
 ```
 
+### 2. 更新
+```go
+// 单列更新：都可以更新到空值 Update
+gormInstance.Debug().Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).Update("StatusRemark", sql.NullString{Valid: false})
+// UpdateColumn 不触发回调
+gormInstance.Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).UpdateColumn("StatusRemark", sql.NullString{Valid: false})
+
+// 多列更新：只有map可以更新空值
+mp := map[string]interface{}{
+  "StatusRemark": sql.NullString{Valid: false},
+  "PatientId":    3,
+}
+
+gormInstance.Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).Updates(mp)
+
+// 使用结构体自动过滤掉空值情况 
+ca.StatusRemark = sql.NullString{Valid: false}
+gormInstance.Debug().WithContext(context.TODO()).Updates(ca)
+```
+
 ### 3. Where写法
 支持字符串、结构体、Map多种方式。
 ```go
