@@ -1,6 +1,6 @@
 // package: maps
 // 有一个标准库需要 1.23版本才能用
-// 非标准库
+// 非标准库 golang.org/x/exp/maps
 
 // ================= 获取keys ================
 m := map[string]int{
