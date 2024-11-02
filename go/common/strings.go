@@ -150,3 +150,7 @@ fmt.Println(strings.ToUpper("abcdef"))
 
 fmt.Println(strings.ToLower("abcDFef"))
 // abcdfef
+
+// 忽略大小些比较两个是否相等
+strings.EqualFold("ABCD", "abCd")
+// true
