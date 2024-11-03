@@ -9,6 +9,8 @@
 ```go
 syntax = "proto3";
 
+// package pb; 可以省略
+
 option go_package = "./pb"; // 这里代表 生成的路径 + 包名（省略后为文件名）
 // option go_package = "./pb;search";
 
@@ -20,6 +22,23 @@ message SearchRequest {
 ```
 
 执行`protoc  --go_out=. simple.proto`，在当前目录下的pb目录下生成`simple.pb.go`文件
+
+命令语法
+```shell
+protoc [OPTION] PROTO_FILES
+# 生成ruby语言proto
+protoc --ruby_out=. simple.proto
+
+--go_out=OUT_DIR            指定代码生成目录，生成 Go 代码
+--cpp_out=OUT_DIR           指定代码生成目录，生成 C++ 代码
+--csharp_out=OUT_DIR        指定代码生成目录，生成 C# 代码
+--java_out=OUT_DIR          指定代码生成目录，生成 java 代码
+--js_out=OUT_DIR            指定代码生成目录，生成 javascript 代码
+--objc_out=OUT_DIR          指定代码生成目录，生成 Objective C 代码
+--php_out=OUT_DIR           指定代码生成目录，生成 php 代码
+--python_out=OUT_DIR        指定代码生成目录，生成 python 代码
+--ruby_out=OUT_DIR          指定代码生成目录，生成 ruby 代码
+```
 
 ### 快速认识
 ```go
@@ -59,7 +78,7 @@ message SearchRequest {
 }
 
 
-// 生成如下结构
+// ============== 生成 ==========
 type SearchRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -80,6 +99,34 @@ type SearchRequest struct {
 }
 ```
 
+### 消息嵌套
+```go
+message Article {
+	string Title = 1;
+	string Content = 2;
+}
+
+message Author {
+	string Name = 1;
+	int32 Age = 2;
+}
+
+message AuthorDetail {
+	int64 DateTime = 1;
+	Author Author = 2; // *Author
+	repeated Article ArticleList = 3; // []Article
+}
+
+// ============== 生成 ==========
+type AuthorDetail struct {
+	// ...
+
+	DateTime    int64      `protobuf:"varint,1,opt,name=DateTime,proto3" json:"DateTime,omitempty"`
+	Author      *Author    `protobuf:"bytes,2,opt,name=Author,proto3" json:"Author,omitempty"`           // *Author
+	ArticleList []*Article `protobuf:"bytes,3,rep,name=ArticleList,proto3" json:"ArticleList,omitempty"` // []Article
+}
+```
+
 ### 枚举Enum
 它生成后对应为**常量**
 ```go
@@ -87,6 +134,7 @@ message SearchRequest {
 	Color color = 1;
 }
 
+// ============== 生成 ==========
 // 定义一个颜色枚举
 enum Color {
 	COLOR_UNSPECIFIED = 0; // 默认值
@@ -106,11 +154,24 @@ const (
 )
 
 type SearchRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
+	//...
 
 	Color Color `protobuf:"varint,1,opt,name=color,proto3,enum=Color" json:"color,omitempty"`
+}
+```
+
+### Map类型
+```go
+message Student{
+  int64              id    = 1; //id
+  string             name  = 2; //学生姓名
+  map<string, int32> score = 3;  //学科 分数的map
+}
+
+// 生成
+type Student struct {
+	// ...                        
+	Score map[string]int32 `protobuf:"bytes,3,rep,name=score,proto3" json:"score,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"` //学科 分数的map
 }
 ```
 
