@@ -1,3 +1,5 @@
+// 它对于sql.Nullxx类型也能处理
+// 除了日期转时间戳的情况
 package main
 
 import (
