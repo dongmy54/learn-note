@@ -51,7 +51,7 @@ func IsZero(v interface{}) bool {
 	return reflect.ValueOf(v).IsZero()
 }
 
-// 结构体转有效map
+// 结构体转有效map 自动忽略其中为0值的字段
 func StructEffectiveMap(v any) (results map[string]interface{}, err error) {
 	rt := reflect.TypeOf(v)
 	rv := reflect.ValueOf(v)
