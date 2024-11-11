@@ -3,7 +3,10 @@
 package main
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
+	"time"
 
 	"github.com/jinzhu/copier"
 )
@@ -17,6 +20,45 @@ type Employee struct {
 	Name   string
 	Age    int
 	Salary float64
+}
+
+// 自定义复制类型转换
+func MyCopy(src, dst interface{}) error {
+	err := copier.CopyWithOption(src, dst, copier.Option{
+		IgnoreEmpty: true,
+		DeepCopy:    true,
+		Converters: []copier.TypeConverter{
+			{ // time.Time 转换成字符串
+				SrcType: time.Time{},
+				DstType: int64(0),
+				Fn: func(src interface{}) (dst interface{}, err error) {
+					s, ok := src.(time.Time)
+					if !ok {
+						return nil, errors.New("src type is not time.Time")
+					}
+					return s.Unix(), nil
+				},
+			},
+
+			{ // time.Time 转换成字符串
+				SrcType: sql.NullTime{},
+				DstType: int64(0),
+				Fn: func(src interface{}) (dst interface{}, err error) {
+					s, ok := src.(sql.NullTime)
+					if !ok {
+						return nil, errors.New("src type is not sql.NullTime")
+					}
+					if s.Valid {
+						return s.Time.Unix(), nil
+					} else {
+						return int64(0), nil
+					}
+				},
+			},
+		},
+	})
+
+	return err
 }
 
 func main() {
