@@ -144,7 +144,10 @@ db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).Fi
 db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).FirstOrCreate(&user)
 ```
 
-FirstOrInit和FirstOrCreate 使用比较广泛，他们常常与`Attrs`和`Assign`搭配使用。
+FirstOrInit 找不到时初始化（不存数据库）
+FirstOrCreate 找不到时写入数据库
+Assign 是强赋值（无论记录是否找到都赋值）, 如果与FirstOrCreate搭配，会同时把Assign内容写入数据库。
+Attrs 是弱赋值（只有找不到才赋值）
 
 ### 8. 预加载Preload
 ```go
