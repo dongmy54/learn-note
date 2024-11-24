@@ -247,7 +247,27 @@ type Account struct {
 }
 ```
 
-### 12. 自定义数据类型
+### 12. 连表查询将数据组装到结构体
+```go
+type StudentCouInfo struct {
+  StudentName string
+  CourseName  string
+}
+
+// join查询
+func GetStudentAndCourse(db *gorm.DB) []StudentCouInfo {
+  var results []StudentCouInfo
+
+  db.Model(&Student{}).
+    Joins("JOIN student_courses ON student_courses.student_id = students.id").
+    Joins("JOIN courses ON courses.id = student_courses.course_id").
+    Select("students.name as student_name, courses.name as course_name").
+    Scan(&results)
+  return results
+}
+```
+
+### 13. 自定义数据类型
 有时候我们希望存储一些自定义数据类型，比如切片、map等，这个时候我们可以自定义数据类型,我们需要做的是自己做数据的存和取的解析过程。
 
 `user`model
