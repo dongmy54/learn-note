@@ -1,4 +1,5 @@
 ### redis
+文档： https://redis.uptrace.dev/zh/guide/go-redis.html
 
 ```go
 package main
