@@ -265,6 +265,17 @@ func GetStudentAndCourse(db *gorm.DB) []StudentCouInfo {
     Scan(&results)
   return results
 }
+
+// 单值
+var cnt int64
+db.Model(&models.User{}).Select("count(*)").Find(&cnt)
+
+// 单值切片
+var names []string
+db.Model(&models.User{}).Select("name").Find(&names)
+
+// scan 和 Find用法基本一致（使用下来发现都可以替换使用）
+// 安装官方的说法 它主要用于将结果扫描到结构体内部
 ```
 
 ### 13. 自定义数据类型
