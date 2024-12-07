@@ -72,7 +72,8 @@ token = kuban.io
 [ssh-(remote-9047)]
 type = tcp
 local_ip = 127.0.0.1
-local_port = 22
+# 映射到内网的端口
+local_port = 22 
 # ssh 连接时用的端口号
 remote_port = 9047          
 ```
