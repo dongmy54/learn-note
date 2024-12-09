@@ -4,10 +4,12 @@ docker --help # 帮助信息
 docker -v # 查看docker版本
 docker info # docker 信息
 
+ping -c 3 docker.unsee.tech # 查看镜像是否可用
 docker pull golang:1.22.2-bullseye # 拉取指定镜像版本
 docker pull docker.unsee.tech/hello-world # 指定加速地址拉取镜像
 docker pull docker.hlmirror.com/jenkins:2.60.3 # 最好指定好版本 不然下不来哈
-ping -c 3 docker.unsee.tech # 查看镜像是否可用
+docker tag docker.hlmirror.com/jenkins:2.60.3 jenkins:2.60.3 # 重新给镜像命名
+
 # 构建镜像
 # docker build -t IMAGE_NAME:TAG PATH_TO_DOCKERFILE
 # 利用当前目录下的Dockefile去构建一个叫 weclome-to-docker的镜像(默认情况下tag为：latest)
