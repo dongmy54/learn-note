@@ -5,6 +5,9 @@ docker -v # 查看docker版本
 docker info # docker 信息
 
 docker pull golang:1.22.2-bullseye # 拉取指定镜像版本
+docker pull docker.unsee.tech/hello-world # 指定加速地址拉取镜像
+docker pull docker.hlmirror.com/jenkins:2.60.3 # 最好指定好版本 不然下不来哈
+ping -c 3 docker.unsee.tech # 查看镜像是否可用
 # 构建镜像
 # docker build -t IMAGE_NAME:TAG PATH_TO_DOCKERFILE
 # 利用当前目录下的Dockefile去构建一个叫 weclome-to-docker的镜像(默认情况下tag为：latest)
@@ -100,5 +103,8 @@ docker network connect go-zero-looklook_looklook_net container-name # 启动后�
 COPY templates/ ./templates
 ```
 
-
+### 可用镜像汇总
+```
+https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea
+```
 
