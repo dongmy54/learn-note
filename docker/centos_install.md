@@ -17,3 +17,21 @@ sudo systemctl start docker
 sudo systemctl enable docker
 ```
 
+### 配置镜像
+`/etc/docker/daemon.json`
+
+PS: 配置镜像地址时，注意要同时配置上"insecure-registries"镜像注册地址，不然它还是会去docker hub查的哦！
+```
+{
+    "registry-mirrors": [
+        "https://docker.unsee.tech",
+        "https://dockerpull.org",
+        "https://docker.1panel.live",
+        "https://dockerhub.icu"
+    ],
+    "insecure-registries": [
+      "docker.unsee.tech"
+    ]
+}
+```
+

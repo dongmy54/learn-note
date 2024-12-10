@@ -264,6 +264,14 @@ ifconfig      # 查看网络接口配置
 ifconfig eth0 # 查看网卡eth0 网络配置
 ip addr add 192.168.0.127/24 dev eth0 # 添加ip到 eth0网卡 dev代表设备
 ip addr show eth0                     # 查看eth0 配置ip信息
+
+# ============================= systemd =======================
+# 最后20行
+journalctl -n 20
+journalctl -f # 一组监控
+journalctl -u docker.service # 查docker最新的 一直监控
+
+
 #=============================== crontab ======================
 crontab crontab.txt  # 加载写好的定时任务   # PS：加载后需要 crontab -e 才会生效
 crontab -e           # 为当前用户添加定时任务(打开编辑界面)
