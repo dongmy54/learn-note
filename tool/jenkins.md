@@ -31,3 +31,19 @@ and the repository exists.
 ```
 到jenkins所在的容器内部执行下`ssh -T git@github.com` 然后Yes写入信任的主机即可
 
+### 自由风格执行shell是在哪里执行的？
+1. 在docker运行的jenkins容器内部执行的
+2. 可以使用一些环境变量比如：
+```shell
+pwd
+echo $GIT_URL # 这里使用了环境变量
+```
+
+### 如何通过ssh去其它服务器上执行操作
+通过安装ssh插件`Publish over SSH`
+然后到manage jenkins > system > Publish over SSH 中去配置服务器信息
+
+然后，新建一个item 中自由风格 > Build Steps > Exec command 则会在远程主机上执行命令
+
+
+
