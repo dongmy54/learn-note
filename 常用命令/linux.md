@@ -255,6 +255,7 @@ ls blog/*/models                               # 列出 文件路径 符合 blog
 curl cip.cc
 
 # 时区调整-ubuntu
+timedatectl # 查看当前时区信息
 sudo timedatectl set-timezone Asia/Shanghai
 
 # 以root身份登录（对于类似重定向的操作简单sudo是不起作用的）
