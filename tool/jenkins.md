@@ -21,6 +21,18 @@ cat secrets/initialAdminPassword
 # 创建第一个管理员账号
 ```
 
+### 配置ssh key
+```
+# 在目标服务器上执行
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins_deploy
+
+# 将公钥添加到授权密钥文件中
+cat ~/.ssh/jenkins_deploy.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+
+```
+
 ### 问题1
 在配置完自己github 公钥和jenkins全局凭证后
 还是提示这个
@@ -49,6 +61,5 @@ echo $GIT_URL # 这里使用了环境变量
 然后到manage jenkins > system > Publish over SSH 中去配置服务器信息
 
 然后，新建一个item 中自由风格 > Build Steps > Exec command 则会在远程主机上执行命令
-
 
 
