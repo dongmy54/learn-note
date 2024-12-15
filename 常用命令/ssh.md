@@ -14,7 +14,14 @@ ssh-copy-id root@120.79.1xx.yyy   # 将本地 公钥传到服务器(`~/.ssh/auth
 vim /etc/ssh/sshd_config          # 服务器 修改 PasswordAuthentication 为no 禁用密码登录
 systemctl restart ssh             # 服务器重启 ssh服务
 ```
+##### key
+```shell
+# 生成 SSH 密钥对
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins_deploy
 
+# 将公钥添加到授权密钥中(要连的服务器上)
+cat ~/.ssh/jenkins_deploy.pub >> ~/.ssh/authorized_keys
+```
 
 ##### 常用
 ```bash
