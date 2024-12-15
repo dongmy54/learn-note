@@ -3,7 +3,12 @@
 docker pull jenkins/jenkins:lts # 拉取官方版本
 mkdir -p dmy_project/jenkins
 sudo chown -R 1000:1000 /root/dmy_project/jenkins  # 添加权限
-docker run -p 8080:8080  -v /root/dmy_project/jenkins:/var/jenkins_home --name jenkins -d jenkins/jenkins:lts
+# 这里把宿主机的容器操作 给予docker容器内部处理
+docker run -p 8080:8080  \
+  -v /root/dmy_project/jenkins:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --name jenkins \
+  -d jenkins/jenkins:lts
 
 # 打开8080的防火墙
 https://xxxx:8080 打开查看
