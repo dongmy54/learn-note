@@ -1,6 +1,13 @@
 ## jenkins
-jenkins做为一款管理部署的开源软件，有很多优点，我们不必去每台服务器手动部署，特别是在部署特别频繁的情况下，能大大节省我们的时间，帮助我们做到持续集成、持续部署还是非常有必要掌握的。
+jenkins作为一款开源部署工具，有很多优点，比如：友好的用户界面、强大的插件生态系统、灵活的配置，可以帮助我们自动化构建、测试、部署；尤其是对于需要频繁部署的场景，让我真正做到持续集成、持续部署；今天让我们来一起学习下。
 
+- 它能做什么？
+当然是自动化部署啦！
+
+- 怎么学呢？
+最好的方式就是自己亲手操练，不入虎穴、焉得虎子。本篇我们以实战项目使用的角度，一步步搭建出一个自动化部署。
+
+这里的步骤都是来自于真机环境，只要您跟着做，保证能成功的哦！
 废话不多说，让我们直接开始。
 
 ### 一、准备工作
@@ -409,4 +416,51 @@ cat ~/.ssh/jenkins_deploy.pub >> ~/.ssh/authorized_keys
 
 
 
+#### 5.立即构建
+总算到这一步了，我们现在开始立即构建，构建完后，将会看到如下内容：
+```shell
++ ssh -o StrictHostKeyChecking=no root@117.xx.yy.178 
+                        docker load -i dmy-go-app.tar &&                         docker stop dmy-go-app || true &&                         docker rm -f dmy-go-app || true &&                         docker run -d                             --name dmy-go-app                             --restart unless-stopped                             -p 9000:9000                             dmy-go-app:latest &&                         rm -f dmy-go-app.tar
+                    
+Loaded image: dmy-go-app:latest
+Error response from daemon: No such container: dmy-go-app
+Error response from daemon: No such container: dmy-go-app
+a2a98a6605287e75a7b1feacb9c90e2a5f59f255be47880272c43aeee2b2d951
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 1734 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
++ rm -f dmy-go-app.tar
+[Pipeline] echo
+Pipeline succeeded! Application is deployed.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+说明整体运行成功，最后我们的go程序监听的是9000端口，记得在云服务器上打开它。就可以发起请求了。
+
+我们在浏览器试下
+![alt text](image-7.png)
+
+已经成功啦。
+
+### 七、写在最后
+对于jenkins部署是一个渐进的过程，不要想着一次把jenkinsfile写好，这是一个逐渐优化的过程，我们慢慢来、逐渐练习。先跑通一个简单的项目部署，然后逐步扩展就能熟练应对复杂的项目了。
 
