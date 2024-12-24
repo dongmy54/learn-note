@@ -132,16 +132,31 @@ db.Where(models.User{Email: "kkkkk@gmail.com"}).Attrs(models.User{Name: "kkkkk"}
 ```
 
 如果我们只是初始化和创建用户，那么前面的代码功能已经够用了；但是如果我们希望如果查到记录后**对已存记录中的字段进行赋予值，我们需要用`Assign()`实现。
-
 ```go
-var user models.User
-// 假设这里的 456@qq.com 用户存在，原用户name是 李四
-// 这里使用Assign会将其Name赋值成 kkkkk
-db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).FirstOrInit(&user)
+u1 := models.User{}
+// 写法一：条件和创建一致（所见即所得）
+db.Debug().Model(&models.User{}).FirstOrCreate(&u1, &models.User{
+  Name:     "John Do23e2232333",
+  Email:    "valid@sdd.com",
+  PhoneNum: "eweeee",
+})
 
-// PS:不建议这么写,如果用户找到，这里直接赋予值，且会存入数据库
-// 相当于update 但是个人感觉使用FirstOrCreate意图非常不明显
-db.Where(models.User{Email: "456@qq.com"}).Assign(models.User{Name: "kkkkk"}).FirstOrCreate(&user)
+// 写法二：条件和更新不一致
+// 这里条件为Name、Email、PhoneNum，如果找到则更新（Assign中Name)
+db.Debug().Model(&models.User{}).Assign(models.User{Name: "sddlll"}).FirstOrCreate(&u1, &models.User{
+   Name:     "John Do23e2232333",
+   Email:    "valid@sdd.com",
+   PhoneNum: "eweeee",
+  })
+
+// 写法三：适合不需要返回值（FirstOrCreate仅一个参数）
+// 1. 此时FirstOrCreate中参数作为create值(仍然会被Assign覆盖哦)
+// 2. 筛选条件仅仅为Where
+db.Debug().Model(&models.User{}).Where(models.User{Name: "skkid"}).Assign(models.User{Name: "323"}).FirstOrCreate(&models.User{
+    Name:     "John Do23e2232333",
+    Email:    "valid@sdd.com",
+    PhoneNum: "eweeee",
+  })
 ```
 
 FirstOrInit 找不到时初始化（不存数据库）
