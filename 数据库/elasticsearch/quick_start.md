@@ -95,4 +95,122 @@ docker-compose up -d
 - Elasticsearch: http://localhost:9200
 - Kibana: http://localhost:5601
 
-PS: 直接用,默认用户名为 `elastic`，密码用docker-compose.yml中环境变量写的`your_elastic_password`直接登录即可。
+我们登录kibana，使用默认用户名 `elastic`，密码用docker-compose.yml中环境变量写的`your_elastic_password`直接登录.
+
+>补充知识：
+**kibana**是elasticsearch可视化数据分析工具，对于我们学习练习使用非常方便。
+
+### 二、练习数据准备
+在开始前，我们先准备一些测试数据，为方便理解，我们以电商系统常用数据做分析。
+
+#### 1. 初试
+前面我们已经成功登录到kibana了，我们登录后，先找到左侧的三个横杠点击，`management > Dev Tools`
+![alt text](image.png)
+
+然后打开它。
+![alt text](image-1.png)
+
+上面我们可以看到在console中已经列出了一些请求数据，这是kibana为了我们方便学习，自动展示的。
+
+让我为你解释下，elasticsearch对外提供的是http服务，因此这里看到的都是各种请求（`POST`/`GET`）
+
+比如
+```shell
+POST /products/_doc
+{
+  "name": "噜啦啦",
+  "brand_name": "HuaWei",
+  "city": "成都",
+  "price": 5290,
+  "create_at": "2022-04-09 13:45:12"
+}
+```
+  
+它相当于
+```shell
+curl -X POST http://localhost:9200/products/_doc -u "elastic:your_elastic_password" -H 'Content-Type: application/json' -d'
+{
+  "name": "噜啦啦",
+  "brand_name": "HuaWei",
+  "city": "成都",
+  "price": 5290,
+  "create_at": "2022-04-09 13:45:12"
+}'
+```
+我们点击console中请求右侧的`▶️`即可发出请求。发出去后就会向es products索引中写入一条文档。
+
+- **概念说明**
+1. products es中叫索引index
+2. 请求体{"name": "xx", "brand_name": "yy", ...} es中称这为文档`doc`,相当于数据库中一行数据记录
+3. 请求体中具体内容比如"name"就是字段/属性啦，需要注意的是es中字段是支持嵌套
+
+让我们继续，继续点击第二个请求查询下products索引有哪些文档。
+```
+# 匹配所有 默认最多返回10条
+GET /products/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
+响应内容如下：
+```
+{
+  "took": 0,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 1,
+      "relation": "eq"
+    },
+    "max_score": 1,
+    "hits": [
+      {
+        "_index": "products",
+        "_id": "SZcbJ5QBrDMs_aLvWrgT",
+        "_score": 1,
+        "_source": {
+          "name": "噜啦啦",
+          "brand_name": "HuaWei",
+          "city": "成都",
+          "price": 5290,
+          "create_at": "2022-04-09 13:45:12"
+        }
+      }
+    ]
+  }
+}
+```
+大概您也能看明白，一般我们就关注`hits`的`total`和`_source`数据就行啦。
+
+我们来更新文档试试呢？在上面我们看到其中一个文档的id`SZcbJ5QBrDMs_aLvWrgT`,我们就更新它啦。
+
+在console中写下如下的请求
+```shell
+# products 索引名
+# SZcbJ5QBrDMs_aLvWrgT 文档id
+POST /products/_update/SZcbJ5QBrDMs_aLvWrgT
+{
+  "doc": {
+    "name": "新产品",
+    "price": 5800
+  }
+}
+```
+发送后我们重新，查询products有哪些文档，发现对应id的name已经变了。
+
+那删除文档怎么写呢？
+```shell
+DELETE /products/_doc/SZcbJ5QBrDMs_aLvWrgT
+```
+好啦！其它您可以自行探索啦。
+
+
+
