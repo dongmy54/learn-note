@@ -580,3 +580,180 @@ curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_pass
 2. **`calendar_interval`非常灵活，按分-m、小时-h、天-d、周-w、月-M、季度-q都支持推荐使用这个**
 3. 另外还有一个`fixed_interval`按主要用于固定间隔，比如按分-m、小时-h、天-d，它不支持w/M/q
 
+- **4. 指标聚合**
+所谓指标聚合就是我们常说的，平均值、最大值、最小等等。
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d '{
+  "aggs": {
+    "avg_amount": {
+      "avg": {
+        "field": "total_amount"
+      }
+    },
+    "sum_amounts": {
+      "sum": {
+        "field": "total_amount"
+      }
+    }
+  },
+  "size": 0
+}'
+
+# "aggregations": {
+# "avg_amount":{"value":269.77175117492675},"sum_amounts":{"value":53954.35023498535}}
+```
+补充：
+- `avg`平均
+- `sum`求和
+- `max`最大
+- `min`最小
+另外我们注意到，是可以一次做多个层面聚合的哦。
+
+- **5. 嵌套聚合**
+假设我们想先按支付方式聚合，然后再在每种支付方式下按照，订单状态聚合。
+
+这里就有层级了，本质上是对每种支付方式的进一步划分，现实业务中很多这样的场景。
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d '{
+  "aggs": {
+    "payment_methods": {
+      "terms": {
+        "field": "payment_method"
+      },
+      "aggs": {
+        "order_statues": {
+          "terms": {
+            "field": "order_status"
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}'
+
+# 主体格式如下
+# "aggregations": {
+#   "payment_methods": {
+#     "doc_count_error_upper_bound": 0,
+#     "sum_other_doc_count": 0,
+#     "buckets": [
+#       {
+#         "key": "银行卡",
+#         "doc_count": 70,
+#         "order_statues": {
+#           "doc_count_error_upper_bound": 0,
+#           "sum_other_doc_count": 0,
+#           "buckets": [
+#             {
+#                 "key": "cancel",
+#                 "doc_count": 26
+#             },
+#             {
+#                 "key": "paid",
+#                 "doc_count": 25
+#             },
+#             {
+#                 "key": "unpaid",
+#                 "doc_count": 19
+#             }
+#           ]
+#         }
+# ....
+```
+
+- **6. Pipeline聚合**
+它是一种高级聚合形式，是对聚合出来的结果进行二次聚合计算，为啥叫管道`pipeline`呢？其实是取类似于linux的管道。
+
+举例：
+比如我们想先按月统计每月的总销售额，然后计算本月相对上月增长百分比，如果上月销售额为0，则本月增长为1000，该怎么写呢？
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d '
+{
+  "aggs": {
+    "sales_by_month": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "month"
+      },
+      "aggs": {
+        "total_sales": {
+          "sum": {
+            "field": "total_amount"
+          }
+        },
+        "sales_diff": {
+          "derivative": {
+            "buckets_path": "total_sales"
+          }
+        },
+        "growth_rate": {
+          "bucket_script": {
+            "buckets_path": {
+              "sales_diff": "sales_diff",
+              "current_sales": "total_sales"
+            },
+            "script": "params.sales_diff == null ? null : params.sales_diff == params.current_sales && params.current_sales > 0 ? 1000 : params.sales_diff / (params.current_sales - params.sales_diff)"
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}'
+
+# "aggregations": {
+#   "sales_by_month": {
+#     "buckets": [
+#       {
+#         "key_as_string": "2024-09-01T00:00:00.000Z",
+#         "key": 1725148800000,
+#         "doc_count": 1,
+#         "total_sales": {
+#             "value": 301.5899963378906
+#         }
+#       },
+#         {
+#           "key_as_string": "2024-10-01T00:00:00.000Z",
+#           "key": 1727740800000,
+#           "doc_count": 84,
+#           "total_sales": {
+#               "value": 21864.190086364746
+#           },
+#           "sales_diff": {
+#               "value": 21562.600090026855
+#           },
+#           "growth_rate": {
+#               "value": 71.49640356727512
+#           }
+#         }
+# ...
+```
+
+说明下
+```shell
+"sales_diff": {
+  "derivative": {
+    "buckets_path": "total_sales"
+  }
+}
+```
+这里sales_diff存储的是当前销售额和上月销售额之间的差值`derivative`是es中的特殊管道，自动帮我们做了计算。
+
+然后，我们只是去利用这个差额，就能计算出上月销售额 = `本月 - 差额`，以此计算百分比进行实现的。
+
+对于`script`部分，本质是先将要用到的`params值`,在`buckets_path`中先定义好，然后去使用的。
+
+上面的例子已经算es中比较复杂的例子了。在使用时，对于`script`计算的部分，我们实际可以放在程序中自己去处理的，看需要吧！
+
+至此聚合的部分也就差不多了。
+
+### 四、最后
+本篇我们从es环境的搭建，测试数据的准备，再到各种查询、聚合统计，相信您看完本文也有了一个全盘的认识，以后遇到具体的问题只需稍微拓展就能使用了。
+
+最后，真心希望本篇能给您带来真正的帮助。
+
+
