@@ -346,3 +346,52 @@ GET /orders/_count
 ok, 我们的测试数据已经构建完成啦。
 
 
+### 三、练习
+#### 1. 基本搜索
+- **单一条件查询**
+假设我们想搜索顾客姓名为张三的订单数据
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d'
+{
+  "query": {
+    "match": { "customer_name": "张三" }
+  }
+}'
+```
+- **多条件查询**
+添加支付方式为微信的订单
+PS: 多条件时，将匹配条件放于must中
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "customer_name": "张三" } },
+        { "term": { "payment_method": "微信" } }
+      ]
+    }
+  }
+}'
+```
+这里会正常匹配出张三、微信支付的数据，需要注意的是：
+- must用于多个条件同时满足。
+- **`match` 用于text类型数据的全文搜索，会有分词的情况**
+- **`term` 适合keyword类型数据，它是不分词的——作为整体去处理**
+
+假设我们像在前面进一步搜索，订单金额大于200的订单呢？
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "customer_name": "张三" } },
+        { "term": { "payment_method": "微信" } },
+        {"range": { "total_amount": {"gt": 200 }}}
+      ]
+    }
+  }
+}'
+```
+好啦，基本查询就到这里。
