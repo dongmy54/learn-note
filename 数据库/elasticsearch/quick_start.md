@@ -348,7 +348,7 @@ ok, 我们的测试数据已经构建完成啦。
 
 ### 三、练习
 #### 1. 基本搜索
-- **单一条件查询**
+- **1. 单一条件查询**
 假设我们想搜索顾客姓名为张三的订单数据
 ```shell
 curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d'
@@ -358,7 +358,7 @@ curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_pass
   }
 }'
 ```
-- **多条件查询**
+- **2. 多条件查询**
 添加支付方式为微信的订单
 PS: 多条件时，将匹配条件放于must中
 ```shell
@@ -394,4 +394,189 @@ curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_pass
   }
 }'
 ```
-好啦，基本查询就到这里。
+
+- **3. 嵌套搜索**
+来继续.我们搜索商品类型是服饰的商品呢？
+我们的商品信息是放在items内部这里嵌套了
+1. 使用`nested` 包裹一层，**path: 指明嵌套路径**
+2. 使用`外层字段.内层字段`方式嵌套搜索
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "customer_name": "张三" } },
+        { "term": { "payment_method": "微信" } },
+        {"range": { "total_amount": {"gt": 200 }}},
+        {
+          "nested": {
+            "path": "items",
+            "query": {
+              "term": {
+                "items.category": "服饰"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}'
+```
+
+好啦，相信进过前面的练习，您也对基本查询有了足够的了解。
+
+#### 2. 聚合统计
+搜索只是es最基础的功能，es最强大的地方是数据分析，要数据分析，一定要会使用聚合统计。我们由简单到复杂一步步开始。
+
+- **1.term分组聚合**
+比如我们按照支付方式，统计每种支付方式的订单数据。这是最简单的统计，如果您在关系型数据库中，也就是 `Group` 配合`Count`完成，那在es中要怎么写呢？
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d' {
+  "aggs": {
+    "payment_methods": {
+      "terms": {
+        "field": "payment_method"
+      }
+    }
+  },
+  "size": 0
+}'
+
+# {
+#     "took": 13,
+#     "timed_out": false,
+#     "_shards": {
+#         "total": 1,
+#         "successful": 1,
+#         "skipped": 0,
+#         "failed": 0
+#     },
+#     "hits": {
+#         "total": {
+#             "value": 200,
+#             "relation": "eq"
+#         },
+#         "max_score": null,
+#         "hits": [ ]
+#     },
+#     "aggregations": {
+#         "payment_methods": {
+#             "doc_count_error_upper_bound": 0,
+#             "sum_other_doc_count": 0,
+#             "buckets": [
+#                 {
+#                     "key": "银行卡",
+#                     "doc_count": 70
+#                 },
+#                 {
+#                     "key": "支付宝",
+#                     "doc_count": 66
+#                 },
+#                 {
+#                     "key": "微信",
+#                     "doc_count": 64
+#                 }
+#             ]
+#         }
+#     }
+# }
+```
+
+解释下聚会的基本格式是：
+```json
+{
+  "size": 0, 
+  "aggs": {
+    "your_aggregation_name": {
+      "terms": {
+        "field": "your_field_name",
+        "size": 10 
+      }
+    }
+  }
+}
+
+// 两个size都是可省略的
+// 1. 外层size: 0 代表不返回具体文档
+// 2. 内层size: 10 代表只返回聚合后桶的个数（比如前面的例子如果2的话，只返回2个桶——银行卡、支付宝）
+```
+
+- **2.Range范围聚合**
+如果我们想知道总价在各个价格段的订单数量，我们可以使用range聚合实现。
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d' {
+  "aggs": {
+    "total_amount_range": {
+      "range": {
+        "field": "total_amount",
+        "ranges": [
+          {"key": "<50", "to": 50},
+          {"key": "50-100(不包含)", "from": 50, "to": 100},
+          {"key": "100-150(不包含)", "from": 100, "to": 150},
+          {"key": "100-200(不包含)", "from": 150, "to": 200},
+          {"key": ">200", "from": 200}
+        ]
+      }
+    }
+  },
+  "size": 0
+}'
+
+# "aggregations": {
+#  "total_amount_range":{
+#   "buckets":[
+#     {"key":"<50","to":50.0,"doc_count":0},
+#     {"key":"50-100(不包含)","from":50.0,"to":100.0,"doc_count":27},
+#     {"key":"100-150(不包含)","from":100.0,"to":150.0,"doc_count":18},
+#     {"key":"100-200(不包含)","from":150.0,"to":200.0,"doc_count":20},
+#     {"key":">200","from":200.0,"doc_count":135}
+#   ]
+# }}
+```
+
+需要注意的点：
+1. 在`range`下面还有一个`ranges`数组区分不同区间
+2. `ranges`中key可以省略，推荐的写法是写上
+3. `from(包含)`，`to(不包含该值)`
+
+- **3. Date Histogram 按日期统计**
+Date Histogram 可以让我们根据日期去做些统计，比如：
+我们按日期统计2024年10月每天的订单数，可以这样写：
+
+```shell
+curl -X GET "http://localhost:9200/orders/_search" -u "elastic:your_elastic_password" -H "Content-Type: application/json" -d '{
+  "query": {
+    "range": {
+      "order_date": {
+        "gte": "2024-10-01",  
+        "lte": "2024-10-31" 
+      }
+    }
+  },
+  "aggs": {
+    "by_day_orders": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "1M"
+      }
+    }
+  },
+  "size": 0
+}'
+
+# "aggregations":{
+#   "by_day_orders":
+#     { "buckets":[
+#     {"key_as_string":"2024-10-01T00:00:00.000Z","key":1727740800000,"doc_count":2},
+#     {"key_as_string":"2024-10-02T00:00:00.000Z","key":1727827200000,"doc_count":2}
+# ...
+```
+注意的点：
+1. 我们额外添加查询在`aggs`外重新添加`query`就行
+2. **`calendar_interval`非常灵活，按分-m、小时-h、天-d、周-w、月-M、季度-q都支持推荐使用这个**
+3. 另外还有一个`fixed_interval`按主要用于固定间隔，比如按分-m、小时-h、天-d，它不支持w/M/q
+
