@@ -345,3 +345,16 @@ db.Find(&user, 1)
 fmt.Printf("User's hobbies: %#v\n", user.Hobbies)
 // User's hobbies: models.DataJSONB{"reading", "swimming"}
 ```
+
+### 14.其它
+```go
+// 使用指定索引
+db.Clauses(hints.UseIndex("index_name"))
+```
+
+
+
+
+
+
+
