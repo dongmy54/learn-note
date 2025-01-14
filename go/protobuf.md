@@ -129,6 +129,9 @@ type AuthorDetail struct {
 
 ### 枚举Enum
 它生成后对应为**常量**
+PS:
+1. 枚举值不能自定义类型，默认int32
+2. 对于proto3,默认只能从0开始
 ```go
 message SearchRequest {
 	Color color = 1;
