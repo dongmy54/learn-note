@@ -1,5 +1,5 @@
 ## 存储过程
-```
+```sql
 DELIMITER //
 
 CREATE PROCEDURE generate_test_data(IN num_rows INT)
@@ -19,14 +19,13 @@ BEGIN
 
     -- 将字符串列表按逗号分隔，并计算字符串的数量
     SET str_count = LENGTH(event_types) - LENGTH(REPLACE(event_types, ',', '')) + 1;
-
-    -- 生成一个随机索引（从1到str_count）
-    SET random_index = FLOOR(1 + RAND() * str_count);
-
-    -- 使用SUBSTRING_INDEX函数获取随机索引对应的字符串
-    SET random_event_type = SUBSTRING_INDEX(SUBSTRING_INDEX(event_types, ',', random_index), ',', -1);
-
     WHILE i <= num_rows DO
+        -- 生成一个随机索引（从1到str_count）
+        SET random_index = FLOOR(1 + RAND() * str_count);
+
+        -- 使用SUBSTRING_INDEX函数获取随机索引对应的字符串
+        SET random_event_type = SUBSTRING_INDEX(SUBSTRING_INDEX(event_types, ',', random_index), ',', -1);
+
         SET random_kind = FLOOR(RAND() * 3) + 1; -- 随机生成 1, 2, 3
 
         -- 生成 100000 以内的随机数
