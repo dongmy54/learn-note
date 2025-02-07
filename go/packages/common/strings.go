@@ -8,7 +8,7 @@
 str := strings.Join([]string{"hello", "world!", "您好"}, " ")
 fmt.Printf("%#v\n", str)
 
-// 方式2: builder
+// 方式2: builder-它同时也是一个io.Writer
 builder := strings.Builder{}
 // 高效拼接字符串
 for _, istr := range []string{"hello", "world!", "您好"} {
