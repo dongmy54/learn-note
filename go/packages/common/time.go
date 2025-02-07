@@ -1,9 +1,10 @@
 // pacakge time
 
 // 当前时间
-now := time.Now() // 返回time.Time
+now := time.Now() // 返回time.Time 默认为本地时间区
 fmt.Printf("%#v\n", now)
 // time.Date(2024, time.November, 2, 12, 16, 55, 838800000, time.Local)
+fmt.Println(now.Zone()) // 查看所属时区
 
 // 格式化 这里的时间只能是2006年1月2日 下午3点04分05秒
 tstr := now.Format("2006-1-2 15:04:05")
@@ -93,6 +94,13 @@ s_time := now.Add(-time.Hour)
 fmt.Println(s_time)
 // 2024-11-02 13:17:00.980928 +0800 CST m=-3599.999866213
 
+// day为0默认返回上一个月最后一天
+time.Date(2025, 2, 0, 0, 0, 0, 0, now.Location())
+//2025-01-31 00:00:00 +0800 CST
+
+// AddDate加年月日（加月时要注意不是自然月，可能存在超过的现象比如2025-1-31加一月会跑到3月3日）
+t5 := time.AddDate(0, 1, 0)
+
 // 时间比较 【时间没法直接加/减和比较】
 // 同理还有 .After()
 if s_time.Before(n_time) {
@@ -102,7 +110,7 @@ if s_time.Before(n_time) {
 }
 // s_time 在 n_time前
 
-// 计算两个时间的差值
+// 当前时间差值
 duration := time.Since(s_time) // 当前时间 - s_time 返回 time.Duration
 fmt.Println(duration)          // 输出的是xhxmxs类似输出
 // 1h0m0.000419626s
@@ -116,6 +124,9 @@ fmt.Println(dur.Hours())
 // -1.0000001016408333
 fmt.Println(dur.Minutes())
 // -60.00000609845
+
+// 两个时间之间的差值
+t1.Sub(t2) // t1 - t2返回duration 
 
 // 构造一个duration 有效的时间单元最大从h开始
 myDuration, err := time.ParseDuration("3h4m5s")
