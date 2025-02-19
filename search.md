@@ -49,6 +49,8 @@ kq.NewPusher AND language:Go
 
 搜索语法：https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax
 
+`go-zero httpx.SetErrorHandler language:go` 指定语言 同时包含多关键字
+
 
 
 
