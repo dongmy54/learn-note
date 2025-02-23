@@ -96,6 +96,14 @@ docker network inspect go-zero-looklook_looklook_net # 检查容器中的网络�
 
 docker run --name=app1 --network=go-zero-looklook_looklook_net -d hello-world # 启动时指定网络
 docker network connect go-zero-looklook_looklook_net container-name # 启动后加入某个网络
+
+# 删除未使用的数据券
+docker system prune -a --volumes
+docker network prune # 未使用的网络
+docker builder prune # 构建的缓存
+ 
+# 强力清扫 包括数据卷、未使用的镜像、停掉的容器、网络等所有东西  !!! 慎用
+docker system prune -a --volumes
 ```
 
 
