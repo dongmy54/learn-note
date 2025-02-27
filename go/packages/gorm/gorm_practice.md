@@ -135,6 +135,7 @@ db.Where(models.User{Email: "kkkkk@gmail.com"}).Attrs(models.User{Name: "kkkkk"}
 ```go
 u1 := models.User{}
 // 写法一：条件和创建一致（所见即所得）
+// 注意这种不带Assign 根据 第二个参数记录后是不会做update的
 db.Debug().Model(&models.User{}).FirstOrCreate(&u1, &models.User{
   Name:     "John Do23e2232333",
   Email:    "valid@sdd.com",
