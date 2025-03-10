@@ -67,3 +67,10 @@ ssh dmy_hw 'ls' # 加单引号的内容在服务器上执行
 ```
 
 
+##### windows系统
+```shell
+Get-Service -Name sshd  # 查看服务状态
+Start-Service sshd # 启动服务
+```
+
+
