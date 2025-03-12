@@ -11,6 +11,7 @@ import (
 )
 
 // 使用Focus标签 代表只运行此示例 其它全部跳过 执行完后 记的改回去
+// Pending 让它暂时不执行
 // 这里改成 Label("library")
 var _ = Describe("Checking books out of the library", Label("library"), func() {
 	var library string
