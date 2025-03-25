@@ -292,7 +292,22 @@ crontab -r           # 删除所有定时任务
 grep CRON /var/log/syslog | tail -10
 ```
 
+### 压测
+```shell
+# 使用hey命令压测
+go install github.com/rakyll/hey@latest
 
+hey -c 400 -q 3 -z 30s \
+  -H 'accept: */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZyI6ZmFsc2UsImNvbW1vbmlkIjoiIiwiZXhwIjoxNzQyOTAwMDE4LCJmaWQiOiIiLCJnaWQiOjEwOTAwNDE1ODA0MTg1MDI2NTYsImlhdCI6MTc0Mjg2NDAxOCwiaXNzIjoiZnVzc2VuZHgyIiwicm9sZSI6IjEiLCJ1c2VyaWQiOiIxMDkwMDQxNTgwMjU0OTI0ODAwIiwidXNlcnR5cGUiOiIwIn0.F9xkPWAuFjpHO6qkRFYQRdzVKt4PErqZhFpw-b--fKg' \
+  'https://dxt.yayi360.com//v2/df/dxp/case/query?emrtype=11&pageno=0&pagesize=6&doctorId=1090041580254924800&cdate=&edate=&states=&order=0&datetype=updatetime&orderby=updatetime&fuzzy='
+
+-c 多少个worker
+-q 每个worker每秒发送请求
+
+# 理论上 最多一次发送 c * q个请求；实际达不到的
+```
 
 
 
