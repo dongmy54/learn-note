@@ -307,6 +307,16 @@ hey -c 400 -q 3 -z 30s \
 -q 每个worker每秒发送请求
 
 # 理论上 最多一次发送 c * q个请求；实际达不到的
+
+
+# post例子
+hey -c 400 -q 3 -z 30s \
+  -H 'accept: */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cookie: Hm_lvt_0361e332a03145acb1f19deaa466f8fc=1741240896,1742432821; beegosessionIDshare=58c364ece238ee57debfc12532e3c67a; _clck=1h0sgjt%7C2%7Cfuj%7C0%7C1763; _clsk=1kpnj%7C1742977288663%7C1%7C1%7Ck.clarity.ms%2Fcollect' \
+  -m 'post' \
+  -d 'pageno=1&pagesize=50&keyword=&datetype=1&start=&end=&checktime=1&updatetime=&beEmployeeGuid=' \
+  'https://dxt.yayi360.com/patient/list'
 ```
 
 
