@@ -7,3 +7,4 @@ https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode-r
 
 2. chrome 浏览器降版本
 到 https://google-chrome.en.uptodown.com/ 这里找历史版本
+`defaults write com.google.Keystone.Agent checkInterval 0` 降级后禁止自动更新否则无用
