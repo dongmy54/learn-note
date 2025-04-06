@@ -9,6 +9,7 @@ pnpm init            # 创建 package.json 文件
 # 安装依赖
 pnpm add -D typescript # ts 做为开发以来安装（创建node-modules和pnpm-lock.yaml)
 pnpm add -D ts-node # ts-node: 直接运行 TypeScript 文件
+pnpm add -D @types/node # 解决看不到node类型定义的问题推荐
 
 pnpm exec tsc --init  # 创建tsconfig.json
 
