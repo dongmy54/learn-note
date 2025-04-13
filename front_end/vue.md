@@ -538,7 +538,21 @@ import { Cell, CellGroup } from 'vant'
 
 首先，把我们的代码推到我们的github仓库。
 
+1. 到`vercel`用github账号注册
+2. import github上项目,这里需要把github上的仓库开发给`vercel`
+![alt text](image-4.png)
+3. 部署（非常快，不到一分钟）
+![alt text](image-5.png)
 
+成功啦
+![alt text](image-6.png)
 
+它自动给你分配域名，都可以访问了哦。
 
+总算完结啦。
 
+### 七. 最后
+我们已完成了整个项目的搭建到部署，后续就靠你啦，都是细节，哈哈哈。
+
+1. vue 官网 https://cn.vuejs.org/guide/quick-start
+2. vant UI 官网 https://vant-ui.github.io/vant/#/zh-CN/home
