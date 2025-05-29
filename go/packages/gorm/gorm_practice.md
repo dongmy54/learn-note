@@ -23,12 +23,13 @@ for _, data := range user_data {
 
 ### 2. 更新
 ```go
-// 单列更新：都可以更新到空值 Update
+// 单列更新：都可以更新到零值 Update
 gormInstance.Debug().Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).Update("StatusRemark", sql.NullString{Valid: false})
-// UpdateColumn 不触发回调
+// UpdateColumn 不触发回调 + 可以更新零值
 gormInstance.Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).UpdateColumn("StatusRemark", sql.NullString{Valid: false})
+err = db.Debug().Model(&models.TDfMessage{}).Where(models.TDfMessage{Kind: 25, EventType: "GroupDisbandEvent"}).UpdateColumn("Kind", 0).Error
 
-// 多列更新：只有map可以更新空值
+// 多列更新：只有map可以更新零值
 mp := map[string]interface{}{
   "StatusRemark": sql.NullString{Valid: false},
   "PatientId":    3,
@@ -36,9 +37,11 @@ mp := map[string]interface{}{
 
 gormInstance.Model(&t_df_case.TDfCase{}).Where("id =?", ca.Id).Updates(mp)
 
-// 使用结构体自动过滤掉空值情况 
+// 使用结构体自动过滤掉零值情况 
 ca.StatusRemark = sql.NullString{Valid: false}
 gormInstance.Debug().WithContext(context.TODO()).Updates(ca)
+
+// UpdateColumns 跳过回调 不能更新零值
 ```
 
 ### 3. Where写法
@@ -351,6 +354,19 @@ fmt.Printf("User's hobbies: %#v\n", user.Hobbies)
 ```go
 // 使用指定索引
 db.Clauses(hints.UseIndex("index_name"))
+
+// 默认情况下链式调用会对Model后的*gorm.DB 生效。比如
+userQuery := db.Model(User{})
+userQuery.Where("status = ?", 1)
+userQuery.Where("age > ?", 30)
+// 此时查询会生成 select * from users where status = 1 and age > 30;
+
+
+要避免这种情况需要每次都去去加Session/Context 重新生成查询对象比如
+db.Session(&gorm.Session{NewDB: true}).Model(clinic.Clinic{}) // session 放于Model前 否则会没有Model
+或者
+db.WithContext(ctx).Model(clinic.Clinic{})
+// 这么写也只是保证了 本次的查询是新的作用域而已（不会污染前面的），它自身后续的链式调用仍然有效，这也是为什么要每次都去重新生成查询对象的原因
 ```
 
 
