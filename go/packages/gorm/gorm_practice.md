@@ -42,6 +42,7 @@ ca.StatusRemark = sql.NullString{Valid: false}
 gormInstance.Debug().WithContext(context.TODO()).Updates(ca)
 
 // UpdateColumns 跳过回调 不能更新零值
+// 优势是：可以更新到多列，可以避免数据库字段设置on update 时候，如果没有带上该字段更新此字段时间的问题
 ```
 
 ### 3. Where写法
