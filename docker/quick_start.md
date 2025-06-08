@@ -439,7 +439,7 @@ docker cp my_postgres_container:/path/to/backup/in/container/my_database_backup.
 # compose
 docker compose up -d # 开启容器组
 docker-compose down  # 关闭容器组
-docker-compose ps    # 查看容器组
+docker-compose ps    # 查看容器组(它启动的只能由它看)
 docker-compose logs  # 查看容器组日志
 docker-compose exec CONTAINER_NAME COMMAND # 容器内部执行命令
 ```
