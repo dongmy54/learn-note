@@ -185,6 +185,9 @@ nohup cmd & # 退出终端后仍然执行
 
 wget -O p.jpg  https://gimg2.baidu.com/image_search/xx.jpg # 下载某个文件并命名
 
+# 监控tcp连接情况
+watch -n 1 "netstat -n | awk '/^tcp/ {++state[\$NF]} END {for(key in state) print key,\"\t\",state[key]}'"
+
 # ======================== 添加sudo权限 =====================
 sudo usermod -aG sudo admind
 sudo visudo
