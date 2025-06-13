@@ -240,6 +240,10 @@ ls learn-not/ruby/语法 | grep rb    # 过滤出xx目录下 包含rb的文件�
 seq 1 1000000 > lines.txt  # 产生一个 1000000行的文件
 time wc -l lines.txt       # 查看命令执行时间
 
+查看网络端口是否开放
+nc -vz 192.168.15.108 2222
+
+
 # 清空日志
 > staging.log
 truncate -s 10 staging.log # 缩小/扩大文件大小
