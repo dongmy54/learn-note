@@ -107,3 +107,8 @@ service comment {
 ```
 
 
+### other
+```go
+// 获取traceId
+traceID := trace.TraceIDFromContext(l.ctx)
+```
