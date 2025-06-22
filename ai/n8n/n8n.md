@@ -72,7 +72,7 @@ services:
       - N8N_SECURE_COOKIE=false // 这里设置为false是由于我们没有打开https，只有false本地才可以访问
 
       # 数据库配置 (PostgreSQL)
-      - DB_TYPE=postgres
+      - DB_TYPE=postgresdb
       - DB_POSTGRES_HOST=postgres # 数据库服务名，在docker-compose网络中
       - DB_POSTGRES_PORT=5432
       - DB_POSTGRES_DATABASE=n8n # n8n使用的数据库名
