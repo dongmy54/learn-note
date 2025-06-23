@@ -17,4 +17,8 @@ go mod init gomodtest  初始化mod文件
 ```shell
 # 清理测试缓存 保证每次都是最新的
 go clean -testcache
+
+
+# linux build数据
+GOARCH=amd64 GOOS=linux go build -o bin/data-migration
 ```
