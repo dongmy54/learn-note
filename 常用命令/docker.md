@@ -37,6 +37,9 @@ docker run --name my_container -p 4000:3000 -d weclcome-to-docker:latest
 
 # restart重启方式 保证宿主机重启后能启动
 docker run --restart=unless-stopped my_image
+# 对于已存在的容器 更新重启策略
+docker update --restart unless-stopped 9aa897b9990b 6880cbd6dd04 091f27ea8178
+
 
 # 挂载
 docker run -v ./config:/root/app/config my_image
