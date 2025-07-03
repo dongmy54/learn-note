@@ -15,7 +15,9 @@ go mod init gomodtest  初始化mod文件
 ```
 
 ```shell
-# 清理测试缓存 保证每次都是最新的
+go clean -cache # 清理编译后缓存条目
+
+# 清理测试缓存结果 保证每次都是最新的
 go clean -testcache
 
 
