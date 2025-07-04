@@ -370,7 +370,21 @@ db.WithContext(ctx).Model(clinic.Clinic{})
 // 这么写也只是保证了 本次的查询是新的作用域而已（不会污染前面的），它自身后续的链式调用仍然有效，这也是为什么要每次都去重新生成查询对象的原因
 ```
 
+### 15.获取sql
+```go
+func GetSQLAndVars(db *gorm.DB) (string, error) {
+  // 使用 GORM 内置的 ToSQL 方法
+  sql := db.ToSQL(func(tx *gorm.DB) *gorm.DB {
+    return tx.Find(nil)
+  })
 
+  if sql == "" {
+    return "", fmt.Errorf("no SQL statement generated")
+  }
+
+  return sql, nil
+}
+```
 
 
 
