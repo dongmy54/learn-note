@@ -1,7 +1,7 @@
 #### lua 脚本
 > 1. lua脚本执行的时候，是相当于把这个脚本当作一个命令整体去执行的
 > 2. 但是需要记住的是，脚本中多个命令，如果执行过程中有错误，也不是原子的哦
-PS： lua是一门语言
+PS： lua是一门静态语言
 
 ##### 为什么有了事务还需要lua脚本
 > 虽然我们有了事务，可以保证多个命令打包一起执行没，但是对于一些包含逻辑判断等复杂的操作，事务并不能满足要求
@@ -84,6 +84,21 @@ end
 	- 如果是docker启动，通过`docker logs -f containerId` 查看
 	- 其它到，/var/log/redis/redis-server.log 文件
 
+
+##### 数据类型
+1. nil 空
+2. string 经典类型
+3. number （整数/浮点数统称）
+4. boolean (true/false)
+
+类型转换
+```shell
+# 转number 对应go中的int64
+tonumber(a)
+# 转string
+tostring(b)
+```
+快速练习`https://onecompiler.com/lua`
 
 
 
