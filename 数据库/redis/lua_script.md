@@ -51,13 +51,45 @@ OK
 ```
 
 ##### 命令行执行lua脚本
-> `redis-cli --eval lua_file key1 key2 , arg1 arg2 arg3`
+> `redis-cli --eval lua_file key1 key2 , arg1 arg2 arg3` 逗号分隔key和value
 
-注意：
-> 1. eval 后面参数是lua脚本文件,.lua后缀
-> 2. 不用写键数量 用逗号分隔
+文件名`l.lua`
+```lua
+local key = KEYS[1];
+-- 初始化的值
+local initial_value = tonumber(ARGV[1]);
+-- 过期时间 默认设置为1天 (24 * 60 * 60 秒)
+local expiry_seconds = 86400;
 
-##### lua脚本简单语法
+redis.log(redis.LOG_NOTICE, "Script started for key: " .. key .. ", initial_value: " .. initial_value)
+-- 检查 key 是否存在
+if redis.call('EXISTS', key) == 1 then
+  redis.log(redis.LOG_NOTICE, "====key: " .. key .." exists")
+  -- 如果 key 存在，执行 INCR 操作
+  local new_value = redis.call('INCR', key)
+  return new_value
+else
+  redis.log(redis.LOG_NOTICE, "====key: " .. key .." not exists")
+  -- 如果 key 不存在，使用 SETEX 命令原子性地设置 key 的值和过期时间
+  redis.call('SETEX', key, expiry_seconds, initial_value)
+  return initial_value
+end
+```
+1. 执行`redis-cli --eval l.lua ShowId:ResultNum:CS:20250708 , 2334566` 
+	- ShowId:ResultNum:CS:20250708 是key
+	- 2334566 是参数（与前逗号分隔）
+
+2. `redis.LOG_NOTICE` 加调试日志；去redis服务查看
+    - 注意它的第二个参数的拼接形式（只能是字符串、用`..`做拼接
+	- 如果是docker启动，通过`docker logs -f containerId` 查看
+	- 其它到，/var/log/redis/redis-server.log 文件
+
+
+
+
+
+
+
 
 
 
