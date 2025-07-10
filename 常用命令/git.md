@@ -62,6 +62,8 @@ git branch -m old_branch_name new_branch_name     改分支名称
 git cherry-pick 76b53de95710166d6f58951d26298e058fa734e6 挑选commit合并到当前分支
                                                          PS: 1. 将其它分支的commit合并过来、带commit 信息
                                                              2. git cherry-pick a b 中间空格一次合多个
+
+git cherry-pick --abort 用于处理git cherry-pick在处理中的情况
 当上面出现失败要求带上-m参数时
 git cherry-pick xxx -m 1 - 以当前分支为主线（合并过来的内容较少，不会带无关的内容）
 git cherry-pick xxx -m 2 - 以其它分支为主（合并内容较多，比较杂乱）
