@@ -49,7 +49,9 @@ kq.NewPusher AND language:Go
 
 搜索语法：https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax
 
-`go-zero httpx.SetErrorHandler language:go` 指定语言 同时包含多关键字
+`go-zero "httpx.SetErrorHandler" language:go` 指定语言 同时包含多关键字;内部加双引号精准匹配
+`https://sourcegraph.com/`深度研究可以用 
+`context:global lang:Go content:"github.com/zeromicro/go-zero/rest/httpx" -content:"httpx.OkJson" content:"httpx."`
 
 
 
