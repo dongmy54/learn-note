@@ -1,0 +1,56 @@
+package main
+
+import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+)
+
+// GenerateHmacSha256 生成 HMAC-SHA256 签名并返回其十六进制表示
+// data: 需要签名的消息
+// secret: 用于签名的密钥
+func GenerateHmacSha256(data, secret string) string {
+	// 创建一个新的 HMAC Hasher
+	h := hmac.New(sha256.New, []byte(secret))
+
+	// 写入数据
+	h.Write([]byte(data))
+
+	// 计算签名并编码为十六进制字符串
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// 正确的签名验证方式
+func VerifySignature(data, secret, receivedSignatureHex string) bool {
+	// 1. 从十六进制解码收到的签名
+	receivedSignature, err := hex.DecodeString(receivedSignatureHex)
+	if err != nil {
+		return false // 格式错误
+	}
+
+	// 2. 用相同的数据和密钥重新计算签名
+	expectedSignature := GenerateHmacSha256(data, secret) // 使用我们上面封装的函数
+	expectedSignatureBytes, _ := hex.DecodeString(expectedSignature)
+
+	// 3. 使用 hmac.Equal 进行常量时间比较，防止时序攻击
+	return hmac.Equal(receivedSignature, expectedSignatureBytes)
+}
+
+// 在 main 函数中调用
+func main() {
+	secret := "your-super-secret-key"
+	data := "this is the message to be signed"
+
+	signature := GenerateHmacSha256(data, secret)
+	fmt.Printf("签名结果: %s\n", signature)
+
+	// 验证签名
+	isValid := VerifySignature(data, secret, signature)
+	if isValid {
+		fmt.Println("签名验证成功")
+	} else {
+		fmt.Println("签名验证失败")
+	}
+}
+
