@@ -11,6 +11,14 @@
 > 1. 在 6.0以前是完全的单线程
 > 2. 6.0开始对于io的处理改成了多线程，但工作线程（命令的处理）始终是单线程
 
+#### 连入
+```shell
+redis-cli -h xx.com -p 6379
+// 授权
+AUTH "your secret"
+// 选择db
+select 1 
+```
 ##### 安装及启动
 ```
 brew install redis    安装
