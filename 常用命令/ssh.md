@@ -14,7 +14,7 @@ ssh-copy-id root@120.79.1xx.yyy   # 将本地 公钥传到服务器(`~/.ssh/auth
 vim /etc/ssh/sshd_config          # 服务器 修改 PasswordAuthentication 为no 禁用密码登录
 systemctl restart ssh             # 服务器重启 ssh服务
 ```
-##### key
+#### key
 ```shell
 # 生成 SSH 密钥对
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins_deploy
@@ -23,7 +23,7 @@ ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins_deploy
 cat ~/.ssh/jenkins_deploy.pub >> ~/.ssh/authorized_keys
 ```
 
-##### 常用
+#### 常用
 ```bash
 ssh root@120.79.1xx.yyy     # 以root身份 登录 120.79.1xx.yyy
 
@@ -37,7 +37,7 @@ ssh dmy_hw < my.sh # 可以将文件写入文件中
 ssh dmy_hw './server.sh' # 运行服务器上文件
 ```
 
-##### 简化登录
+#### 简化登录
 ```
 # ～/.ssh/config
 Host aliyu
@@ -47,7 +47,7 @@ Host aliyu
   IdentityFile ~/.ssh/id_rsa
 ```
 
-##### 调整ssh超时时间
+#### 调整ssh超时时间
 ```
 # /etc/ssh/ssh_config文件
 
@@ -61,13 +61,18 @@ ClientAliveCountMax  10
 systemctl restart ssh
 ```
 
-##### 链接的同时执行命令
+#### 链接的同时执行命令
 ```bash
 ssh dmy_hw 'ls' # 加单引号的内容在服务器上执行
 ```
 
+#### 本地端口转发
+```shell
+ssh -L 33006:192.168.15.145:3306 fsbr
+-L 本地端口转发 本地端口:远端ip:远端端口 跳板机信息（直接ssh连接的机器）
+```
 
-##### windows系统
+#### windows系统
 ```shell
 Get-Service -Name sshd  # 查看服务状态
 Start-Service sshd # 启动服务
