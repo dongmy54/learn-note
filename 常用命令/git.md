@@ -46,6 +46,7 @@ git remote update origin --prune           更新远端分支名称
 git checkout -b xx-branch                  在当前分支的基础上创建分支
 git checkout -b xx-branch develop          在develop分支上创建分支
 git checkout -b xx-branch origin/develop   在远端develop分支上创建分支
+git checkout -b new-branch-name commitId 以commitId建立新的分支
 
 git checkout -   切换到上一个分支
 git checkout .   当前所有修改全部放弃
