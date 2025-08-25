@@ -12,6 +12,8 @@ go mod tidy 清洁项目下go.sum（类似于拉取日志）中不相关版本�
 
 go build ./... 当前文件 及目录下所有文件包括子文件build一遍
 go mod init gomodtest  初始化mod文件
+
+GOARCH=amd64 GOOS=linux go build -o bin/data-migration
 ```
 
 ```shell
