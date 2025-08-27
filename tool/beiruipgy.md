@@ -23,3 +23,15 @@ pgyvisitor # 使用1中添加的账号去登录即可
 
 
 
+
+### 如何利用ssh实现浏览器访问内网ip
+方案： ssh 配置代理 + chrome插件SwitchyOmega
+```shell
+Host fsbr-proxy
+  HostName 172.16.1.xx # 这里应该填写您的公网IP地址
+  User fuxxxx
+  DynamicForward 8181   # 在连接时自动开启SOCKS代理
+  ServerAliveInterval 60 # 每60秒发一个心跳包，防止连接断开
+```
+
+上面会实现一个本地的代理 SOCKS5: 127.0.0.1:8181
