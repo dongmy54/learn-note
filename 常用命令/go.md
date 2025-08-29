@@ -26,3 +26,26 @@ go clean -testcache
 # linux build数据
 GOARCH=amd64 GOOS=linux go build -o bin/data-migration
 ```
+
+#### 多版本管理
+1. 安装g `curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash`
+
+2. 配置.bashrc
+```shell
+# 将这行添加到你的 .bashrc 或 .zshrc 文件末尾
+export PATH="$HOME/.g/bin:$PATH"
+
+# 重新加载配置文件
+source ~/.bashrc 
+# 或者 source ~/.zshrc
+```
+
+3. 常用命令
+```shell
+g ls # 列出本地版本
+
+g ls-remote # 列出远程版本
+g install 1.22.3 # 安装指定版
+g use xxx # 使用指定版本
+g uninstall 1.22.3 # 卸载
+```
