@@ -1,15 +1,14 @@
 ### common 
 go老项目，不支持gomod处理方式,
 
-
+.vscode/settings.json
 配置gopath和 go111module开关即可，在项目根目录下
 ```json
 {
-    "go.gopath": "/home/fussen/fs/dxx/",
+    "go.gopath": "${workspaceFolder}",
     "go.toolsEnvVars": {
       "GO111MODULE": "off"
     }
-    // 注意：这里的值是你的GOPATH的根目录，而不是项目代码的路径
 }
 ```
 
