@@ -11,7 +11,7 @@ https://mp.weixin.qq.com/s?__biz=MjM5Mzk1NzA1NA==&mid=2247486033&idx=1&sn=63aae6
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.moonshot.cn/anthropic",
     "ANTHROPIC_AUTH_TOKEN": "sk-9AIKMylL1CHdhWOb0OlHaxxxxx",
-    "ANTHROPIC_MODEL": "kimi-k2-0905-preview",
+    "ANTHROPIC_MODEL": "kimi-k2-turbo-preview",
     "API_TIMEOUT_MS": "600000"
   }
 }
@@ -80,6 +80,120 @@ PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进
 `claude commit` 一键提交
 `claude -c` 上下文还在，无需重复解释需求
 
+
+#### 4. mcp
+`claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp`
+
+#### 5. 权限
+~/.claude/settings.json
+```json
+{
+  "permissions": {
+    "allow": [
+      /* ------- 文件操作 ------- */
+      "Edit",
+      "FileWrite",
+      "FileDelete",
+
+      /* ------- Git 全家桶 ------- */
+      "Bash(git *)",
+      "Bash(git-commit:*)",
+      "Bash(git-push:*)",
+      "Bash(git-pull:*)",
+      "Bash(git-fetch:*)",
+      "Bash(git-checkout:*)",
+      "Bash(git-branch:*)",
+      "Bash(git-merge:*)",
+      "Bash(git-rebase:*)",
+      "Bash(git-reset:*)",
+      "Bash(git-stash:*)",
+      "Bash(git-status)",
+      "Bash(git-log)",
+
+      /* ------- Node / JS 生态 ------- */
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(yarn *)",
+      "Bash(pnpm *)",
+      "Bash(node *)",
+      "Bash(bun *)",
+
+      /* ------- Python 生态 ------- */
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pip *)",
+      "Bash(pip3 *)",
+      "Bash(poetry *)",
+      "Bash(pdm *)",
+      "Bash(conda *)",
+
+      /* ------- Go 生态 ------- */
+      "Bash(go *)",
+      "Bash(gofmt *)",
+      "Bash(goimports *)",
+
+      /* ------- Rust 生态 ------- */
+      "Bash(cargo *)",
+      "Bash(rustfmt *)",
+      "Bash(clippy *)",
+
+      /* ------- Java / Kotlin ------- */
+      "Bash(mvn *)",
+      "Bash(gradle *)",
+      "Bash(kotlinc *)",
+
+      /* ------- C/C++ ------- */
+      "Bash(make *)",
+      "Bash(cmake *)",
+      "Bash(g++ *)",
+      "Bash(gcc *)",
+      "Bash(clang *)",
+      "Bash(clang-format *)",
+      "Bash(clang-tidy *)",
+
+      /* ------- Docker / K8s ------- */
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "Bash(kubectl *)",
+
+      /* ------- 代码格式化 / 检查 ------- */
+      "Bash(prettier *)",
+      "Bash(eslint *)",
+      "Bash(black *)",
+      "Bash(flake8 *)",
+      "Bash(mypy *)",
+      "Bash(ruff *)",
+      "Bash(shellcheck *)",
+      "Bash(shfmt *)",
+
+      /* ------- 测试 ------- */
+      "Bash(npm run test)",
+      "Bash(npm run test:*)",
+      "Bash(python -m pytest)",
+      "Bash(pytest)",
+      "Bash(cargo test)",
+      "Bash(go test)",
+      "Bash(mvn test)",
+      "Bash(gradle test)",
+
+      /* ------- 构建 / 发布 ------- */
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(pnpm build)",
+      "Bash(yarn build)",
+      "Bash(make build)",
+      "Bash(cargo build)",
+      "Bash(go build)",
+
+      /* ------- 网络拉文档 ------- */
+      "WebFetch(*)"
+    ],
+
+    /* 同会话内后续编辑不再弹窗 */
+    "defaultMode": "acceptEdits"
+  }
+}
+```
 
 使用go语言开发，实现一个分布式场景下的singlefight（go语言的singlefight只在单独的进程内有效），搭配redis实现，要求：
 1. 实现一个完成功能包，使用时，直接导入即可使用

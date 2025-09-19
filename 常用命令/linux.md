@@ -194,8 +194,11 @@ nohup cmd & # 退出终端后仍然执行
 
 wget -O p.jpg  https://gimg2.baidu.com/image_search/xx.jpg # 下载某个文件并命名
 
-# 监控tcp连接情况
+
+# watch监控变化 最好命令都放在引号（单/双）比较容易拓展
 watch -n 2 date  # 每2s查看日期
+watch -n 10 "tail -n 200 log/mig4.log | grep 'printProgress clinicId' | tail -n 5" # 多个命令为一个整体使用引号
+# 监控tcp连接情况
 watch -n 1 "netstat -n | awk '/^tcp/ {++state[\$NF]} END {for(key in state) print key,\"\t\",state[key]}'"
 
 # ======================== 添加sudo权限 =====================
