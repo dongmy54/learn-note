@@ -14,6 +14,8 @@
 #### 连入
 ```shell
 redis-cli -h xx.com -p 6379
+redis-cli -h 10.131.99.5 -p 6378 -a xxxpassWord -n 1
+
 // 授权
 AUTH "your secret"
 // 选择db
