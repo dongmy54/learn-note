@@ -387,6 +387,38 @@ func GetSQLAndVars(db *gorm.DB) (string, error) {
 ```
 
 
+### 16. join查询扫入scan
+```go
+type ImplantInfo struct {
+  BrandName   string      `gorm:"column:brand_name"`
+  BrandNameCn string      `gorm:"column:brand_name_cn"`
+  SeriesName  string      `gorm:"column:series_name"`
+  TCtImplant  *TCtImplant `gorm:"embedded"` // 注意这里要使用嵌套
+}
+
+func (m *defaultTCtImplantModel) GetImplantInfos(ctx context.Context, implantNos []int64) ([]*ImplantInfo, error) {
+  var infos []*ImplantInfo
+
+  // 数据量不大直接join一次取出
+  sql := `
+    SELECT
+      b.brandName AS brand_name,
+      b.brandNameCn AS brand_name_cn,
+      s.seriesName As series_name,
+      i.*
+    FROM
+      t_ct_implant i 
+    LEFT JOIN t_ct_implant_brand b ON i.brandID = b.identity 
+    LEFT JOIN t_ct_implant_series s ON i.seriesID = s.identity 
+    WHERE
+      i.selfImplantNo IN (?)
+      AND i.datastatus = 1
+    `
+  err := m.conn.WithContext(ctx).Raw(sql, implantNos).Scan(&infos).Error
+
+  return infos, err
+}
+```
 
 
 
