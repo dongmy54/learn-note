@@ -20,6 +20,13 @@ https://mp.weixin.qq.com/s?__biz=MjM5Mzk1NzA1NA==&mid=2247486033&idx=1&sn=63aae6
 - `/status` 查看模型
 
 
+如果不用配置文件，可以直接配置环境变量，比如：
+```shell
+export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+export ANTHROPIC_AUTH_TOKEN="xxx"
+```
+也能生效
+
 
 #### 2. 对于不支持的模型
 采用`claude-code-router`转换
@@ -72,7 +79,6 @@ PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进
 | `/cost`            | 实时显示本次会话的 **token 花费 & 耗时**。              |
 | `/doctor`          | 一键诊断安装、网络、key 是否正确。                       |
 | `/add-dir <路径>`    | 把额外目录加入工作区，**多仓库**场景常用。                   |
-| `/sessions`        | 列出所有本地会话，可**回滚**到任意节点。                    |
 | `/review`          | 让 AI 对当前 **PR diff** 做代码审查。               |
 | `/mcp`             | 管理 MCP 服务器（如 WebSearch、Excel、Playwright）。 |
 | `/exit` 或 `Ctrl+C` | 退出交互。                                     |
@@ -80,6 +86,48 @@ PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进
 `claude commit` 一键提交
 `claude -c` 上下文还在，无需重复解释需求
 
+
+1. 配置全局规则
+家目录 ~/.claude/CLAUDE.md
+
+2. session上下文继续
+/resume 手动选择，恢复哪一次session
+
+3. 主题配置
+/config 选择主题，然后退出重新进入生效
+
+4. 代码回滚到指定检查点
+/rewind
+
+5. 压缩上下文，节省token
+/compact
+
+6. 清楚当前session的上下文
+/clear 注意它是会话级别的，用于临时清理，不希望写进对话的内容
+也可用于临时性的，终端cluade提问
+
+7. 权限设置
+/perssions 添加权限后，可以设置权限级别用户/项目级别
+
+或者配置文件（~/.claude/settings.json）
+
+8. 临时执行shell命令
+进入cluade后，使用 !+命令方式，比如: !ls
+
+9. 指定文件
+@ 后会自动弹出文件供您选择
+
+10. 一次性提问
+`claude -p "go语言使用使用通道"`
+
+11. 先把需求聊透，再编码
+连续按下两次 shift + Tab 进入plan模式
+
+12. 生成项目概览信息,后续辅助ai决策
+/init 自动生成项目下的 .CLAUDE.md文件
+
+13. vscode选中代码，终端感知
+插件claude code for vscode即可
 
 #### 4. mcp
 `claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp`
