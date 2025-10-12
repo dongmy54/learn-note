@@ -68,6 +68,9 @@ git cherry-pick --abort 用于处理git cherry-pick在处理中的情况
 当上面出现失败要求带上-m参数时
 git cherry-pick xxx -m 1 - 以当前分支为主线（合并过来的内容较少，不会带无关的内容）
 git cherry-pick xxx -m 2 - 以其它分支为主（合并内容较多，比较杂乱）
+
+git tag v1.0.0
+git push origin v1.0.0
 ==========================================远端=========================================
 
 git remote -v                                远端机信息
