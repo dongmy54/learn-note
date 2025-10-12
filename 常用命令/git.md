@@ -71,6 +71,11 @@ git cherry-pick xxx -m 2 - 以其它分支为主（合并内容较多，比较�
 
 git tag v1.0.0
 git push origin v1.0.0
+
+git tag -f v1.0.0 // 不升级版本情况下强制版本指向新的commit
+git push origin v1.0.0 --force // 加force即可
+
+
 ==========================================远端=========================================
 
 git remote -v                                远端机信息
