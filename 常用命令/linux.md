@@ -138,6 +138,8 @@ sudo lsof -i -P -n    # 查看打开了哪些端口监听等
 lsof | grep delete # 列出打开的已删除进程
 ls -l | sort -nrk 5   # 按照文件大小排序
 
+nc -vz baidu.com 80   # nc mac自带工具测试 域名端口是否可用
+
 id                    # 用户id信息
 chmod 640 foo.text    # 更改文件权限
                       # rwx代表 读 写 执行，数字是 4 2 1
