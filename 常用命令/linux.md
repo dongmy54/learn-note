@@ -124,6 +124,7 @@ ps x                  # 初略（数据列少）的列出所有进程
 ps aux                # 详细（数据列多）的列出所有进程
 ps aux |grep sidekiq  # 从所有进程中过滤出 sidekiq相关进程
 ps aux | less         # 太长分页查看
+pgrep -f "go-demo"    # 查出匹配这个名称的进程名 输出进程id
 
 kill 1024             # 杀死（终止）进程号为1024进程
 kill -stop 1024       # 停止1024号进程
