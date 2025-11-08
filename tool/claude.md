@@ -138,110 +138,58 @@ PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进
 {
   "permissions": {
     "allow": [
-      /* ------- 文件操作 ------- */
-      "Edit",
-      "FileWrite",
-      "FileDelete",
-
-      /* ------- Git 全家桶 ------- */
-      "Bash(git *)",
-      "Bash(git-commit:*)",
-      "Bash(git-push:*)",
-      "Bash(git-pull:*)",
-      "Bash(git-fetch:*)",
-      "Bash(git-checkout:*)",
-      "Bash(git-branch:*)",
-      "Bash(git-merge:*)",
-      "Bash(git-rebase:*)",
-      "Bash(git-reset:*)",
-      "Bash(git-stash:*)",
-      "Bash(git-status)",
-      "Bash(git-log)",
-
-      /* ------- Node / JS 生态 ------- */
-      "Bash(npm *)",
-      "Bash(npx *)",
-      "Bash(yarn *)",
-      "Bash(pnpm *)",
-      "Bash(node *)",
-      "Bash(bun *)",
-
-      /* ------- Python 生态 ------- */
-      "Bash(python *)",
-      "Bash(python3 *)",
-      "Bash(pip *)",
-      "Bash(pip3 *)",
-      "Bash(poetry *)",
-      "Bash(pdm *)",
-      "Bash(conda *)",
-
-      /* ------- Go 生态 ------- */
-      "Bash(go *)",
-      "Bash(gofmt *)",
-      "Bash(goimports *)",
-
-      /* ------- Rust 生态 ------- */
-      "Bash(cargo *)",
-      "Bash(rustfmt *)",
-      "Bash(clippy *)",
-
-      /* ------- Java / Kotlin ------- */
-      "Bash(mvn *)",
-      "Bash(gradle *)",
-      "Bash(kotlinc *)",
-
-      /* ------- C/C++ ------- */
-      "Bash(make *)",
-      "Bash(cmake *)",
-      "Bash(g++ *)",
-      "Bash(gcc *)",
-      "Bash(clang *)",
-      "Bash(clang-format *)",
-      "Bash(clang-tidy *)",
-
-      /* ------- Docker / K8s ------- */
-      "Bash(docker *)",
-      "Bash(docker-compose *)",
-      "Bash(kubectl *)",
-
-      /* ------- 代码格式化 / 检查 ------- */
-      "Bash(prettier *)",
-      "Bash(eslint *)",
-      "Bash(black *)",
-      "Bash(flake8 *)",
-      "Bash(mypy *)",
-      "Bash(ruff *)",
-      "Bash(shellcheck *)",
-      "Bash(shfmt *)",
-
-      /* ------- 测试 ------- */
-      "Bash(npm run test)",
-      "Bash(npm run test:*)",
-      "Bash(python -m pytest)",
-      "Bash(pytest)",
-      "Bash(cargo test)",
-      "Bash(go test)",
-      "Bash(mvn test)",
-      "Bash(gradle test)",
-
-      /* ------- 构建 / 发布 ------- */
-      "Bash(npm run build)",
-      "Bash(npm run build:*)",
-      "Bash(pnpm build)",
-      "Bash(yarn build)",
-      "Bash(make build)",
-      "Bash(cargo build)",
-      "Bash(go build)",
-
-      /* ------- 网络拉文档 ------- */
-      "WebFetch(*)"
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(go:*)",
+      "WebSearch",
+      "WebFetch",
+      "WebFetch(domain:*.*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(cd:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(which:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(git:*)",
+      "Bash(brew:*)",
+      "Bash(curl:*)",
+      "Bash(env)",
+      "Grep",
+      "Glob",
+      "Bash(make:*)"
     ],
-
-    /* 同会话内后续编辑不再弹窗 */
-    "defaultMode": "acceptEdits"
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(dd:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dmy/.claude/hooks/go-checks.sh"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
+PS：
+1. 一点注释不能加
+2. 对于命令，最好去看它帮我加的是如何写的，避免编写错误；如果有语法错误，或者注释存在会导致配置不生效
+3. 如何校验配置是否生效？进入交互后通过permissions命令查看(不用每次都退出后重新进入)
+4. 对于hooks 中shell脚本,注意退出码（成功0 失败用2），如果写1不会看到且不处理
+
 
 使用go语言开发，实现一个分布式场景下的singlefight（go语言的singlefight只在单独的进程内有效），搭配redis实现，要求：
 1. 实现一个完成功能包，使用时，直接导入即可使用
