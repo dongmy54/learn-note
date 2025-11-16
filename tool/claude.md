@@ -132,6 +132,9 @@ PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进
 
 #### 4. mcp
 `claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp`
+`claude mcp add --transport sse brightdata "https://mcp.brightdata.com/sse?token=<your-api-token>" --scope user`
+注意添加 `--scope user`全局使用
+- chrome-devtools 其次
 
 #### 5. 权限
 ~/.claude/settings.json
