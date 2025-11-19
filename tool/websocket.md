@@ -1,0 +1,8 @@
+###  websocat
+https://github.com/vi/websocat
+
+测试
+```shell
+websocat "ws://192.168.15.188:16001/v2/df/dxwsapi?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZyI6MSwiZXhwIjoxNzYzNTUwODg4LCJmaWQiOiI1M2NmMTQzMy0zYjUyLTQ4ZTUtYTY3My0zZWZkNmIyMjAwNmIiLCJnaWQiOjEyMDUyNDk1ODIxNzExNjQ2NzIsImdzdWJ0eXBlIjoxLCJpYXQiOjE3NjM1MTQ4ODgsImlzcyI6ImZ1c3NlbmR4MiIsInBhdGlkIjoiIiwicm9sZSI6IjEiLCJzY29wZSI6bnVsbCwic291cmNlIjoiZHgyIiwidXNlcmlkIjoiMTIwNTI0OTU4MjE1MDE5MzE1MiJ9.cgjgE_A64UmI5U3lIfqLkX2kYL4NEtoPY-ZmJba-Fms"
+```
+
