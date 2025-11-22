@@ -39,6 +39,7 @@ export ANTHROPIC_AUTH_TOKEN="xxx"
 {
   "LOG": true,
   "API_TIMEOUT_MS": 600000,
+  "PROXY_URL": "http://127.0.0.1:7890", // 这个参数非常关键 有些模型对地区有限制
   "Providers": [
     {
       "name": "openrouter",
@@ -61,10 +62,12 @@ export ANTHROPIC_AUTH_TOKEN="xxx"
   }
 }
 ```
-PS: 修改完配置后重启`ccr code restart`,不生效的话，手动干掉进程然后重启
+PS: 修改完配置后重启`ccr restart`
+不生效的话,手动干掉进程然后重启
 `lsof -i :3456`查进程id
 `ccr code`直接使用
 
+另外一种修改的方式: `ccr ui` 直接界面修改/添加/切换
 另外需要注意的是，使用是要把原本正常的`~/.claude/settings.json`干掉否则不会生效。
 
 
