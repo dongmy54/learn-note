@@ -79,11 +79,19 @@ func main() {
 	router.AddPlugin(plugin.SignalsHandler)
 
 	// 添加中间件
-	// 1. 顺序有重要性 上面的包下面的
+	// 1. 顺序有重要性 上面的包（洋葱上面的在外层）下面的
 	// 2. Ack慎用，直接ack后都不会处罚重试机制
 	// 3. 官方的重试属于应用层的重试，并不是一定就只重试这么多次，redis本次也有投递不成功继续投递的问题
 	//    因此，会在上层添加一个死信队列的重试
-	router.AddMiddleware(
+	// 4. 使用重试时，不要使用超时中间件；
+	//   就算要使用也要注意，timeout要放在重试中间件上面；绝对不要放在重试中间件下面，这会导致重试中间件失效
+	//   那么如何保证超时呢？使用重试中的MaxElapsedTime 最大重试时间来做
+	//   根本原因：超时中间件和重试中间件它们都有自己的时间控制，两者叠加不好计算，也容易冲突；当前watermill无法实现，对单次处理超时（带上重试）的控制
+	// 5. 由于重试是基于内存的，如果总共要重试5次，那么在重试到第2次时，此时程序重启，那么会从头开始计算重试次数哦。
+	//    虽然计算次数不对，但是消息并不会丢失；所以不会有问题。
+    // 6. 由于重试是基于内存的，因此如果一个消费者组里面只有一个消费者，与此同时重试设置的时间比较长，那么这段时间内其它消息消费都会被阻塞掉
+	//     因此重试机制，时间不要设置的太长，最好速战速决
+    router.AddMiddleware(
 		//middleware.InstantAck,
 		middleware.CorrelationID,
 		middleware.Recoverer,
@@ -91,12 +99,12 @@ func main() {
 		// 重试中间件：基本重试功能
 		middleware.Retry{
 			// MaxRetries:          3,
-			// InitialInterval:     500 * time.Millisecond,
-			// MaxInterval:         time.Minute * 5,
-			// Multiplier:          2.0,
-			// MaxElapsedTime:      time.Minute * 10,
-			// RandomizationFactor: 0.1,
-			// ResetContextOnRetry: true,
+			// InitialInterval:     500 * time.Millisecond, // 首次重试时间间隔
+			// MaxInterval:         time.Minute * 5, // 最大重试时间间隔
+			// Multiplier:          2.0, // 重试时间间隔倍数
+			// MaxElapsedTime:      time.Minute * 10, // 最大重试时间
+			// RandomizationFactor: 0.1, // 随机因子
+			// ResetContextOnRetry: true, // 重试时是否重置上下文
 			// OnRetryHook: func(retryNum int, delay time.Duration) {
 			// 	log.Printf("Retry attempt %d, next delay: %v", retryNum, delay)
 			// },
@@ -116,6 +124,7 @@ func main() {
 
 	// 添加处理器
 	// 只有消费者模式下，才会使用
+	// 一次AddConsumerHandler 就相当于添加了一个消费者；要并发处理，可以多添加几个（处理函数相同），只是handler_name不同即可
 	router.AddConsumerHandler("callback_handler", topic, subscriber, func(msg *message.Message) error {
 		fmt.Println("收到消息: ", string(msg.Payload))
 		time.Sleep(1 * time.Second)
