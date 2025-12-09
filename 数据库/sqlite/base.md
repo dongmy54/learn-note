@@ -22,4 +22,20 @@ ADD COLUMN user_floors VARCHAR(255);
 
 ALTER TABLE permissions
 ADD COLUMN user_name VARCHAR(255);
+
+
+ALTER TABLE patients
+ADD COLUMN id VARCHAR(50);
+```
+
+备份
+```
+-- 设置输出文件
+.output patients_backup.sql
+-- 指定导出表
+.dump patients
+-- 关闭输出文件
+.output stdout
+-- 退出后查看 备份sql
+.quit
 ```
