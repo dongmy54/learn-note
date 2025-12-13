@@ -17,3 +17,20 @@ function compact(arr) {
         return arr;
 }
 ```
+
+5. `let`、`const`、`var`区别
+- `const` 常量不用过多解释
+- `let`和`var`都是变量
+- `let`是块级作用域，`var`是函数作用域
+```js
+console.log(a);  // 不报错 undefined
+var a = "sdaf";
+
+console.log(b);  // 报错 ReferenceError: Cannot access 'b' before initialization.  的作用域还没到这里
+let b = "hello";
+```
+除非老项目，变量都用let
+
+6. 注意在ts中函数是写`function`而非`func`
+7. 变量接`冒号`（a: number）
+
