@@ -1,6 +1,6 @@
 ## typescript 开发搭建
 
-### 1. 
+### 1. pnpm方式
 `mkdir my-ts`
 `cd my-ts`
 ```shell
@@ -29,4 +29,22 @@ touch src/index.ts # 代码文件
 然后命令行可以执行`pnpm start看输出了`
 > 当然，直接执行`pnpm ts-node src/index.ts`也是可以的啦。
 
+
+### 2. tsc
+```shell
+# 1. 初始化ts项目，生成tsconfig.json
+tsc --init 
+
+# 只做类型检查 不生成js文件
+tsc --noEmit
+
+# 读取tsconfig.json 生成 .js和.d.ts文件（一堆文件）
+tsc
+
+# 文件变动自动检查编译
+tsc --watch
+
+# PS：注意tsc的作用主要是做类型检查和编译（它是编译器），无法运行js/ts文件
+# 而bun可以直接运行
+```
 
