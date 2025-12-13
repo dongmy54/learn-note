@@ -48,3 +48,8 @@ tsc --watch
 # 而bun可以直接运行
 ```
 
+### 3. tsconfig.json的作用
+编译配置说明书，解决：
+1. 要编译哪些文件，不编译哪些（include/exclude）
+2. 类型检查严格程度（strict）
+3. 按什么标准编译出文件（target）
