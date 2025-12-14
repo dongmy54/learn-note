@@ -124,3 +124,17 @@ a.push(2);
 a.push(3);
 console.log(a);
 ```
+
+### 7. 元组
+是一种特殊的数组
+1. 混合各种类型
+2. 长度固定
+
+```ts
+let tuple: [string, number, boolean] = ["hello", 42, true];
+console.log(tuple[0]); // "hello"
+console.log(tuple[1]); // 42
+console.log(tuple[2]); // true
+console.log(tuple[3]); // 直接爆红 因为越界了 长度固定为3
+```
+

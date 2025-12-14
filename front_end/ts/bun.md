@@ -21,3 +21,6 @@ bun init # 初始化项目（使用bun init后就不用tsc --init）
 bun add jquery # 添加依赖
 bun run file.ts # 运行ts文件
 ```
+
+注意：`bun run xx.ts` 默认情况下会先进行类型检查，但是有时候虽然类型不符合要求，但是并不会报错哦（感觉比较宽松），使用`tsc --noEmit`会报错
+
