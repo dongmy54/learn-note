@@ -43,3 +43,5 @@ let b = "hello";
     - 是否包含xx.b.ts 如果已包含说明已支持ts类型，直接安装即可
     - 是否有@types/xxx包来提供类型定义，如果有则多安装下它，如果没有，那么自己就需要写类型申明了
 
+11. `npm install @types/node --save-dev` 这里的`--save-dev`是保存到开发依赖
+

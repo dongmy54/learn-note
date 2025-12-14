@@ -22,6 +22,19 @@ function log(message: string) {
 export default log; // 默认导出（只能有一个，导出时默认导出它）
 ```
 
+在统一文件中导出，方便集中管理，使用时也好使用
+```ts
+// 此时在index.ts中直接对外暴露math.js中的所有内容 做导出
+export * from "./math";
+
+
+// 它等价于
+// import * as math from "./math";
+
+// export const add = math.add;
+// export const sub = math.sub;
+// ……所有「命名导出」逐个转发
+```
 
 ### 导入
 `index.ts`

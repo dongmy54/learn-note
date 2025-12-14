@@ -14,7 +14,20 @@ let a: number = 123; // 类型+值
 1. `any`：任意类型
 ```ts
 let a; // 默认就是any
+```
 
+内置类型
+```ts
+// 定义一个布尔对象
+let b: Boolean = new Boolean(1); 
+// 定义一个错误对象
+let e: Error = new Error('Error occurred'); 
+// 定义一个日期对象
+let d: Date = new Date(); 
+// 定义一个正则表达式对象
+let r: RegExp = /[a-z]/;
+
+console.log(b, e, d, r);
 ```
 
 ### 2. 类型推断：
