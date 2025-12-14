@@ -13,3 +13,11 @@
 
 
 - `bunx tsc hello_world.ts` bunx是调用工具（非自己的，比如这里的tsc）,这里实际是使用bunx去找tsc然后使用tsc把hello_world.ts编译成js文件
+
+
+正常操作
+```bash
+bun init # 初始化项目（使用bun init后就不用tsc --init）
+bun add jquery # 添加依赖
+bun run file.ts # 运行ts文件
+```

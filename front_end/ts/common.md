@@ -34,3 +34,12 @@ let b = "hello";
 6. 注意在ts中函数是写`function`而非`func`
 7. 变量接`冒号`（a: number）
 
+8. `node_modules`目录是存放项目依赖的地方，
+  由`xx install`根据package.json生成，因此不要把它提交到git仓库，
+  应该在`.gitignore`中忽略该目录。
+
+9. 包的引入，通过`import` `import $ from "jquery";`
+10. 包的安装要注意
+    - 是否包含xx.b.ts 如果已包含说明已支持ts类型，直接安装即可
+    - 是否有@types/xxx包来提供类型定义，如果有则多安装下它，如果没有，那么自己就需要写类型申明了
+

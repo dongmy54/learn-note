@@ -53,3 +53,17 @@ tsc --watch
 1. 要编译哪些文件，不编译哪些（include/exclude）
 2. 类型检查严格程度（strict）
 3. 按什么标准编译出文件（target）
+
+### 4. 声明
+有些老的js库本身没有提供类型声明，需要手动声明类型。所以需要申明来解决问题。
+```ts
+declare var b: (selector: string) => any; // 声明变量
+declare function foo(name: string): void; // 声明函数
+
+// 声明命名空间(用于解决层叠嵌套问题)
+declare namespace MyLib {
+  function run(task: string): void;
+}
+MyLib.run("build");
+```
+
