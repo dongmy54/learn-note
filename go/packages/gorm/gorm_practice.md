@@ -421,4 +421,23 @@ func (m *defaultTCtImplantModel) GetImplantInfos(ctx context.Context, implantNos
 ```
 
 
+### 17. 零值与跳过回调
+1. 利用map做到零值更新
+2. 利用updateColumns做到跳过回调
+
+两者结合迁移常用
+```go
+db := test.GetDxpDb()
+
+db.Model(TDfMessage{}).Debug().Where("id = ?", 1203826486985887744).UpdateColumns(
+  map[string]any{
+    "status": 0,
+    "kind":   3,
+  },
+)
+
+// 注意上面代码如果改成 Updates同样能更新零值，但是不跳过回调会有updatedAt的问题
+```
+
+
 
