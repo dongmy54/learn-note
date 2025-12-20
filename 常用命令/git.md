@@ -158,6 +158,9 @@ git worktree remove ../new-project-name
 git checkout master-draft -- .
 # 把master-draft分支的代码，以非commit形式添加到当前分支
 # 此时相当于把内容已经git add .了，但没有commit
+
+
+
 ```
 
 ##### 如何添加一个空目录到git
@@ -171,6 +174,11 @@ git checkout master-draft -- .
 # 除了 忽略文件自己
 !.gitignore
 ```
+
+### .git/info/exclude
+和.gitignore基本差不多，内部使用方式完全一样。
+它可以实现忽略文件的功能，这样不用在.gitignore中写就能实现忽略文件的功能
+
 
 ##### 关于忽略目录的写法
 > 1. `vendor/emall_interface`、`vendor/emall_interface/`、`/vendor/emall_interface/*` 在使用效果（版本提交）是等效的
