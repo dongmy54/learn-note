@@ -135,6 +135,29 @@ rm -rf .git-credential-cache       解决仓库存在、账号正确却提示仓
 
 # 批量删除远程分支
 git branch -r | grep  'fixbug' | sed 's/origin\///g' | xargs -I {} git push origin :{}
+
+
+==========================================worktree==========================================
+# 工作树理解
+# 相当于新开了一个项目的开发空间，这个空间下的一切操作和原空间（默认）一样
+# 优势：可以实现在同一时刻，位于不同的分支开发的（默认一个工作树时，同一时刻只能在一个分支上工作）
+# 注意点：不同的工作树，不能同时位于同一个分支！！！！
+
+git worktree add ../new-project-name master -b master-draft 
+# 新工作树的目录名称为 new-project-name（位置基于当前项目路径）
+# 新的工作树基于master分支创建一个新的 master-draft 分支
+
+
+git worktree list 
+# 工作树列表
+
+git worktree remove ../new-project-name
+# 删除指定工作树(后面填写工作树路径)
+
+
+git checkout master-draft -- .
+# 把master-draft分支的代码，以非commit形式添加到当前分支
+# 此时相当于把内容已经git add .了，但没有commit
 ```
 
 ##### 如何添加一个空目录到git
