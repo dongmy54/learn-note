@@ -219,8 +219,28 @@ PS：
 对于post请求后的内容需要写入数据库，数据库使用最基本的sqlite3方式写入即可，当前post主要写用户数据，后续还会支持其它类型的数据结构，因此最好有良好的扩展性，使用gorm包写数据、查询数据；另外完成后需要有对于上述两种请求的测试
 
 
-
-
+### 插件claude code for vscode
+唯一一个注意点是，安装完后去配置下环境变量，cmd+,打开设置，搜索claude code,找到Environment Variables,配置参考
+```json
+"claudeCode.environmentVariables": [    
+    {
+        "name": "ANTHROPIC_BASE_URL",
+        "value": "https://open.bigmodel.cn/api/anthropic"
+    },
+    {
+        "name": "ANTHROPIC_AUTH_TOKEN",
+        "value": "xxx"
+    },
+    {
+        "name": "ANTHROPIC_MODEL",
+        "value": "GLM-4.6"
+    },
+    {
+        "name": "API_TIMEOUT_MS",
+        "value": "600000"
+    }
+],
+```
 
 
 
