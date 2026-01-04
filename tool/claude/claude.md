@@ -244,5 +244,9 @@ PS：
 
 
 
+### 插件
+插件市场 https://claudemarketplaces.com/
+`/plugin marketplace add anthropics/claude-code` 添加官方插件市场
+`/plugin install feature-dev ` 官方功能开发
 
 
