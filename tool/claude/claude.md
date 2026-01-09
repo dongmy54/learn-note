@@ -138,6 +138,7 @@ PS: 修改完配置后重启`ccr restart`
 `claude mcp add --transport sse brightdata "https://mcp.brightdata.com/sse?token=<your-api-token>" --scope user`
 注意添加 `--scope user`全局使用
 - chrome-devtools 其次
+`claude mcp remove brightdata` 移除
 
 #### 5. 权限
 ~/.claude/settings.json
