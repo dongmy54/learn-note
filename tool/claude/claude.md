@@ -265,3 +265,19 @@ description: 描述什么时候触发
 验证
 1. `/plugin list`切换到已安装下查看，是否激活打上了勾选
 2. 语言验证： "使用LSP 查询有哪些地方使用了NewPublisher"
+
+
+### rules
+把所有内容全部定义在claude.md中太拥挤了，直接定义rules,也方便区分
+
+还可以控制只对哪些文件生效
+比如：`.claude/rules/code-style.md`
+```yaml
+---
+paths: **/*.go
+---
+
+# go代码规范
+
+- 函数名必须以Ba开头
+```
