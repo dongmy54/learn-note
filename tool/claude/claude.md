@@ -244,3 +244,12 @@ PS: claude code自带的plan模式就是一个子代理
 `/plugin install feature-dev ` 官方功能开发
 
 
+### LSP
+配置步骤
+1. 命令行开启`export ENABLE_LSP_TOOL=1`
+2. 确保终端安装了对应的语言服务，比如go的语言服务`go install golang.org/x/tools/gopls@latest`
+3. claude code交互界面，`/plugin` 然后找到discover中搜索`gopls-lsp`安装
+
+验证
+1. `/plugin list`切换到已安装下查看，是否激活打上了勾选
+2. 语言验证： "使用LSP 查询有哪些地方使用了NewPublisher"
