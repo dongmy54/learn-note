@@ -225,7 +225,22 @@ description: 描述什么时候触发
 其它信息xxx
 ```
 
+结合skills，
+
+1. **必须显示指定skills`才会加载使用**
+2. tools则不同，如果不指定代表所有工具均可用
+
+```yaml
+---
+name: ex-code
+description: 代码解释
+skills: explaining-code
+tools: Read, Write, Bash
+---
+```
+
 ### 插件claude code for vscode
+
 唯一一个注意点是，安装完后去配置下环境变量，cmd+,打开设置，搜索claude code,找到Environment Variables,配置参考
 ```json
 "claudeCode.environmentVariables": [    
@@ -281,3 +296,19 @@ paths: **/*.go
 
 - 函数名必须以Ba开头
 ```
+
+### skill
+
+1. 路径位置：`.claude/skills/{skill_name}/SKILL.md`
+2. 可以通过`/{skill_name}`方式运行skill,类似于斜杠命令
+
+  
+
+### 其它
+
+对于斜杠命令，发现一个特点，使用时，如果顶格输入它不会把当前的上下文（**选中的代码**）带入进去。
+
+那么有两种解法：
+
+1. 留空格后执行比如" /xxx"
+2. 直接显示的加一个1,比如："1 /xxx"
