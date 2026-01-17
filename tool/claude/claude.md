@@ -231,9 +231,9 @@ description: 描述什么时候触发
 
 1. **必须显示指定skills`才会加载使用**
 2. tools则不同，如果不指定代表所有工具均可用
-3. 通过`@xx`符合触发子代理，又或者直接指出子代理名称
+3. 推荐通过`@xx`符合触发子代理，又或者直接指出子代理名称（代理如果通过斜杠命令去执行效果始终不太好）
 4. 子代理的遵循指令情况不算好（原因，claude通常会对它生成两次提示词的提示，理论上它不应该直接加载claude.md的内容，但是如果自动生成的提示词中提及了的话会自动带上）
-
+5. 子代理的description非常关键，一定要对agent的功能有一个整体的描述，因为ai在生成提示词时，更多的参考了描述
 ```yaml
 ---
 name: ex-code
@@ -270,9 +270,11 @@ tools: Read, Write, Bash
 
 
 ### 插件
-插件市场 https://claudemarketplaces.com/
+插件市场： https://claudemarketplaces.com/
+官方插件代码仓库：https://github.com/anthropics/claude-plugins-official
 `/plugin marketplace add anthropics/claude-code` 添加官方插件市场
-`/plugin install feature-dev ` 官方功能开发
+`/plugin install feature-dev` 官方功能开发（也可以到/plugin后去搜索对应插件）
+插件可以在`.claude/plugins`目录下找到，可以看到它的agents目录等信息
 
 
 ### LSP
