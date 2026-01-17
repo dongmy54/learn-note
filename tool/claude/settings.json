@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(go:*)",
+      "WebSearch",
+      "WebFetch",
+      "WebFetch(domain:*.*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(cd:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(which:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(git:*)",
+      "Bash(brew:*)",
+      "Bash(curl:*)",
+      "Bash(env)",
+      "Grep",
+      "Glob",
+      "Bash(make:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(dd:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dmy/.claude/hooks/go-checks.sh"
+          },
+          {
+            "type": "prompt",
+            "prompt": "你正在评估 Claude 是否应该停止工作。上下文: $ARGUMENTS\n\n检查当前修改的代码是否遵循了 CLAUDE.md 中定义的开发规范。\n如果符合规范，返回：\n{\\\"ok\\\": true}\n\n如果有违反规范的地方，返回：\n{\\\"ok\\\": false, \\\"reason\\\": \\\"具体描述哪些地方不符合规范，以及需要如何修改\\\"}",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
