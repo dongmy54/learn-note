@@ -136,6 +136,15 @@ PS: 当前open-router已支持直接对claude的配置无需这些额外工具
 插件claude code for vscode即可
 
 #### 4. mcp
+前提条件要安装node,版本至少大于16（它会内置npx、npm等工具）
+```shell
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm -v
+
+nvm install 20
+```
+
 `claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp`
 `claude mcp add --transport sse brightdata "https://mcp.brightdata.com/sse?token=<your-api-token>" --scope user`
 注意添加 `--scope user`全局使用
@@ -163,6 +172,7 @@ PS: 当前open-router已支持直接对claude的配置无需这些额外工具
 // token去：账号设置 -> API 访问令牌
 // project-id: 左侧边栏点击“项目设置”，在“基本设置”页面即可复制项目 ID c. 拿到项目 ID
 ```
+安装完后的mcp配置在`~/.claude.json`中
 
 #### 5. 权限
 ~/.claude/settings.json
