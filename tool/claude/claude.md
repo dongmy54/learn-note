@@ -142,6 +142,28 @@ PS: 当前open-router已支持直接对claude的配置无需这些额外工具
 - chrome-devtools 其次
 `claude mcp remove brightdata` 移除
 
+官方文档： "https://github.com/apifox/apifox-mcp-server"
+```json
+{
+  "mcpServers": {
+    "API 文档": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "apifox-mcp-server@latest",
+        "--project-id=<project-id>"
+      ],
+      "env": {
+        "APIFOX_ACCESS_TOKEN": "<access-token>"
+      }
+    }
+  }
+}
+
+// token去：账号设置 -> API 访问令牌
+// project-id: 左侧边栏点击“项目设置”，在“基本设置”页面即可复制项目 ID c. 拿到项目 ID
+```
+
 #### 5. 权限
 ~/.claude/settings.json
 ```json
