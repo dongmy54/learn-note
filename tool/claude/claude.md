@@ -70,6 +70,8 @@ PS: 修改完配置后重启`ccr restart`
 另外一种修改的方式: `ccr ui` 直接界面修改/添加/切换
 另外需要注意的是，使用是要把原本正常的`~/.claude/settings.json`干掉否则不会生效。
 
+PS: 当前open-router已支持直接对claude的配置无需这些额外工具
+
 
 #### 3. 常用命令
 | 指令                 | 功能                                        |
@@ -134,10 +136,43 @@ PS: 修改完配置后重启`ccr restart`
 插件claude code for vscode即可
 
 #### 4. mcp
+前提条件要安装node,版本至少大于16（它会内置npx、npm等工具）
+```shell
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm -v
+
+nvm install 20
+```
+
 `claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp`
 `claude mcp add --transport sse brightdata "https://mcp.brightdata.com/sse?token=<your-api-token>" --scope user`
 注意添加 `--scope user`全局使用
 - chrome-devtools 其次
+`claude mcp remove brightdata` 移除
+
+官方文档： "https://github.com/apifox/apifox-mcp-server"
+```json
+{
+  "mcpServers": {
+    "API 文档": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "apifox-mcp-server@latest",
+        "--project-id=<project-id>"
+      ],
+      "env": {
+        "APIFOX_ACCESS_TOKEN": "<access-token>"
+      }
+    }
+  }
+}
+
+// token去：账号设置 -> API 访问令牌
+// project-id: 左侧边栏点击“项目设置”，在“基本设置”页面即可复制项目 ID c. 拿到项目 ID
+```
+安装完后的mcp配置在`~/.claude.json`中
 
 #### 5. 权限
 ~/.claude/settings.json
@@ -200,29 +235,119 @@ PS：
 
 ### 子代理
 主要用于定义一个专属处理某个问题的角色，比如代码审查员，用于提高代码质量
-配置在~/.claude/agents目录下，特点在于定制性更强。
+配置在~/.claude/agents目录下
+
+调用：
+1. 在对话中明确使用 xx 子代理 做什么（显示触发,这是目前最好用的方式，自动触发的几率太小啦，另外可以试试加强语气，比如： 必须触发）
+2. 可以一次使用多个子代理，比如描述 先使用 xx 子代理，然后 使用 xx 子代理
+
+特点：
+1. 独立的上下文（它不会污染主会话，互不干扰,另外一个点是它不会加载.claude.md 它有自己的系统提示词，一切都是新的哦）
+2. 专注特定任务，比如做测试/代码审查
+3. 一个子代理就是一个角色身份
+
+PS: claude code自带的plan模式就是一个子代理
+格式
+```yaml
+---
+name: 名字
+description: 描述什么时候触发
+---
+
+角色描述信息
+
+其它信息xxx
+```
+
+结合skills，
+
+1. **必须显示指定skills`才会加载使用**
+2. tools则不同，如果不指定代表所有工具均可用
+3. 推荐通过`@xx`符合触发子代理，又或者直接指出子代理名称（代理如果通过斜杠命令去执行效果始终不太好）
+4. 子代理的遵循指令情况不算好（原因，claude通常会对它生成两次提示词的提示，理论上它不应该直接加载claude.md的内容，但是如果自动生成的提示词中提及了的话会自动带上）
+5. 子代理的description非常关键，一定要对agent的功能有一个整体的描述，因为ai在生成提示词时，更多的参考了描述
+```yaml
+---
+name: ex-code
+description: 代码解释
+skills: explaining-code
+tools: Read, Write, Bash
+---
+```
+
+### 插件claude code for vscode
+
+唯一一个注意点是，安装完后去配置下环境变量，cmd+,打开设置，搜索claude code,找到Environment Variables,配置参考
+```json
+"claudeCode.environmentVariables": [    
+    {
+        "name": "ANTHROPIC_BASE_URL",
+        "value": "https://open.bigmodel.cn/api/anthropic"
+    },
+    {
+        "name": "ANTHROPIC_AUTH_TOKEN",
+        "value": "xxx"
+    },
+    {
+        "name": "ANTHROPIC_MODEL",
+        "value": "GLM-4.6"
+    },
+    {
+        "name": "API_TIMEOUT_MS",
+        "value": "600000"
+    }
+],
+```
 
 
 
-使用go语言开发，实现一个分布式场景下的singlefight（go语言的singlefight只在单独的进程内有效），搭配redis实现，要求：
-1. 实现一个完成功能包，使用时，直接导入即可使用
-2. 需要包含完整集成测试，redis连接本地就行
-3. 使用时支持singlefight使用的key，超时时间、缓存时间等信息
+### 插件
+插件市场： https://claudemarketplaces.com/
+官方插件代码仓库：https://github.com/anthropics/claude-plugins-official
+`/plugin marketplace add anthropics/claude-code` 添加官方插件市场
+`/plugin install feature-dev` 官方功能开发（也可以到/plugin后去搜索对应插件）
+插件可以在`.claude/plugins`目录下找到，可以看到它的agents目录等信息
 
 
+### LSP
+配置步骤
+1. 命令行开启`export ENABLE_LSP_TOOL=1`
+2. 确保终端安装了对应的语言服务，比如go的语言服务`go install golang.org/x/tools/gopls@latest`
+3. claude code交互界面，`/plugin` 然后找到discover中搜索`gopls-lsp`安装
 
-1. 界面回复用中
-2. 设置调用频率
-
-
-在当前目录下直接开发，把当前目录当作项目根目录即可，使用go语言开发一个基本的http server服务，要求有get/post两种请求，post请求使用使用body参数，content-type均为application/json返回数据
-对于post请求后的内容需要写入数据库，数据库使用最基本的sqlite3方式写入即可，当前post主要写用户数据，后续还会支持其它类型的数据结构，因此最好有良好的扩展性，使用gorm包写数据、查询数据；另外完成后需要有对于上述两种请求的测试
-
-
-
-
+验证
+1. `/plugin list`切换到已安装下查看，是否激活打上了勾选
+2. 语言验证： "使用LSP 查询有哪些地方使用了NewPublisher"
 
 
+### rules
+把所有内容全部定义在claude.md中太拥挤了，直接定义rules,也方便区分
 
+还可以控制只对哪些文件生效
+比如：`.claude/rules/code-style.md`
+```yaml
+---
+paths: **/*.go
+---
 
+# go代码规范
 
+- 函数名必须以Ba开头
+```
+
+### skill
+
+1. 路径位置：`.claude/skills/{skill_name}/SKILL.md`
+2. 可以通过`/{skill_name}`方式运行skill,类似于斜杠命令
+
+  
+
+### 其它
+
+对于斜杠命令，发现一个特点，使用时，如果顶格输入它不会把当前的上下文（**选中的代码**）带入进去。
+
+那么有两种解法：
+
+1. 留空格后执行比如" /xxx"
+2. 直接显示的加一个1,比如："1 /xxx"
+3. 子代理相对agent来说更稳定可控，它是给大模型一个技能包

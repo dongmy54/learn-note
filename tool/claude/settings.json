@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(go:*)",
+      "WebSearch",
+      "WebFetch",
+      "WebFetch(domain:*.*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(cd:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(which:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(git:*)",
+      "Bash(brew:*)",
+      "Bash(curl:*)",
+      "Bash(env)",
+      "Grep",
+      "Glob",
+      "Bash(make:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(dd:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dmy/.claude/hooks/go-checks.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.go$ ]]; then go fmt \"$CLAUDE_FILE_PATHS\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
