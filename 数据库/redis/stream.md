@@ -89,6 +89,17 @@ OK
 # 1763795320997-0 消息id
 ```
 
+```shell
+# 读取流最新->旧 40条消息
+XREVRANGE user-msg-topic + - COUNT 40
+
+# 精确判断一条消息是否在消费组的pending列表中
+XPENDING mystream mygroup 1772782598283-0 1772782598283-0 1
+
+# 删掉消费者组
+XGROUP DESTROY user-msg-topic default-group_handler_user-msg-topic_websocket_handler
+```
+
 ### 三、常用命令
 ```shell
 # 查看stream下的消费者组情况
@@ -121,6 +132,7 @@ OK
 # group1 有3消费者
 #        pending的消息数量2
 #        entries-read 已读取消息数量4
+#        last-delivered-id 消费者组最后一次向该消费者投递的id：1763795383893-0（只是读取可能还未被ack)
 #        lag 还需要读取多少条消息（这里为0，代表全部读取完毕）
 # group2 没有消费者
 #        pending的消息数量0
