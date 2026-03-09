@@ -21,6 +21,14 @@ AUTH "your secret"
 // 选择db
 select 1 
 ```
+
+#### 问题排查
+```shell 
+client list  # 查看连接到的客户端 里面有 客户端名字、ip、db等信息（最好通过redis-cli 结合grep使用）
+monitor      # 监控命令（所有使用过的命令都会打印出来 通过grep过滤特定命令）
+```
+
+
 ##### 安装及启动
 ```
 brew install redis    安装

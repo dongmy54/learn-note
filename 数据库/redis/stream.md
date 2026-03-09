@@ -170,4 +170,10 @@ XGROUP DESTROY user-msg-topic default-group_handler_user-msg-topic_websocket_han
 ```
 
 
+### 感想
+对于watermill包来说，主要是两个命令的体现
+1. `xreadgroup` 消费者组从中读取消息
+2. `xack` 确认某条消息
+3. 在日志中有stream 流id 对消息的添加和处理都是通过 这个id去处理的 
+
 
