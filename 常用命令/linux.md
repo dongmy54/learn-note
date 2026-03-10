@@ -316,6 +316,11 @@ crontab -r           # 删除所有定时任务
 
 # 查看执行情况
 grep CRON /var/log/syslog | tail -10
+
+
+# 操作系统信息
+uname # 系统内核
+uname -m # 架构
 ```
 
 ### 压测
