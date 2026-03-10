@@ -102,6 +102,9 @@ XGROUP DESTROY user-msg-topic default-group_handler_user-msg-topic_websocket_han
 
 ### 三、常用命令
 ```shell
+# 删掉某个stream
+DEL mystream 
+
 # 查看stream下的消费者组情况
 127.0.0.1:6379> XINFO GROUPS mystream
 1)  1) "name"
@@ -146,6 +149,7 @@ XGROUP DESTROY user-msg-topic default-group_handler_user-msg-topic_websocket_han
 (integer) 4
 
 # 手动裁剪stream中消息长度
+# 如果设置为0 则相当于清空
 127.0.0.1:6379> XTRIM mystream MAXLEN 2
 (integer) 2
 
