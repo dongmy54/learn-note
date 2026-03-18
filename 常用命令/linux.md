@@ -215,8 +215,17 @@ unzip web.zip
 mv h5 old_h5
 mv web h5
 
-tar -zcvf h5_20240820.tar.gz h5
-cp -rf h5 old_h5
+
+# tar打包
+tar -czvf h5_20240820.tar.gz h5 # 对h5目录打包
+tar -czvf arche.tar.gz *        # 对当前目录下所有文件打包
+# -c create创建
+# -z zip 压缩
+# -v 详细信息
+# -f file 指定文件
+
+tar -xzvf arche.tar.gz # 对包解压
+# -x 解压extract（c换x）
 
 
 # ===============================较少用到======================
@@ -249,6 +258,7 @@ grep -a xx file_name # Binary file 提示，前面加-a
 
 
 zgrep 'test' production.gz # 过滤gz文件
+pgrep "go-demo"            # 根据进程启动名称查进程
 zless production.gz        # 查看gz文件内容
 
 ls learn-not/ruby/语法 | grep rb    # 过滤出xx目录下 包含rb的文件名
