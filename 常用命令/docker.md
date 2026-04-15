@@ -23,6 +23,9 @@ docker save -o welcome-to-docker.tar welcome-to-docker
 docker load < my-image.tar.gz # 从文件中加载docker镜像
 
 docker images # 查看有哪些镜像
+docker image prune  # 删除悬空镜像——指比如多次build同一个镜像名、同一个tag,那么前一个镜像就会变成悬空镜像
+docker image prune -a # 删除所有未被容器使用的镜像、包括一个用于构建用到的基础镜像，所以清洁力度非常大、慎用
+
 # 删除镜像 weclcome-to-docker tag名为20230910
 docker rmi welcome-to-docker:20230910 
 
@@ -115,6 +118,17 @@ docker system prune -a --volumes
 // 复制目录到 下对方必须要带目录哦
 COPY templates/ ./templates
 ```
+
+
+### 关于镜像管理
+基本构成：镜像名：tag
+
+1. 在未达到阶段性成果前tag都是用默认的`latest`;重复构建没关系，会抢占（前一个变悬空镜像）
+2. 在真正达到一个阶段性时，再打包成具体tag
+3. 定时清理悬空镜像`docker image prune`
+4. 启动容器时，先stop、然后删除同名容器，再启动新容器
+
+
 
 ### 可用镜像汇总
 ```
