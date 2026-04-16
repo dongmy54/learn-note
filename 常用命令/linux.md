@@ -248,7 +248,8 @@ grep 'test' db_test.rb temp.rb      # 在文件中匹配字符串(这里只支�
 grep -i 'test' db_test.rb temp.rb   # 忽略大小写
 grep -l 'test' db_test.rb temp.rb   # 列出匹配到的文件
 grep hu -Ir log                     # I（忽略二进制文件）r（递归文件） 检索hu
-grep -A 10 -B 10 self.product_klass.find_by /Users/dongmingyan/t.rb  # 过滤匹配内容的前后10行
+grep -A 10 -B 10 self.product_klass.find_by /Users/dongmingyan/t.rb  # 过滤匹配内容的前后10行 A-after B-before
+grep -C 10 self.product_klass.find_by /Users/dongmingyan/t.rb # 与上等效 前后10行
 grep -rl . -e 'iot.v2.kuban.io' # 只找出对应的文件
 grep -rn . -e 'iot.v2.kuban.io' # 找出当前目录下所有文件中 包含iot.v2.kuban.io的文件并打印行号
 # -r 递归

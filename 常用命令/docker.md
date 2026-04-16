@@ -77,6 +77,8 @@ docker inspect -f '{{ .Mounts }}' 容器id和名称
 docker logs kb-ent-api       # 查看容器运行情况（制定容器日志）
 docker logs --stderr web-app # 查看日志标准错误
 docker logs -f web-app       # 动态查看日志
+docker logs 74c6299f389e 2>&1 | grep Plugin # 在grep时候 搭配2>&1因为 它是标准错误，默认过滤不到内容
+
 
 # 在容器内创建备份文件
 docker exec -it my_postgres_container pg_dump -U postgres -W -F t my_database > my_database_backup.tar
