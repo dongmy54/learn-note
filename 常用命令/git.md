@@ -160,7 +160,9 @@ git checkout master-draft -- .
 # 此时相当于把内容已经git add .了，但没有commit
 
 
-
+还有一个简单办法
+1. 到工作树目录下使用`git statsh -u`(把新添加文件也放进暂存)
+2. 然后回到需要回填的分支使用`git statsh pop` 
 ```
 
 ##### 如何添加一个空目录到git
