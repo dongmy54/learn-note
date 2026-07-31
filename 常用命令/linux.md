@@ -95,7 +95,8 @@ mv ~/temp.rb ~/tp.rb             # 更改文件名（相同目录时）
 mv file1 file2 file3 directory   # 一次移动多个文件
 mv aa.rb{,.bak}                  # 复制出一个 aa.rb.bak文件
 
-cp cp -a /Users/dongmingyan/yg/emall_interface/* vendor/emall_interface # 复制一个文件中的所有内容（文件/目录）到另外一个目录
+# /. 代表目录下的所有内容
+cp -r .claude/skills/. .agents/skills # 复制一个文件中的所有内容（文件/目录）到另外一个目录
 
 rm -rf uploads/attachment/file/*  删除目录下所有文件
 
