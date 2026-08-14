@@ -75,6 +75,22 @@ git push origin v1.0.0
 git tag -f v1.0.0 // 不升级版本情况下强制版本指向新的commit
 git push origin v1.0.0 --force // 加force即可
 
+==========================================rebase======================================
+git rebase
+原理：rebase顾名思义，re（重新）base基于起点，把当前分支上提交的commit，站在目标分支（引入分支）上做重新提交。
+比如：
+1.初始main分支: A-B-C
+2. feature：A-B-C-D-E 基于C开发了D-E
+3. main分支：A-B-C-F 基于C开发了F
+
+此时在feature上rebase main；产生 A-B-C-F-D'-E' rebase到了F节点提交了D和E产生了D'和E'(rebase会改变)
+
+git rebase中途发送了冲突如何处理：
+1. 手动处理冲突改文件后git add、git rebase continue
+2. 如果还有其它commit的冲突一直循环到处理完成（merge一次处理完）
+
+如果冲突太多，不想处理(回退到rebase一起以前，就当没发生)
+git rebase abort
 
 ==========================================远端=========================================
 
