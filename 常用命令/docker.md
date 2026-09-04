@@ -72,6 +72,8 @@ docker inspect <container_name_or_id> #查看容器信息，非常详细
 docker inspect --format='{{.NetworkSettings.IPAddress}}' <container_name_or_id>
 # 查看容器挂载信息
 docker inspect -f '{{ .Mounts }}' 容器id和名称
+# 查看容器内环境变量
+docker exec d7f939a18d1e env
 
 # 日志
 docker logs kb-ent-api       # 查看容器运行情况（制定容器日志）
