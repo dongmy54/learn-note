@@ -86,7 +86,7 @@ git rebase
 此时在feature上rebase main；产生 A-B-C-F-D'-E' rebase到了F节点提交了D和E产生了D'和E'(rebase会改变)
 
 git rebase中途发送了冲突如何处理：
-1. 手动处理冲突改文件后git add、git rebase continue
+1. 手动处理冲突改文件后git add、git rebase --continue
 2. 如果还有其它commit的冲突一直循环到处理完成（merge一次处理完）
 
 如果冲突太多，不想处理(回退到rebase一起以前，就当没发生)
